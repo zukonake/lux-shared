@@ -1,50 +1,49 @@
+#include <cassert>
 #include <stdexcept>
-#include <cstdint>
+//
+#include <alias/int.hpp>
+#include <alias/vector.hpp>
 #include <net/net_order.hpp>
+#include <net/tile_state.hpp>
 #include "server_data.hpp"
 
 namespace net
 {
 
-std::vector<uint8_t> ServerData::serialize() //TODO take reference instead of return?
+void ServerData::serialize(ServerData const &server_data, Vector<U8> &bytes)
 {
-    static_assert(sizeof(world::tile::Type::shape) == 1);
-    static_assert(sizeof(world::tile::Type::tex_pos) == 2);
+    static_assert(sizeof(TileState::shape) == 1);
+    static_assert(sizeof(TileState::tex_pos) == 2);
+    assert(bytes.size() == 0);
 
-    const std::size_t single_size = sizeof(world::tile::Type);
-    uint64_t byte_size = single_size * tiles.size();
+    const SizeT single_size = sizeof(TileState);
 
-    std::vector<uint8_t> result(byte_size);
-    for(std::size_t i = 0; i < tiles.size(); ++i)
+    bytes.reserve(server_data.tiles.size() * single_size);
+    for(auto const &i : server_data.tiles)
     {
-        result[(i * single_size) + 0] = tiles[i].shape;
-        result[(i * single_size) + 1] = tiles[i].tex_pos.x;
-        result[(i * single_size) + 2] = tiles[i].tex_pos.y;
+        bytes.emplace_back(i.shape);
+        bytes.emplace_back(i.tex_pos.x);
+        bytes.emplace_back(i.tex_pos.y);
     }
-    return result;
 }
 
 
-ServerData ServerData::deserialize(std::vector<uint8_t> const &bytes)
+void ServerData::deserialize(ServerData &server_data, Vector<U8> const &bytes)
 {
-    const std::size_t single_size = sizeof(world::tile::Type);
+    const SizeT single_size = sizeof(TileState);
     if((bytes.size() % single_size) != 0)
     {
         throw std::runtime_error("invalid server data deserialization input");
     }
-    const std::size_t tile_num    = bytes.size() / single_size;
-    ServerData result;
-    result.tiles.reserve(tile_num);
-    for(std::size_t i = 0; i < tile_num; ++i)
+    const SizeT tile_num = bytes.size() / single_size;
+
+    server_data.tiles.reserve(tile_num);
+    for(SizeT i = 0; i < tile_num; ++i)
     {
-        result.tiles.emplace_back(
-            (world::tile::Type::Shape) bytes[(i * single_size) + 0],
-            linear::Point2d<uint8_t>(
-                bytes[(i * single_size) + 1],
-                bytes[(i * single_size) + 2]
-            ));
+        server_data.tiles.emplace_back(
+            (TileState::Shape)bytes[(i * single_size) + 0],
+            TileState::TexPos(bytes[(i * single_size) + 1], bytes[(i * single_size) + 2]));
     }
-    return result;
 }
 
 }

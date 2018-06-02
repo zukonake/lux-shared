@@ -1,40 +1,38 @@
-#include <vector>
-#include <cstdint>
+#include <cassert>
+#include <stdexcept>
 //
+#include <alias/int.hpp>
+#include <alias/vector.hpp>
 #include <net/net_order.hpp>
-#include <world/tile/type.hpp>
 #include "client_data.hpp"
 
 namespace net
 {
 
-std::vector<uint8_t> ClientData::serialize() //TODO take reference instead of return?
+void ClientData::serialize(ClientData const &client_data, Vector<U8> &bytes)
 {
     static_assert(sizeof(view_size) == 4);
+    assert(bytes.size() == 0);
 
-    std::vector<uint8_t> result(sizeof(view_size));
-    result[0] =  net_order<uint16_t>(view_size.x) & 0xFF;
-    result[1] = (net_order<uint16_t>(view_size.x) & 0xFF00) >> 8;
-    result[2] =  net_order<uint16_t>(view_size.y) & 0xFF;
-    result[3] = (net_order<uint16_t>(view_size.y) & 0xFF00) >> 8;
-    return result;
+    bytes.reserve(sizeof(view_size));
+    bytes.emplace_back(net_order<U16>((client_data.view_size.x) & 0x00FF));
+    bytes.emplace_back(net_order<U16>((client_data.view_size.x) & 0xFF00) >> 8);
+    bytes.emplace_back(net_order<U16>((client_data.view_size.y) & 0x00FF));
+    bytes.emplace_back(net_order<U16>((client_data.view_size.y) & 0xFF00) >> 8);
 }
 
-
-ClientData ClientData::deserialize(std::vector<uint8_t> const &bytes)
+void ClientData::deserialize(ClientData &client_data, Vector<U8> const &bytes)
 {
     static_assert(sizeof(view_size) == 4);
 
-    const std::size_t single_size = sizeof(view_size);
+    const SizeT single_size = sizeof(view_size);
     if(bytes.size() != single_size)
     {
         throw std::runtime_error("invalid client data deserialization input");
     }
-    const std::size_t tile_num    = bytes.size() / single_size;
-    ClientData result = {{0, 0}};
-    result.view_size.x = net_order<uint16_t>(bytes[0] | (bytes[1] << 8));
-    result.view_size.y = net_order<uint16_t>(bytes[2] | (bytes[3] << 8));
-    return result;
+    const SizeT tile_num = bytes.size() / single_size;
+    client_data.view_size.x = net_order<U16>(bytes[0] | (bytes[1] << 8));
+    client_data.view_size.y = net_order<U16>(bytes[2] | (bytes[3] << 8));
 }
 
 }

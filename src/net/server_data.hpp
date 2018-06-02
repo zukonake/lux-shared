@@ -1,20 +1,18 @@
 #pragma once
 
-#include <cstdint>
-#include <vector>
-//
-#include <world/tile/type.hpp>
+#include <alias/int.hpp>
+#include <alias/vector.hpp>
+#include <net/tile_state.hpp>
 
 namespace net
 {
 
 struct ServerData
 {
-    std::vector<world::tile::Type> tiles;
-    //tiles view size (in w and h) are client-side
+    Vector<TileState> tiles;
 
-    std::vector<uint8_t> serialize();
-    static ServerData deserialize(std::vector<uint8_t> const &bytes);
+    static void   serialize(ServerData const &server_data, Vector<U8>       &bytes);
+    static void deserialize(ServerData       &server_data, Vector<U8> const &bytes);
 };
 
 }
