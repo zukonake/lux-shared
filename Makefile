@@ -1,4 +1,4 @@
-TARGET    = lux-shared
+TARGET    = liblux.so
 BUILD_DIR = build
 SRC_DIR   = src
 

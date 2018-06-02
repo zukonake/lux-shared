@@ -16,4 +16,3 @@ vgcore*
 *.o
 *.exe
 *.out
-lux-shared
