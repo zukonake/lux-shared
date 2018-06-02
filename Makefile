@@ -1,4 +1,4 @@
-TARGET    = liblux.so
+TARGET    = liblux.a
 BUILD_DIR = build
 SRC_DIR   = src
 
@@ -26,7 +26,7 @@ WARNINGS_FLAGS  = \
 CXX       = g++
 CXXFLAGS += -I$(SRC_DIR) $(WARNINGS) $(DEBUG_FLAGS) -std=c++17 -pedantic -fPIC
 LDLIBS   += -lenet -pthread -lluajit
-LDFLAGS  += -shared
+LDFLAGS  += 
 
 CPP_FILES = $(shell find $(SRC_DIR) -type f -name "*.cpp" -printf '%p ')
 DEP_FILES = $(subst $(SRC_DIR),$(BUILD_DIR),$(patsubst %.cpp,%.d,$(CPP_FILES)))
@@ -37,7 +37,7 @@ OBJ_FILES = $(subst $(SRC_DIR),$(BUILD_DIR),$(patsubst %.cpp,%.o,$(CPP_FILES)))
 $(TARGET) : $(OBJ_FILES)
 	@echo "Linking $@..."
 	@mkdir -p $(dir $@)
-	$(CXX) $(LDFLAGS) $(OBJ_FILES) -o $@ $(LDLIBS)
+	@ar rcs $@ $(OBJ_FILES)
 
 $(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp $(BUILD_DIR)/%.d
 	@echo "Building $@..."
@@ -51,6 +51,6 @@ $(BUILD_DIR)/%.d : $(SRC_DIR)/%.cpp
 
 clean :
 	@echo "Cleaning up..."
-	@$(RM) -r $(TARGET) $(BUILD_DIR) libapi.so
+	@$(RM) -r $(TARGET) $(BUILD_DIR)
 
 -include $(DEP_FILES)
