@@ -1,10 +1,10 @@
 #pragma once
 
-#include <cstdint>
+#include <alias/int.hpp>
 
 namespace net
 {
 
-typedef uint16_t Port;
+typedef U16 Port;
 
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include <alias/int.hpp>
 
 namespace net
 {
@@ -12,20 +12,20 @@ T net_order(T val);
 
 //TODO use BSWAP asm instruction?
 template<>
-inline uint8_t net_order(uint8_t val)
+inline U8 net_order(U8 val)
 {
     return val;
 }
 
 template<>
-inline uint16_t net_order(uint16_t val)
+inline U16 net_order(U16 val)
 {
     return ((val & 0x00FF) << 8) |
            ((val & 0xFF00) >> 8);
 }
 
 template<>
-inline uint32_t net_order(uint32_t val)
+inline U32 net_order(U32 val)
 {
     return ((val & 0x000000FF) << 24) |
            ((val & 0x0000FF00) <<  8) |
@@ -34,7 +34,7 @@ inline uint32_t net_order(uint32_t val)
 }
 
 template<>
-inline uint64_t net_order(uint64_t val)
+inline U64 net_order(U64 val)
 {
     return ((val & 0x00000000000000FF) << 56) |
            ((val & 0x000000000000FF00) << 40) |

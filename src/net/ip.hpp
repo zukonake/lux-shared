@@ -1,10 +1,10 @@
 #pragma once
 
-#include <cstdint>
+#include <alias/int.hpp>
 
 namespace net
 {
 
-typedef uint32_t Ip;
+typedef U32 Ip;
 
 }
