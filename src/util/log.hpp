@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+//
+#include <tinyformat.h>
 
 namespace util
 {
@@ -58,7 +60,7 @@ void log(std::string const &prefix, Level level, std::string const &fmt, Args...
     }
     output += fmt;
     output += '\n';
-    std::printf(output.c_str(), args...); //TODO fix this annoying warning
+    tfm::printf(output.c_str(), args...);
 }
 
 
