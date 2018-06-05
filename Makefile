@@ -6,11 +6,12 @@ DEBUG_FLAGS     = -g -O0 -ftrapv
 WARNINGS_FLAGS  = \
 	-Wall \
 	-Wextra \
+	-Werror \
 	-Wwrite-strings \
 	-Winit-self \
 	-Wcast-align \
 	-Wcast-qual \
-	-Wold-style-cast \
+	-Wno-old-style-cast \
 	-Wpointer-arith \
 	-Wstrict-aliasing \
 	-Wformat=2 \
@@ -20,11 +21,11 @@ WARNINGS_FLAGS  = \
 	-Wnon-virtual-dtor \
 	-Wctor-dtor-privacy \
 	-Wno-long-long \
-	-Weffc++ \
 	-Wconversion
 
 CXX       = g++
-CXXFLAGS += -I$(SRC_DIR) -Iinclude $(WARNINGS) $(DEBUG_FLAGS) -std=c++17 -pedantic -fPIC
+CXXFLAGS += -I$(SRC_DIR) -isystem include $(WARNINGS_FLAGS) \
+	    $(DEBUG_FLAGS) -std=c++17 -pedantic -fPIC
 LDLIBS   += -lenet -pthread
 LDFLAGS  += 
 

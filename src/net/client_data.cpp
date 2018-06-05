@@ -30,9 +30,8 @@ void ClientData::deserialize(ClientData &client_data, Vector<U8> const &bytes)
     {
         throw std::runtime_error("invalid client data deserialization input");
     }
-    const SizeT tile_num = bytes.size() / single_size;
-    client_data.view_size.x = net_order<U16>(bytes[0] | (bytes[1] << 8));
-    client_data.view_size.y = net_order<U16>(bytes[2] | (bytes[3] << 8));
+    client_data.view_size.x = net_order((U16)(bytes[0] | (bytes[1] << 8)));
+    client_data.view_size.y = net_order((U16)(bytes[2] | (bytes[3] << 8)));
 }
 
 }
