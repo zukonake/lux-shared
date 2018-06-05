@@ -25,7 +25,7 @@ WARNINGS_FLAGS  = \
 
 CXX       = g++
 CXXFLAGS += -I$(SRC_DIR) -Iinclude $(WARNINGS) $(DEBUG_FLAGS) -std=c++17 -pedantic -fPIC
-LDLIBS   += -lenet -pthread -lluajit
+LDLIBS   += -lenet -pthread
 LDFLAGS  += 
 
 CPP_FILES = $(shell find $(SRC_DIR) -type f -name "*.cpp" -printf '%p ')
