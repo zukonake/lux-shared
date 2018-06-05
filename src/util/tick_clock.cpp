@@ -4,6 +4,7 @@ namespace util
 {
 
 TickClock::TickClock(Duration rate) :
+    clock(),
     cycle(0),
     rate(rate),
     before(clock.now())

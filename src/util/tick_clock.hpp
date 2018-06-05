@@ -13,6 +13,8 @@ class TickClock
     typedef std::chrono::time_point<std::chrono::steady_clock> TimePoint;
 
     TickClock(Duration rate);
+    TickClock(TickClock const &that) = delete;
+    TickClock &operator=(TickClock const &that) = delete;
 
     void reset();
     void start();
