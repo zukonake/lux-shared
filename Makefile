@@ -24,7 +24,7 @@ WARNINGS_FLAGS  = \
 	-Weffc++ \
 	-Wconversion
 
-CXX       = g++
+CXX       = clang++
 CXXFLAGS += -I$(SRC_DIR) -isystem include $(WARNINGS_FLAGS) \
 	    $(DEBUG_FLAGS) -std=c++17 -pedantic -fPIC
 LDLIBS   += -lenet -pthread
