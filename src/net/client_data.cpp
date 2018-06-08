@@ -14,11 +14,13 @@ void ClientData::serialize(ClientData const &client_data, Vector<U8> &bytes)
     static_assert(sizeof(view_size) == 4);
     assert(bytes.size() == 0);
 
-    bytes.reserve(sizeof(view_size));
-    bytes.emplace_back(net_order<U16>((client_data.view_size.x) & 0x00FF));
-    bytes.emplace_back(net_order<U16>((client_data.view_size.x) & 0xFF00) >> 8);
-    bytes.emplace_back(net_order<U16>((client_data.view_size.y) & 0x00FF));
-    bytes.emplace_back(net_order<U16>((client_data.view_size.y) & 0xFF00) >> 8);
+    bytes.resize(sizeof(view_size));
+    U16 net_order_x = net_order<U16>(client_data.view_size.x);
+    U16 net_order_y = net_order<U16>(client_data.view_size.y);
+    bytes[0] =  net_order_x & 0x00FF;
+    bytes[1] = (net_order_x & 0xFF00) >> 8;
+    bytes[2] =  net_order_y & 0x00FF;
+    bytes[3] = (net_order_y & 0xFF00) >> 8;
 }
 
 void ClientData::deserialize(ClientData &client_data, Vector<U8> const &bytes)
