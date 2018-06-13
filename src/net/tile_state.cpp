@@ -3,7 +3,7 @@
 namespace net
 {
 
-TileState::TileState(Shape shape, TexPos tex_pos) :
+TileState::TileState(Shape shape, TexPos const &tex_pos) :
     shape(shape),
     tex_pos(tex_pos)
 {

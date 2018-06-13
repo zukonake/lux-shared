@@ -18,7 +18,7 @@ struct TileState
 
     Shape shape;
     TexPos tex_pos;
-    TileState(Shape shape, TexPos tex_pos);
+    TileState(Shape shape, TexPos const &tex_pos);
 };
 
 }

@@ -22,7 +22,7 @@ enum Level
 extern Level logger_report_level;
 
 template<typename... Args>
-void log(std::string const &prefix, Level level, std::string const &fmt, Args... args)
+void log(std::string const &prefix, Level level, std::string const &fmt, Args const &...args)
 {
     if(level > logger_report_level)
     {
