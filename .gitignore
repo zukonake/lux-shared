@@ -2,7 +2,7 @@
 bin
 depend
 build
-
+Debug
 # Ignore generated files
 callgrind*
 vgcore*
@@ -17,3 +17,9 @@ vgcore*
 *.o
 *.exe
 *.out
+*.filters
+*.vcxproj
+resource.h
+*.user
+Shared.rc
+Shared.aps
