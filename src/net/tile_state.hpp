@@ -2,6 +2,8 @@
 
 #include <alias/int.hpp>
 #include <linear/point_2d.hpp>
+#include <net/serialize.hpp>
+#include <net/deserialize.hpp>
 
 namespace net
 {
@@ -18,7 +20,22 @@ struct TileState
 
     Shape shape;
     TexPos tex_pos;
-    TileState(Shape shape, TexPos const &tex_pos);
 };
+
+template<>
+void serialize<TileState>(Vector<U8> &bytes, TileState const &val)
+{
+    serialize<U8>(bytes, (U8)val.shape);
+    serialize<U8>(bytes, val.tex_pos.x);
+    serialize<U8>(bytes, val.tex_pos.y);
+}
+
+template<>
+void deserialize<TileState>(Vector<U8> &bytes, TileState &val)
+{
+    deserialize<U8>(bytes, (U8 &)val.shape);
+    deserialize<U8>(bytes, val.tex_pos.x);
+    deserialize<U8>(bytes, val.tex_pos.y);
+}
 
 }
