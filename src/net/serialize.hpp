@@ -11,19 +11,19 @@ template<typename T>
 void serialize(Vector<U8> &bytes, T const &val);
 
 template<>
-void serialize<bool>(Vector<U8> &bytes, bool const &val)
+inline void serialize<bool>(Vector<U8> &bytes, bool const &val)
 {
     bytes.emplace_back(val);
 }
 
 template<>
-void serialize<U8>(Vector<U8> &bytes, U8 const &val)
+inline void serialize<U8>(Vector<U8> &bytes, U8 const &val)
 {
     bytes.emplace_back(val);
 }
 
 template<>
-void serialize<U16>(Vector<U8> &bytes, U16 const &val)
+inline void serialize<U16>(Vector<U8> &bytes, U16 const &val)
 {
     U16 temp = net_order<U16>(val);
     bytes.emplace_back( temp & 0x00FF);
@@ -31,7 +31,7 @@ void serialize<U16>(Vector<U8> &bytes, U16 const &val)
 }
 
 template<>
-void serialize<U32>(Vector<U8> &bytes, U32 const &val)
+inline void serialize<U32>(Vector<U8> &bytes, U32 const &val)
 {
     U32 temp = net_order<U32>(val);
     bytes.emplace_back( temp & 0x000000FF);
@@ -41,7 +41,7 @@ void serialize<U32>(Vector<U8> &bytes, U32 const &val)
 }
 
 template<>
-void serialize<U64>(Vector<U8> &bytes, U64 const &val)
+inline void serialize<U64>(Vector<U8> &bytes, U64 const &val)
 {
     U64 temp = net_order<U64>(val);
     bytes.emplace_back( temp & 0x00000000000000FF);

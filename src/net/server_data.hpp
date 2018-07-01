@@ -15,7 +15,7 @@ struct ServerData
 };
 
 template<>
-void serialize<ServerData>(Vector<U8> &bytes, ServerData const &val)
+inline void serialize<ServerData>(Vector<U8> &bytes, ServerData const &val)
 {
     assert(bytes.size() == 0);
     bytes.reserve(val.tiles.size() * sizeof(TileState));
@@ -26,7 +26,7 @@ void serialize<ServerData>(Vector<U8> &bytes, ServerData const &val)
 }
 
 template<>
-void deserialize<ServerData>(Vector<U8> &bytes, ServerData &val)
+inline void deserialize<ServerData>(Vector<U8> &bytes, ServerData &val)
 {
     assert((bytes.size() % sizeof(TileState)) == 0);
 

@@ -23,7 +23,7 @@ struct TileState
 };
 
 template<>
-void serialize<TileState>(Vector<U8> &bytes, TileState const &val)
+inline void serialize<TileState>(Vector<U8> &bytes, TileState const &val)
 {
     serialize<U8>(bytes, (U8)val.shape);
     serialize<U8>(bytes, val.tex_pos.x);
@@ -31,7 +31,7 @@ void serialize<TileState>(Vector<U8> &bytes, TileState const &val)
 }
 
 template<>
-void deserialize<TileState>(Vector<U8> &bytes, TileState &val)
+inline void deserialize<TileState>(Vector<U8> &bytes, TileState &val)
 {
     deserialize<U8>(bytes, (U8 &)val.shape);
     deserialize<U8>(bytes, val.tex_pos.x);

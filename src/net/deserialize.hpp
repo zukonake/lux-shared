@@ -11,21 +11,21 @@ template<typename T>
 void deserialize(Vector<U8> &bytes, T &val);
 
 template<>
-void deserialize<bool>(Vector<U8> &bytes, bool &val)
+inline void deserialize<bool>(Vector<U8> &bytes, bool &val)
 {
     val = (bool)bytes.back();
     bytes.pop_back();
 }
 
 template<>
-void deserialize<U8>(Vector<U8> &bytes, U8 &val)
+inline void deserialize<U8>(Vector<U8> &bytes, U8 &val)
 {
     val = (U8)bytes.back();
     bytes.pop_back();
 }
 
 template<>
-void deserialize<U16>(Vector<U8> &bytes, U16 &val)
+inline void deserialize<U16>(Vector<U8> &bytes, U16 &val)
 {
     val = 0;
     val |= (U16)(bytes.back()) << 8;
@@ -36,7 +36,7 @@ void deserialize<U16>(Vector<U8> &bytes, U16 &val)
 }
 
 template<>
-void deserialize<U32>(Vector<U8> &bytes, U32 &val)
+inline void deserialize<U32>(Vector<U8> &bytes, U32 &val)
 {
     val = 0;
     val |= (U32)(bytes.back()) << 24;
@@ -51,7 +51,7 @@ void deserialize<U32>(Vector<U8> &bytes, U32 &val)
 }
 
 template<>
-void deserialize<U64>(Vector<U8> &bytes, U64 &val)
+inline void deserialize<U64>(Vector<U8> &bytes, U64 &val)
 {
     val = 0;
     val |= (U64)(bytes.back()) << 56;

@@ -21,7 +21,7 @@ struct ClientData
 
 //TODO add asserts so that member types can be changed safely, same in ServerData
 template<>
-void serialize<ClientData>(Vector<U8> &bytes, ClientData const &client_data)
+inline void serialize<ClientData>(Vector<U8> &bytes, ClientData const &client_data)
 {
     static_assert(sizeof(U32) == sizeof(float));
     assert(bytes.size() == 0);
@@ -34,7 +34,7 @@ void serialize<ClientData>(Vector<U8> &bytes, ClientData const &client_data)
 }
 
 template<>
-void deserialize<ClientData>(Vector<U8> &bytes, ClientData &client_data)
+inline void deserialize<ClientData>(Vector<U8> &bytes, ClientData &client_data)
 {
     static_assert(sizeof(U32) == sizeof(float));
     assert(bytes.size() == sizeof(ClientData));
