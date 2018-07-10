@@ -8,6 +8,7 @@
 namespace net
 {
 
+#pragma pack(push, 1)
 struct TileState
 {
     typedef linear::Point2d<U8> TexPos;
@@ -21,6 +22,7 @@ struct TileState
     Shape shape;
     TexPos tex_pos;
 };
+#pragma pack(pop)
 
 template<>
 inline void serialize<TileState>(Vector<U8> &bytes, TileState const &val)

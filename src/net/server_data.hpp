@@ -9,10 +9,12 @@
 namespace net
 {
 
+#pragma pack(push, 1)
 struct ServerData
 {
     Vector<TileState> tiles;
 };
+#pragma pack(pop)
 
 template<>
 inline void serialize<ServerData>(Vector<U8> &bytes, ServerData const &val)
