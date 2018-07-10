@@ -27,17 +27,19 @@ struct TileState
 template<>
 inline void serialize<TileState>(Vector<U8> &bytes, TileState const &val)
 {
-    serialize<U8>(bytes, (U8)val.shape);
+    serialize<U8>(bytes, (U8)(val.shape));
     serialize<U8>(bytes, val.tex_pos.x);
     serialize<U8>(bytes, val.tex_pos.y);
+    assert(bytes.size() >= sizeof(TileState));
 }
 
 template<>
 inline void deserialize<TileState>(Vector<U8> &bytes, TileState &val)
 {
-    deserialize<U8>(bytes, (U8 &)val.shape);
-    deserialize<U8>(bytes, val.tex_pos.x);
+    assert(bytes.size() >= sizeof(TileState));
     deserialize<U8>(bytes, val.tex_pos.y);
+    deserialize<U8>(bytes, val.tex_pos.x);
+    deserialize<U8>(bytes, (U8 &)val.shape);
 }
 
 }

@@ -28,8 +28,8 @@ inline void serialize<ClientData>(Vector<U8> &bytes, ClientData const &client_da
     bytes.reserve(sizeof(ClientData));
     serialize<U16>(bytes, client_data.view_size.x);
     serialize<U16>(bytes, client_data.view_size.y);
-    serialize<U32>(bytes, (U32)client_data.character_dir.x);
-    serialize<U32>(bytes, (U32)client_data.character_dir.y);
+    serialize<U32>(bytes, *(U32 const *)(&client_data.character_dir.x));
+    serialize<U32>(bytes, *(U32 const *)(&client_data.character_dir.y));
     serialize<bool>(bytes, client_data.is_moving);
 }
 
@@ -38,11 +38,11 @@ inline void deserialize<ClientData>(Vector<U8> &bytes, ClientData &client_data)
 {
     static_assert(sizeof(U32) == sizeof(float));
     assert(bytes.size() == sizeof(ClientData));
-    deserialize<U16>(bytes, client_data.view_size.x);
-    deserialize<U16>(bytes, client_data.view_size.y);
-    deserialize<U32>(bytes, (U32 &)client_data.character_dir.x);
-    deserialize<U32>(bytes, (U32 &)client_data.character_dir.y);
     deserialize<bool>(bytes, client_data.is_moving);
+    deserialize<U32>(bytes, (U32 &)client_data.character_dir.y);
+    deserialize<U32>(bytes, (U32 &)client_data.character_dir.x);
+    deserialize<U16>(bytes, client_data.view_size.y);
+    deserialize<U16>(bytes, client_data.view_size.x);
     assert(bytes.size() == 0);
 }
 

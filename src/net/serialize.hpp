@@ -7,6 +7,11 @@
 namespace net
 {
 
+//TODO the de/serialization is not really good as of now
+// -implementations for various structs can depend on each other and it's not clear which
+//  structs does what (for example - reserving vector size)
+// -deserialize calls pop_back which might be slow
+// -deserialization must occur in reverse order
 template<typename T>
 void serialize(Vector<U8> &bytes, T const &val);
 
