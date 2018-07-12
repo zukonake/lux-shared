@@ -4,8 +4,8 @@
 #include <alias/vector.hpp>
 #include <linear/size_2d.hpp>
 #include <linear/vector_2d.hpp>
-#include <net/serialize.hpp>
-#include <net/deserialize.hpp>
+#include <net/serializer.hpp>
+#include <net/deserializer.hpp>
 
 namespace net
 {
@@ -19,31 +19,27 @@ struct ClientData
 };
 #pragma pack(pop)
 
-//TODO add asserts so that member types can be changed safely, same in ServerData
 template<>
-inline void serialize<ClientData>(Vector<U8> &bytes, ClientData const &client_data)
+inline void Serializer::push<ClientData>(ClientData const &client_data)
 {
     static_assert(sizeof(U32) == sizeof(float));
-    assert(bytes.size() == 0);
-    bytes.reserve(sizeof(ClientData));
-    serialize<U16>(bytes, client_data.view_size.x);
-    serialize<U16>(bytes, client_data.view_size.y);
-    serialize<U32>(bytes, *(U32 const *)(&client_data.character_dir.x));
-    serialize<U32>(bytes, *(U32 const *)(&client_data.character_dir.y));
-    serialize<bool>(bytes, client_data.is_moving);
+    push<U16>(client_data.view_size.x);
+    push<U16>(client_data.view_size.y);
+    push<U32>(*(U32 const *)(&client_data.character_dir.x));
+    push<U32>(*(U32 const *)(&client_data.character_dir.y));
+    push<bool>(client_data.is_moving);
 }
 
 template<>
-inline void deserialize<ClientData>(Vector<U8> &bytes, ClientData &client_data)
+inline void Deserializer::pop<ClientData>(ClientData &client_data)
 {
     static_assert(sizeof(U32) == sizeof(float));
-    assert(bytes.size() == sizeof(ClientData));
-    deserialize<bool>(bytes, client_data.is_moving);
-    deserialize<U32>(bytes, (U32 &)client_data.character_dir.y);
-    deserialize<U32>(bytes, (U32 &)client_data.character_dir.x);
-    deserialize<U16>(bytes, client_data.view_size.y);
-    deserialize<U16>(bytes, client_data.view_size.x);
-    assert(bytes.size() == 0);
+    assert(get_size() >= sizeof(ClientData));
+    pop<U16>(client_data.view_size.x);
+    pop<U16>(client_data.view_size.y);
+    pop<U32>((U32 &)client_data.character_dir.x);
+    pop<U32>((U32 &)client_data.character_dir.y);
+    pop<bool>(client_data.is_moving);
 }
 
 }

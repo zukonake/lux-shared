@@ -2,8 +2,8 @@
 
 #include <alias/int.hpp>
 #include <linear/point_2d.hpp>
-#include <net/serialize.hpp>
-#include <net/deserialize.hpp>
+#include <net/serializer.hpp>
+#include <net/deserializer.hpp>
 
 namespace net
 {
@@ -25,21 +25,19 @@ struct TileState
 #pragma pack(pop)
 
 template<>
-inline void serialize<TileState>(Vector<U8> &bytes, TileState const &val)
+inline void Serializer::push<TileState>(TileState const &val)
 {
-    serialize<U8>(bytes, (U8)(val.shape));
-    serialize<U8>(bytes, val.tex_pos.x);
-    serialize<U8>(bytes, val.tex_pos.y);
-    assert(bytes.size() >= sizeof(TileState));
+    push<U8>((U8)val.shape);
+    push<U8>(val.tex_pos.x);
+    push<U8>(val.tex_pos.y);
 }
 
 template<>
-inline void deserialize<TileState>(Vector<U8> &bytes, TileState &val)
+inline void Deserializer::pop<TileState>(TileState &val)
 {
-    assert(bytes.size() >= sizeof(TileState));
-    deserialize<U8>(bytes, val.tex_pos.y);
-    deserialize<U8>(bytes, val.tex_pos.x);
-    deserialize<U8>(bytes, (U8 &)val.shape);
+    pop<U8>((U8 &)val.shape);
+    pop<U8>(val.tex_pos.x);
+    pop<U8>(val.tex_pos.y);
 }
 
 }

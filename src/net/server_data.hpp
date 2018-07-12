@@ -3,8 +3,8 @@
 #include <alias/int.hpp>
 #include <alias/vector.hpp>
 #include <net/tile_state.hpp>
-#include <net/serialize.hpp>
-#include <net/deserialize.hpp>
+#include <net/serializer.hpp>
+#include <net/deserializer.hpp>
 
 namespace net
 {
@@ -14,32 +14,29 @@ struct ServerData
     Vector<TileState> tiles;
 };
 
-//TODO since ServerData is not POD, should the de/serialization really happen here?
 template<>
-inline void serialize<ServerData>(Vector<U8> &bytes, ServerData const &val)
+inline void Serializer::push<ServerData>(ServerData const &val)
 {
-    assert(bytes.size() == 0);
-    bytes.reserve(val.tiles.size() * sizeof(TileState));
     for(auto const &i : val.tiles)
     {
-        serialize<TileState>(bytes, i);
+        push<TileState>(i);
     }
 }
 
 template<>
-inline void deserialize<ServerData>(Vector<U8> &bytes, ServerData &val)
+inline void Deserializer::pop<ServerData>(ServerData &val)
 {
     assert(val.tiles.size() == 0);
-    assert((bytes.size() % sizeof(TileState)) == 0);
+    assert((get_size() % sizeof(TileState)) == 0);
 
-    const SizeT tile_num = bytes.size() / sizeof(TileState);
+    const SizeT tile_num = get_size() / sizeof(TileState);
     val.tiles.reserve(tile_num);
     for(SizeT i = 0; i < tile_num; ++i)
     {
         val.tiles.emplace_back();
-        deserialize<TileState>(bytes, val.tiles.back());
+        pop<TileState>(val.tiles.back());
     }
-    assert(bytes.size() == 0);
+    assert(get_size() == 0);
 }
 
 }
