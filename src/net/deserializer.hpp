@@ -44,7 +44,7 @@ inline void Deserializer::pop<U16>(U16 &val)
     pop<U8>(temp);
     val  = (U16)temp;
     pop<U8>(temp);
-    val |= (U16)((U16)temp << 8);
+    val |= (U16)temp << 8U;
     val = net_order<U16>(val);
 }
 
@@ -55,11 +55,11 @@ inline void Deserializer::pop<U32>(U32 &val)
     pop<U8>(temp);
     val  = (U32)temp;
     pop<U8>(temp);
-    val |= (U32)temp << 8;
+    val |= (U32)temp << 8UL;
     pop<U8>(temp);
-    val |= (U32)temp << 16;
+    val |= (U32)temp << 16UL;
     pop<U8>(temp);
-    val |= (U32)temp << 24;
+    val |= (U32)temp << 24UL;
     val = net_order<U32>(val);
 }
 
@@ -70,19 +70,19 @@ inline void Deserializer::pop<U64>(U64 &val)
     pop<U8>(temp);
     val  = (U64)temp;
     pop<U8>(temp);
-    val |= (U64)temp << 8;
+    val |= (U64)temp << 8ULL;
     pop<U8>(temp);
-    val |= (U64)temp << 16;
+    val |= (U64)temp << 16ULL;
     pop<U8>(temp);
-    val |= (U64)temp << 24;
+    val |= (U64)temp << 24ULL;
     pop<U8>(temp);
-    val |= (U64)temp << 32;
+    val |= (U64)temp << 32ULL;
     pop<U8>(temp);
-    val |= (U64)temp << 40;
+    val |= (U64)temp << 40ULL;
     pop<U8>(temp);
-    val |= (U64)temp << 48;
+    val |= (U64)temp << 48ULL;
     pop<U8>(temp);
-    val |= (U64)temp << 56;
+    val |= (U64)temp << 56ULL;
     val = net_order<U64>(val);
 }
 
