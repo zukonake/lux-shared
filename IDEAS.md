@@ -61,6 +61,11 @@
     * again - exposed API
     * open-source helps
 * physics engine
+* block placing shouldn't be too limiting, it would be nice to place non-overlapping blocks
+  on the same tile
+* inventory shouldn't be limiting, as in Minecraft
+    * the major factor there was, that many items that were not needed were often carried
+    * additionaly a quick-stack feature like in Terraria would be good
 * entities move freely or on a smaller grid
 * entities can fall down
 * realistic health system
@@ -125,6 +130,7 @@
         * various materials and spells can take various forms and shapes
         * combinations allowing to cast many spells at once
         * thanks to the menu, the player can create his spells before fighting
+* non-grindy and perhaps innovative research system
 * sanity system
     * whispers and blurred visions
     * on very low sanity you see horryfing abominations and the world becomes bloody
