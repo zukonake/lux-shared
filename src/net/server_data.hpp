@@ -14,29 +14,25 @@ struct ServerData
     Vector<TileState> tiles;
 };
 
-template<>
-inline void Serializer::push<ServerData>(ServerData const &val)
+inline Serializer &operator<<(Serializer &in, ServerData const &v)
 {
-    for(auto const &i : val.tiles)
+    for(auto const &tile : v.tiles)
     {
-        push<TileState>(i);
+        in << tile;
     }
+    return in;
 }
 
-template<>
-inline void Deserializer::pop<ServerData>(ServerData &val)
+inline Deserializer &operator>>(Deserializer &out, ServerData &v)
 {
-    assert(val.tiles.size() == 0);
-    assert((get_size() % sizeof(TileState)) == 0);
-
-    const SizeT tile_num = get_size() / sizeof(TileState);
-    val.tiles.reserve(tile_num);
+    const SizeT tile_num = out.get_size() / sizeof(TileState);
+    v.tiles.reserve(tile_num);
     for(SizeT i = 0; i < tile_num; ++i)
     {
-        val.tiles.emplace_back();
-        pop<TileState>(val.tiles.back());
+        v.tiles.emplace_back();
+        out >> v.tiles.back();
     }
-    assert(get_size() == 0);
+    return out;
 }
 
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <cstring>
 //
 #include <alias/int.hpp>
 #include <net/net_order.hpp>
@@ -11,79 +12,114 @@ namespace net
 class Deserializer
 {
     public:
-    Deserializer(U8 const *arr, U8 const *end);
+    struct Array
+    {
+        U8   *val;
+        SizeT len;
+    };
 
-    template<typename T>
-    void  pop(T &val);
-    SizeT get_size() const;
+    Deserializer(U8 const *start, U8 const *end) :
+        iter(start),
+        end(end)
+    { }
+    ~Deserializer() = default;
+
+    friend Deserializer &operator>>(Deserializer &out, U8    &v);
+    friend Deserializer &operator>>(Deserializer &out, U16   &v);
+    friend Deserializer &operator>>(Deserializer &out, U32   &v);
+    friend Deserializer &operator>>(Deserializer &out, U64   &v);
+    friend Deserializer &operator>>(Deserializer &out, Array &v);
+
+    SizeT get_size() const { return (SizeT)(end - iter); }
 
     private:
-    U8 const *arr;
+    U8 const *iter;
     U8 const *end;
 };
 
-template<>
-inline void Deserializer::pop<U8>(U8 &val)
+inline Deserializer &operator>>(Deserializer &out, U8 &v)
 {
-    assert(get_size() > 0);
-    val = *(arr++);
+    assert(out.get_size() >= 1);
+    v = *out.iter;
+    out.iter++;
+    return out;
 }
 
-template<>
-inline void Deserializer::pop<bool>(bool &val)
+inline Deserializer &operator>>(Deserializer &out, U16 &v)
 {
-    U8 temp;
-    pop<U8>(temp);
-    val = (bool)temp;
+    assert(out.get_size() >= 2);
+    std::memcpy((U8 *)&v, out.iter, 2);
+    v = net_order<U16>(v);
+    out.iter += 2;
+    return out;
 }
 
-template<>
-inline void Deserializer::pop<U16>(U16 &val)
+inline Deserializer &operator>>(Deserializer &out, U32 &v)
 {
-    U8 temp;
-    pop<U8>(temp);
-    val  = (U16)temp;
-    pop<U8>(temp);
-    val |= (U16)temp << 8U;
-    val = net_order<U16>(val);
+    assert(out.get_size() >= 4);
+    std::memcpy((U8 *)&v, out.iter, 4);
+    v = net_order<U32>(v);
+    out.iter += 4;
+    return out;
 }
 
-template<>
-inline void Deserializer::pop<U32>(U32 &val)
+inline Deserializer &operator>>(Deserializer &out, U64 &v)
 {
-    U8 temp;
-    pop<U8>(temp);
-    val  = (U32)temp;
-    pop<U8>(temp);
-    val |= (U32)temp << 8UL;
-    pop<U8>(temp);
-    val |= (U32)temp << 16UL;
-    pop<U8>(temp);
-    val |= (U32)temp << 24UL;
-    val = net_order<U32>(val);
+    assert(out.get_size() >= 8);
+    std::memcpy((U8 *)&v, out.iter, 8);
+    v = net_order<U64>(v);
+    out.iter += 8;
+    return out;
 }
 
-template<>
-inline void Deserializer::pop<U64>(U64 &val)
+inline Deserializer &operator>>(Deserializer &out, Deserializer::Array &v)
 {
-    U8 temp;
-    pop<U8>(temp);
-    val  = (U64)temp;
-    pop<U8>(temp);
-    val |= (U64)temp << 8ULL;
-    pop<U8>(temp);
-    val |= (U64)temp << 16ULL;
-    pop<U8>(temp);
-    val |= (U64)temp << 24ULL;
-    pop<U8>(temp);
-    val |= (U64)temp << 32ULL;
-    pop<U8>(temp);
-    val |= (U64)temp << 40ULL;
-    pop<U8>(temp);
-    val |= (U64)temp << 48ULL;
-    pop<U8>(temp);
-    val |= (U64)temp << 56ULL;
-    val = net_order<U64>(val);
+    assert(out.get_size() >= v.len);
+    std::memcpy(v.val, out.iter, v.len);
+    out.iter += v.len;
+    return out;
+}
+
+inline Deserializer &operator>>(Deserializer &out, I8 &v)
+{
+    out >> (U8 &)v;
+    return out;
+}
+
+inline Deserializer &operator>>(Deserializer &out, I16 &v)
+{
+    out >> (U16 &)v;
+    return out;
+}
+
+inline Deserializer &operator>>(Deserializer &out, I32 &v)
+{
+    out >> (U32 &)v;
+    return out;
+}
+
+inline Deserializer &operator>>(Deserializer &out, I64 &v)
+{
+    out >> (U64 &)v;
+    return out;
+}
+
+inline Deserializer &operator>>(Deserializer &out, bool &v)
+{
+    out >> (U8 &)v;
+    return out;
+}
+
+inline Deserializer &operator>>(Deserializer &out, float &v)
+{
+    out >> (U32 &)v;
+    return out;
+}
+
+inline Deserializer &operator>>(Deserializer &out, double &v)
+{
+    out >> (U64 &)v;
+    return out;
 }
 
 }

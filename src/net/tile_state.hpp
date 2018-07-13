@@ -1,7 +1,7 @@
 #pragma once
 
 #include <alias/int.hpp>
-#include <linear/point_2d.hpp>
+#include <linear/vec_2.hpp>
 #include <net/serializer.hpp>
 #include <net/deserializer.hpp>
 
@@ -15,7 +15,7 @@ namespace net
 #pragma pack(push, 1)
 struct TileState
 {
-    typedef linear::Point2d<U8> TexPos;
+    typedef linear::Vec2<U8> TexPos;
     enum Shape : U8
     {
         EMPTY,
@@ -28,20 +28,18 @@ struct TileState
 };
 #pragma pack(pop)
 
-template<>
-inline void Serializer::push<TileState>(TileState const &val)
+inline Serializer &operator<<(Serializer &in, TileState const &v)
 {
-    push<U8>((U8)val.shape);
-    push<U8>(val.tex_pos.x);
-    push<U8>(val.tex_pos.y);
+    in << (U8 const &)v.shape;
+    in << v.tex_pos;
+    return in;
 }
 
-template<>
-inline void Deserializer::pop<TileState>(TileState &val)
+inline Deserializer &operator>>(Deserializer &out, TileState &v)
 {
-    pop<U8>((U8 &)val.shape);
-    pop<U8>(val.tex_pos.x);
-    pop<U8>(val.tex_pos.y);
+    out >> (U8 &)v.shape;
+    out >> v.tex_pos;
+    return out;
 }
 
 }

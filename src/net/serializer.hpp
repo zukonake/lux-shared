@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cassert>
+#include <cstring>
+//
 #include <alias/int.hpp>
 #include <net/net_order.hpp>
 
@@ -9,61 +12,118 @@ namespace net
 class Serializer
 {
     public:
-    Serializer(SizeT len);
-    ~Serializer();
+    struct Array
+    {
+        U8   *val;
+        SizeT len;
+    };
 
-    template<typename T>
-    void  push(T const &val);
-    SizeT get_size() const;
-    U8   *get() const;
+    Serializer(SizeT n_bytes) :
+        start(new U8[n_bytes]),
+        iter(start),
+        end(iter + n_bytes)
+    { }
+
+    ~Serializer() { delete[] start; }
+
+    friend inline Serializer &operator<<(Serializer &in, U8    const &v);
+    friend inline Serializer &operator<<(Serializer &in, U16   const &v);
+    friend inline Serializer &operator<<(Serializer &in, U32   const &v);
+    friend inline Serializer &operator<<(Serializer &in, U64   const &v);
+    friend inline Serializer &operator<<(Serializer &in, Array const &v);
+
+    SizeT get_size() const { return (SizeT)(end - iter); }
+    U8 const *get() const { return iter; }
 
     private:
-    SizeT iter;
-    U8   *arr;
+    U8 *start;
+    U8 *iter;
+    U8 *end;
 };
 
-template<>
-inline void Serializer::push<U8>(U8 const &val)
+inline Serializer &operator<<(Serializer &in, U8 const &v)
 {
-    arr[iter++] = val;
+    assert(in.get_size() >= 1);
+    *(in.iter) = v;
+    in.iter += 1;
+    return in;
 }
 
-template<>
-inline void Serializer::push<bool>(bool const &val)
+inline Serializer &operator<<(Serializer &in, U16 const &v)
 {
-    push<U8>((U8)val);
+    U16 temp = net_order<U16>(v);
+    assert(in.get_size() >= 2);
+    std::memcpy(in.iter, (U8 *)&temp, 2);
+    in.iter += 2;
+    return in;
 }
 
-template<>
-inline void Serializer::push<U16>(U16 const &val)
+inline Serializer &operator<<(Serializer &in, U32 const &v)
 {
-    U16 temp = net_order<U16>(val);
-    push<U8>( temp & 0x00FF);
-    push<U8>((temp & 0xFF00) >> 8U);
+    U32 temp = net_order<U32>(v);
+    assert(in.get_size() >= 4);
+    std::memcpy(in.iter, (U8 *)&temp, 4);
+    in.iter += 4;
+    return in;
 }
 
-template<>
-inline void Serializer::push<U32>(U32 const &val)
+inline Serializer &operator<<(Serializer &in, U64 const &v)
 {
-    U32 temp = net_order<U32>(val);
-    push<U8>( temp & 0x000000FF);
-    push<U8>((temp & 0x0000FF00) >>  8UL);
-    push<U8>((temp & 0x00FF0000) >> 16UL);
-    push<U8>((temp & 0xFF000000) >> 24UL);
+    U64 temp = net_order<U64>(v);
+    assert(in.get_size() >= 8);
+    std::memcpy(in.iter, (U8 *)&temp, 8);
+    in.iter += 8;
+    return in;
 }
 
-template<>
-inline void Serializer::push<U64>(U64 const &val)
+inline Serializer &operator<<(Serializer &in, Serializer::Array const &v)
 {
-    U64 temp = net_order<U64>(val);
-    push<U8>( temp & 0x00000000000000FF);
-    push<U8>((temp & 0x000000000000FF00) >>  8ULL);
-    push<U8>((temp & 0x0000000000FF0000) >> 16ULL);
-    push<U8>((temp & 0x00000000FF000000) >> 24ULL);
-    push<U8>((temp & 0x000000FF00000000) >> 32ULL);
-    push<U8>((temp & 0x0000FF0000000000) >> 40ULL);
-    push<U8>((temp & 0x00FF000000000000) >> 48ULL);
-    push<U8>((temp & 0xFF00000000000000) >> 56ULL);
+    assert(in.get_size() >= v.len);
+    std::memcpy(in.iter, v.val, v.len);
+    in.iter += v.len;
+    return in;
+}
+
+inline Serializer &operator<<(Serializer &in, I8 const &v)
+{
+    in << (U8 const &)v;
+    return in;
+}
+
+inline Serializer &operator<<(Serializer &in, I16 const &v)
+{
+    in << (U16 const &)v;
+    return in;
+}
+
+inline Serializer &operator<<(Serializer &in, I32 const &v)
+{
+    in << (U32 const &)v;
+    return in;
+}
+
+inline Serializer &operator<<(Serializer &in, I64 const &v)
+{
+    in << (U64 const &)v;
+    return in;
+}
+
+inline Serializer &operator<<(Serializer &in, bool const &v)
+{
+    in << (U8 const &)v;
+    return in;
+}
+
+inline Serializer &operator<<(Serializer &in, float const &v)
+{
+    in << (U32 const &)v;
+    return in;
+}
+
+inline Serializer &operator<<(Serializer &in, double const &v)
+{
+    in << (U64 const &)v;
+    return in;
 }
 
 }
