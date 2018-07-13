@@ -8,6 +8,10 @@
 namespace net
 {
 
+//TODO generally much this struct should be replaced by a hash of a ID,
+//     this struct represents a TileType, and those will be held in the Database
+//     both client and server side, so there is no need to transfer it all,
+//     same applies to future "*Type" structs
 #pragma pack(push, 1)
 struct TileState
 {
