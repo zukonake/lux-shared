@@ -32,8 +32,9 @@ class Serializer
     friend inline Serializer &operator<<(Serializer &in, U64   const &v);
     friend inline Serializer &operator<<(Serializer &in, Array const &v);
 
-    SizeT get_size() const { return (SizeT)(end - iter); }
-    U8 const *get() const { return iter; }
+    SizeT get_size() const { return (SizeT)(end - start); }
+    SizeT get_free() const { return (SizeT)(end - iter); }
+    U8 const *get() const { return start; }
 
     private:
     U8 *start;
@@ -43,7 +44,7 @@ class Serializer
 
 inline Serializer &operator<<(Serializer &in, U8 const &v)
 {
-    assert(in.get_size() >= 1);
+    assert(in.get_free() >= 1);
     *(in.iter) = v;
     in.iter += 1;
     return in;
@@ -52,7 +53,7 @@ inline Serializer &operator<<(Serializer &in, U8 const &v)
 inline Serializer &operator<<(Serializer &in, U16 const &v)
 {
     U16 temp = net_order<U16>(v);
-    assert(in.get_size() >= 2);
+    assert(in.get_free() >= 2);
     std::memcpy(in.iter, (U8 *)&temp, 2);
     in.iter += 2;
     return in;
@@ -61,7 +62,7 @@ inline Serializer &operator<<(Serializer &in, U16 const &v)
 inline Serializer &operator<<(Serializer &in, U32 const &v)
 {
     U32 temp = net_order<U32>(v);
-    assert(in.get_size() >= 4);
+    assert(in.get_free() >= 4);
     std::memcpy(in.iter, (U8 *)&temp, 4);
     in.iter += 4;
     return in;
@@ -70,7 +71,7 @@ inline Serializer &operator<<(Serializer &in, U32 const &v)
 inline Serializer &operator<<(Serializer &in, U64 const &v)
 {
     U64 temp = net_order<U64>(v);
-    assert(in.get_size() >= 8);
+    assert(in.get_free() >= 8);
     std::memcpy(in.iter, (U8 *)&temp, 8);
     in.iter += 8;
     return in;
@@ -78,7 +79,7 @@ inline Serializer &operator<<(Serializer &in, U64 const &v)
 
 inline Serializer &operator<<(Serializer &in, Serializer::Array const &v)
 {
-    assert(in.get_size() >= v.len);
+    assert(in.get_free() >= v.len);
     std::memcpy(in.iter, v.val, v.len);
     in.iter += v.len;
     return in;
