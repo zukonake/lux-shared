@@ -82,43 +82,43 @@ inline Deserializer &operator>>(Deserializer &out, Deserializer::Array &v)
 
 inline Deserializer &operator>>(Deserializer &out, I8 &v)
 {
-    out >> (U8 &)v;
+    out >> *((U8 *)&v);
     return out;
 }
 
 inline Deserializer &operator>>(Deserializer &out, I16 &v)
 {
-    out >> (U16 &)v;
+    out >> *((U16 *)&v);
     return out;
 }
 
 inline Deserializer &operator>>(Deserializer &out, I32 &v)
 {
-    out >> (U32 &)v;
+    out >> *((U32 *)&v);
     return out;
 }
 
 inline Deserializer &operator>>(Deserializer &out, I64 &v)
 {
-    out >> (U64 &)v;
+    out >> *((U64 *)&v);
     return out;
 }
 
 inline Deserializer &operator>>(Deserializer &out, bool &v)
 {
-    out >> (U8 &)v;
+    out >> *((U8 *)&v);
     return out;
 }
 
 inline Deserializer &operator>>(Deserializer &out, float &v)
 {
-    out >> (U32 &)v;
+    out >> *((U32 *)&v);
     return out;
 }
 
 inline Deserializer &operator>>(Deserializer &out, double &v)
 {
-    out >> (U64 &)v;
+    out >> *((U64 *)&v);
     return out;
 }
 

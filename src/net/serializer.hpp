@@ -6,6 +6,8 @@
 #include <alias/int.hpp>
 #include <net/net_order.hpp>
 
+#include <iostream>
+
 namespace net
 {
 
@@ -87,43 +89,43 @@ inline Serializer &operator<<(Serializer &in, Serializer::Array const &v)
 
 inline Serializer &operator<<(Serializer &in, I8 const &v)
 {
-    in << (U8 const &)v;
+    in << *((U8 const *)&v);
     return in;
 }
 
 inline Serializer &operator<<(Serializer &in, I16 const &v)
 {
-    in << (U16 const &)v;
+    in << *((U16 const *)&v);
     return in;
 }
 
 inline Serializer &operator<<(Serializer &in, I32 const &v)
 {
-    in << (U32 const &)v;
+    in << *((U32 const *)&v);
     return in;
 }
 
 inline Serializer &operator<<(Serializer &in, I64 const &v)
 {
-    in << (U64 const &)v;
+    in << *((U64 const *)&v);
     return in;
 }
 
 inline Serializer &operator<<(Serializer &in, bool const &v)
 {
-    in << (U8 const &)v;
+    in << *((U8 const *)&v);
     return in;
 }
 
 inline Serializer &operator<<(Serializer &in, float const &v)
 {
-    in << (U32 const &)v;
+    in << *((U32 const *)&v);
     return in;
 }
 
 inline Serializer &operator<<(Serializer &in, double const &v)
 {
-    in << (U64 const &)v;
+    in << *((U64 const *)&v);
     return in;
 }
 
