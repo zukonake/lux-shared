@@ -25,7 +25,7 @@ WARNINGS_FLAGS  = \
 	-Wconversion
 
 CXX       = clang++
-CXXFLAGS += -I$(SRC_DIR) -isystem deps/tinyformat $(WARNINGS_FLAGS) \
+CXXFLAGS += -I$(SRC_DIR) -isystem include $(WARNINGS_FLAGS) \
 	    $(DEBUG_FLAGS) -std=c++17 -pedantic -fPIC
 LDLIBS   += -lenet -pthread
 LDFLAGS  += 
