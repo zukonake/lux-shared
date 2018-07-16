@@ -26,7 +26,7 @@ class Serializer
     friend inline Serializer &operator<<(Serializer &in, U32   const &v);
     friend inline Serializer &operator<<(Serializer &in, U64   const &v);
     template<typename T, SizeT len>
-    friend inline Serializer &operator<<(Serializer &in, T (const &v)[len]);
+    friend inline Serializer &operator<<(Serializer &in, const T (&v)[len]);
     template<typename T>
     friend inline Serializer &operator<<(Serializer &in, Array<T> const &v);
 
@@ -75,13 +75,11 @@ inline Serializer &operator<<(Serializer &in, U64 const &v)
     return in;
 }
 
-inline Serializer &operator<<(Serializer &in, Serializer::Array const &v)
-
 template<typename T, SizeT len>
-inline Serializer &operator<<(Serializer &in, T (const &v)[len])
+inline Serializer &operator<<(Serializer &in, const T (&v)[len])
 {
     assert(in.get_free() >= len * sizeof(T));
-    for(SizeT i = 0; i < v.len; ++i) in << v[i];
+    for(SizeT i = 0; i < len; ++i) in << v[i];
     return in;
 }
 

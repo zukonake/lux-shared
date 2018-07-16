@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <cstdlib>
 #include <cstring>
 //
 #include <alias/scalar.hpp>
@@ -79,7 +80,7 @@ template<typename T, SizeT len>
 inline Deserializer &operator>>(Deserializer &out, T (&v)[len])
 {
     assert(out.get_size() >= len * sizeof(T));
-    for(SizeT i = 0; i < len; ++i) out >> val[i];
+    for(SizeT i = 0; i < len; ++i) out >> v[i];
     return out;
 }
 
@@ -88,7 +89,7 @@ inline Deserializer &operator>>(Deserializer &out, Array<U8> &v)
 {
     out >> v.len;
     assert(out.get_size() >= v.len);
-    v.val = std::malloc(v.len);
+    v.val = (U8 *)std::malloc(v.len);
     //TODO ^ check for nullptr
     //       optimize with realloc
     std::memcpy(v.val, out.iter, v.len);
