@@ -1,10 +1,11 @@
 #pragma once
 
 #include <alias/scalar.hpp>
-#include <alias/vector.hpp>
 #include <linear/vec_2.hpp>
+#include <net/array.hpp>
 #include <net/serializer.hpp>
 #include <net/deserializer.hpp>
+#include <common/chunk.hpp>
 
 namespace net
 {
@@ -12,15 +13,15 @@ namespace net
 #pragma pack(push, 1)
 struct ClientData
 {
-    linear::Vec2<U16>     view_size;    //in tiles
-    linear::Vec2<F32> character_dir;
-    bool is_moving;
+    Array<ChunkPoint> chunk_requests;
+    linear::Vec2<F32>  character_dir;
+    bool               is_moving;
 };
 #pragma pack(pop)
 
 inline Serializer &operator<<(Serializer &in, ClientData const &v)
 {
-    in << v.view_size;
+    in << v.chunk_requests;
     in << v.character_dir;
     in << v.is_moving;
     return in;
@@ -28,7 +29,7 @@ inline Serializer &operator<<(Serializer &in, ClientData const &v)
 
 inline Deserializer &operator>>(Deserializer &out, ClientData &v)
 {
-    out >> v.view_size;
+    out >> v.chunk_requests;
     out >> v.character_dir;
     out >> v.is_moving;
     return out;
