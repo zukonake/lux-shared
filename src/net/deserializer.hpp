@@ -4,9 +4,9 @@
 #include <cstring>
 //
 #include <alias/scalar.hpp>
-#include <alias/c_array.hpp>
 #include <alias/vector.hpp>
 #include <net/net_order.hpp>
+#include <net/array.hpp>
 
 namespace net
 {
@@ -30,7 +30,7 @@ class Deserializer
     template<typename T, SizeT len>
     friend Deserializer &operator>>(Deserializer &out, T (&v)[len]);
     template<typename T>
-    friend Deserializer &operator>>(Deserializer &out, CArray<T> &v);
+    friend Deserializer &operator>>(Deserializer &out, Array<T> &v);
 
     SizeT get_size() const { return (SizeT)(end - iter); }
 
@@ -84,7 +84,7 @@ inline Deserializer &operator>>(Deserializer &out, T (&v)[len])
 }
 
 template<>
-inline Deserializer &operator>>(Deserializer &out, CArray<U8> &v)
+inline Deserializer &operator>>(Deserializer &out, Array<U8> &v)
 {
     out >> v.len;
     assert(out.get_size() >= v.len);
@@ -97,7 +97,7 @@ inline Deserializer &operator>>(Deserializer &out, CArray<U8> &v)
 }
 
 template<typename T>
-inline Deserializer &operator>>(Deserializer &out, CArray<T> &v)
+inline Deserializer &operator>>(Deserializer &out, Array<T> &v)
 {
     out >> v.len
     assert(out.get_size() >= v.len * sizeof(T));

@@ -5,8 +5,7 @@
 //
 #include <alias/scalar.hpp>
 #include <net/net_order.hpp>
-
-#include <iostream>
+#include <net/array.hpp>
 
 namespace net
 {
@@ -29,7 +28,7 @@ class Serializer
     template<typename T, SizeT len>
     friend inline Serializer &operator<<(Serializer &in, T (const &v)[len]);
     template<typename T>
-    friend inline Serializer &operator<<(Serializer &in, CArray<T> const &v);
+    friend inline Serializer &operator<<(Serializer &in, Array<T> const &v);
 
     SizeT get_size() const { return (SizeT)(end - start); }
     SizeT get_free() const { return (SizeT)(end - iter); }
@@ -87,7 +86,7 @@ inline Serializer &operator<<(Serializer &in, T (const &v)[len])
 }
 
 template<>
-inline Serializer &operator<<(Serializer &in, CArray<U8> const &v)
+inline Serializer &operator<<(Serializer &in, Array<U8> const &v)
 {
     in << v.len;
     assert(in.get_free() >= v.len);
@@ -97,7 +96,7 @@ inline Serializer &operator<<(Serializer &in, CArray<U8> const &v)
 }
 
 template<typename T>
-inline Serializer &operator<<(Serializer &in, CArray<T> const &v)
+inline Serializer &operator<<(Serializer &in, Array<T> const &v)
 {
     in << v.len;
     assert(in.get_free() >= v.len * sizeof(T));
