@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cstring>
 //
-#include <alias/int.hpp>
+#include <alias/scalar.hpp>
 #include <net/net_order.hpp>
 
 namespace net

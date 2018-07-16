@@ -1,6 +1,6 @@
 #pragma once
 
-#include <alias/int.hpp>
+#include <alias/scalar.hpp>
 #include <alias/vector.hpp>
 #include <net/tile_state.hpp>
 #include <net/serializer.hpp>
