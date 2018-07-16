@@ -14,12 +14,6 @@ namespace net
 class Serializer
 {
     public:
-    struct Array
-    {
-        U8   *val;
-        SizeT len;
-    };
-
     Serializer(SizeT n_bytes) :
         start(new U8[n_bytes]),
         iter(start),
@@ -32,7 +26,10 @@ class Serializer
     friend inline Serializer &operator<<(Serializer &in, U16   const &v);
     friend inline Serializer &operator<<(Serializer &in, U32   const &v);
     friend inline Serializer &operator<<(Serializer &in, U64   const &v);
-    friend inline Serializer &operator<<(Serializer &in, Array const &v);
+    template<typename T, SizeT len>
+    friend inline Serializer &operator<<(Serializer &in, T (const &v)[len]);
+    template<typename T>
+    friend inline Serializer &operator<<(Serializer &in, CArray<T> const &v);
 
     SizeT get_size() const { return (SizeT)(end - start); }
     SizeT get_free() const { return (SizeT)(end - iter); }
@@ -80,10 +77,31 @@ inline Serializer &operator<<(Serializer &in, U64 const &v)
 }
 
 inline Serializer &operator<<(Serializer &in, Serializer::Array const &v)
+
+template<typename T, SizeT len>
+inline Serializer &operator<<(Serializer &in, T (const &v)[len])
 {
+    assert(in.get_free() >= len * sizeof(T));
+    for(SizeT i = 0; i < v.len; ++i) in << v[i];
+    return in;
+}
+
+template<>
+inline Serializer &operator<<(Serializer &in, CArray<U8> const &v)
+{
+    in << v.len;
     assert(in.get_free() >= v.len);
     std::memcpy(in.iter, v.val, v.len);
     in.iter += v.len;
+    return in;
+}
+
+template<typename T>
+inline Serializer &operator<<(Serializer &in, CArray<T> const &v)
+{
+    in << v.len;
+    assert(in.get_free() >= v.len * sizeof(T));
+    for(SizeT i = 0; i < v.len; ++i) in << v.val[i];
     return in;
 }
 
