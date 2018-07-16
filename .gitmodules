@@ -1,0 +1,3 @@
+[submodule "deps/tinyformat"]
+	path = deps/tinyformat
+	url = git@github.com:c42f/tinyformat.git
