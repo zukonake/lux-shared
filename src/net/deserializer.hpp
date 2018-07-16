@@ -100,9 +100,9 @@ inline Deserializer &operator>>(Deserializer &out, Array<U8> &v)
 template<typename T>
 inline Deserializer &operator>>(Deserializer &out, Array<T> &v)
 {
-    out >> v.len
+    out >> v.len;
     assert(out.get_size() >= v.len * sizeof(T));
-    v.val = std::malloc(v.len * sizeof(T));
+    v.val = (T *)std::malloc(v.len * sizeof(T));
     //TODO ^ check for nullptr
     //       optimize with realloc
     for(SizeT i = 0; i < v.len; ++i) out >> v.val[i];

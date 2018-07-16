@@ -12,13 +12,13 @@ struct TileData
 };
 #pragma pack(pop)
 
-Serializer &operator<<(Serializer &in, TileData const &v)
+inline Serializer &operator<<(Serializer &in, TileData const &v)
 {
     in << v.database_hash;
     return in;
 }
 
-Deserializer &operator>>(Deserializer &out, TileData &v)
+inline Deserializer &operator>>(Deserializer &out, TileData &v)
 {
     out >> v.database_hash;
     return out;

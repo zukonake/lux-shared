@@ -15,14 +15,14 @@ struct ChunkData
 };
 #pragma pack(pop)
 
-Serializer &operator<<(Serializer &in, ChunkData const &v)
+inline Serializer &operator<<(Serializer &in, ChunkData const &v)
 {
     in << v.pos;
     in << v.tiles;
     return in;
 }
 
-Deserializer &operator>>(Deserializer &out, ChunkData &v)
+inline Deserializer &operator>>(Deserializer &out, ChunkData &v)
 {
     out >> v.pos;
     out >> v.tiles;

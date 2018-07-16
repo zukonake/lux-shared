@@ -13,9 +13,9 @@ namespace net
 #pragma pack(push, 1)
 struct ClientData
 {
-    Array<ChunkPoint> chunk_requests;
-    linear::Vec2<F32>  character_dir;
-    bool               is_moving;
+    Array<ChunkPos>   chunk_requests;
+    linear::Vec2<F32> character_dir;
+    bool              is_moving;
 };
 #pragma pack(pop)
 
