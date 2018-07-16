@@ -117,13 +117,13 @@ inline Serializer &operator<<(Serializer &in, bool const &v)
     return in;
 }
 
-inline Serializer &operator<<(Serializer &in, float const &v)
+inline Serializer &operator<<(Serializer &in, F32 const &v)
 {
     in << *((U32 const *)&v);
     return in;
 }
 
-inline Serializer &operator<<(Serializer &in, double const &v)
+inline Serializer &operator<<(Serializer &in, F64 const &v)
 {
     in << *((U64 const *)&v);
     return in;

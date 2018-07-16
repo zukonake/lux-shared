@@ -110,13 +110,13 @@ inline Deserializer &operator>>(Deserializer &out, bool &v)
     return out;
 }
 
-inline Deserializer &operator>>(Deserializer &out, float &v)
+inline Deserializer &operator>>(Deserializer &out, F32 &v)
 {
     out >> *((U32 *)&v);
     return out;
 }
 
-inline Deserializer &operator>>(Deserializer &out, double &v)
+inline Deserializer &operator>>(Deserializer &out, F64 &v)
 {
     out >> *((U64 *)&v);
     return out;

@@ -13,7 +13,7 @@ namespace net
 struct ClientData
 {
     linear::Vec2<U16>     view_size;    //in tiles
-    linear::Vec2<float> character_dir;
+    linear::Vec2<F32> character_dir;
     bool is_moving;
 };
 #pragma pack(pop)
