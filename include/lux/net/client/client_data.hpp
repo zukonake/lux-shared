@@ -1,11 +1,11 @@
 #pragma once
 
-#include <alias/scalar.hpp>
-#include <linear/vec_2.hpp>
-#include <net/array.hpp>
-#include <net/serializer.hpp>
-#include <net/deserializer.hpp>
-#include <common/chunk.hpp>
+#include <lux/alias/scalar.hpp>
+#include <lux/linear/vec_2.hpp>
+#include <lux/net/array.hpp>
+#include <lux/net/serializer.hpp>
+#include <lux/net/deserializer.hpp>
+#include <lux/common/chunk.hpp>
 
 namespace net
 {

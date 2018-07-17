@@ -1,6 +1,6 @@
 #pragma once
 
-#include <net/hash.hpp>
+#include <lux/net/hash.hpp>
 
 namespace net
 {

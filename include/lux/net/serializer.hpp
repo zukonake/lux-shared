@@ -3,9 +3,9 @@
 #include <cassert>
 #include <cstring>
 //
-#include <alias/scalar.hpp>
-#include <net/net_order.hpp>
-#include <net/array.hpp>
+#include <lux/alias/scalar.hpp>
+#include <lux/net/net_order.hpp>
+#include <lux/net/array.hpp>
 
 namespace net
 {

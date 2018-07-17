@@ -1,7 +1,7 @@
 #pragma once
 
-#include <alias/scalar.hpp>
-#include <linear/vec_3.hpp>
+#include <lux/alias/scalar.hpp>
+#include <lux/linear/vec_3.hpp>
 
 typedef I32 ChunkCoord;
 typedef linear::Vec3<ChunkCoord> ChunkPos;

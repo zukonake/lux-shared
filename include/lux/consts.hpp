@@ -1,6 +1,6 @@
 #pragma once
 
-#include <common/chunk.hpp>
+#include <lux/common/chunk.hpp>
 
 namespace consts
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <consts.hpp>
-#include <common/chunk.hpp>
-#include <net/server/tile_data.hpp>
+#include <lux/consts.hpp>
+#include <lux/common/chunk.hpp>
+#include <lux/net/server/tile_data.hpp>
 
 namespace net
 {

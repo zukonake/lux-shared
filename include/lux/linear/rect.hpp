@@ -1,6 +1,6 @@
 #pragma once
 
-#include <linear/point_2d.hpp>
+#include <lux/linear/point_2d.hpp>
 
 namespace linear
 {

@@ -4,9 +4,9 @@
 //
 #include <glm/detail/type_vec2.hpp>
 //
-#include <util/merge_hash.hpp>
-#include <net/serializer.hpp>
-#include <net/deserializer.hpp>
+#include <lux/util/merge_hash.hpp>
+#include <lux/net/serializer.hpp>
+#include <lux/net/deserializer.hpp>
 
 namespace linear
 {

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 //
-#include "log.hpp"
+#include <lux/util/log.hpp>
 
 namespace util
 {

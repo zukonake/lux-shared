@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <enet/enet.h>
 //
-#include "enet_handle.hpp"
+#include <lux/net/enet_handle.hpp>
 
 namespace net
 {

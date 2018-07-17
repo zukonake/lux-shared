@@ -1,12 +1,12 @@
 #pragma once
 
-#include <alias/scalar.hpp>
-#include <alias/c_string.hpp>
-#include <net/array.hpp>
-#include <net/serializer.hpp>
-#include <net/deserializer.hpp>
-#include <net/server/chunk_data.hpp>
-#include <common/entity.hpp>
+#include <lux/alias/scalar.hpp>
+#include <lux/alias/c_string.hpp>
+#include <lux/net/array.hpp>
+#include <lux/net/serializer.hpp>
+#include <lux/net/deserializer.hpp>
+#include <lux/net/server/chunk_data.hpp>
+#include <lux/common/entity.hpp>
 
 namespace net
 {

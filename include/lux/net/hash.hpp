@@ -1,6 +1,6 @@
 #pragma once
 
-#include <alias/scalar.hpp>
+#include <lux/alias/scalar.hpp>
 
 namespace net
 {
