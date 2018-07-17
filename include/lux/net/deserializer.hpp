@@ -84,19 +84,6 @@ inline Deserializer &operator>>(Deserializer &out, T (&v)[len])
     return out;
 }
 
-template<>
-inline Deserializer &operator>>(Deserializer &out, Array<U8> &v)
-{
-    out >> v.len;
-    assert(out.get_size() >= v.len);
-    v.val = (U8 *)std::malloc(v.len);
-    //TODO ^ check for nullptr
-    //       optimize with realloc
-    std::memcpy(v.val, out.iter, v.len);
-    out.iter += v.len;
-    return out;
-}
-
 template<typename T>
 inline Deserializer &operator>>(Deserializer &out, Array<T> &v)
 {
@@ -106,6 +93,19 @@ inline Deserializer &operator>>(Deserializer &out, Array<T> &v)
     //TODO ^ check for nullptr
     //       optimize with realloc
     for(SizeT i = 0; i < v.len; ++i) out >> v.val[i];
+    return out;
+}
+
+template<>
+inline Deserializer &operator>><U8>(Deserializer &out, Array<U8> &v)
+{
+    out >> v.len;
+    assert(out.get_size() >= v.len);
+    v.val = (U8 *)std::malloc(v.len);
+    //TODO ^ check for nullptr
+    //       optimize with realloc
+    std::memcpy(v.val, out.iter, v.len);
+    out.iter += v.len;
     return out;
 }
 

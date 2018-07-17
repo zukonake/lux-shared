@@ -83,22 +83,22 @@ inline Serializer &operator<<(Serializer &in, const T (&v)[len])
     return in;
 }
 
-template<>
-inline Serializer &operator<<(Serializer &in, Array<U8> const &v)
-{
-    in << v.len;
-    assert(in.get_free() >= v.len);
-    std::memcpy(in.iter, v.val, v.len);
-    in.iter += v.len;
-    return in;
-}
-
 template<typename T>
 inline Serializer &operator<<(Serializer &in, Array<T> const &v)
 {
     in << v.len;
     assert(in.get_free() >= v.len * sizeof(T));
     for(SizeT i = 0; i < v.len; ++i) in << v.val[i];
+    return in;
+}
+
+template<>
+inline Serializer &operator<<<U8>(Serializer &in, Array<U8> const &v)
+{
+    in << v.len;
+    assert(in.get_free() >= v.len);
+    std::memcpy(in.iter, v.val, v.len);
+    in.iter += v.len;
     return in;
 }
 
