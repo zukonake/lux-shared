@@ -11,4 +11,4 @@ configure_file("${PROJECT_SOURCE_DIR}/config.h.in"
 
 include_directories("include" "${PROJECT_BINARY_DIR}/include")
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-add_library(lux-shared STATIC ${SOURCES})
+add_library(lux STATIC ${SOURCES})
