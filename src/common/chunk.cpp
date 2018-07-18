@@ -44,3 +44,10 @@ ChunkIndex to_chunk_index(MapPos const &pos)
     }
     return (ChunkIndex)(result.x + (result.y * SIZE.x) + (result.z * SIZE.x * SIZE.y));
 }
+
+MapPos chunk_to_map_pos(ChunkPos const &pos, ChunkIndex const &idx)
+{
+    auto const &SIZE = consts::CHUNK_SIZE;
+    return (MapPos)(pos * (ChunkPos)SIZE) +
+        MapPos(idx % SIZE.x, idx / SIZE.x, idx / SIZE.x * SIZE.y);
+}

@@ -11,3 +11,4 @@ typedef SizeT ChunkIndex;
 
 ChunkPos   to_chunk_pos(MapPos const &pos);
 ChunkIndex to_chunk_index(MapPos const &pos);
+MapPos     chunk_to_map_pos(ChunkPos const &pos, ChunkIndex const &idx);
