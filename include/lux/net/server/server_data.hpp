@@ -2,7 +2,7 @@
 
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/c_string.hpp>
-#include <lux/net/array.hpp>
+#include <lux/alias/vector.hpp>
 #include <lux/net/serializer.hpp>
 #include <lux/net/deserializer.hpp>
 #include <lux/net/server/chunk_data.hpp>
@@ -23,8 +23,8 @@ struct ServerInitData
 #pragma pack(push, 1)
 struct ServerData
 {
-    Array<ChunkData> chunks;
-    Array<EntityPos> entities;
+    Vector<ChunkData> chunks;
+    Vector<EntityPos> entities;
     EntityPos        player_pos;
 };
 #pragma pack(pop)

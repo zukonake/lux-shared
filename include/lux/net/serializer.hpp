@@ -4,8 +4,9 @@
 #include <cstring>
 //
 #include <lux/alias/scalar.hpp>
+#include <lux/alias/vector.hpp>
+#include <lux/alias/array.hpp>
 #include <lux/net/net_order.hpp>
-#include <lux/net/array.hpp>
 
 namespace net
 {
@@ -26,9 +27,9 @@ class Serializer
     friend inline Serializer &operator<<(Serializer &in, U32   const &v);
     friend inline Serializer &operator<<(Serializer &in, U64   const &v);
     template<typename T, SizeT len>
-    friend inline Serializer &operator<<(Serializer &in, const T (&v)[len]);
+    friend inline Serializer &operator<<(Serializer &in, Array<T, len> const &v);
     template<typename T>
-    friend inline Serializer &operator<<(Serializer &in, Array<T> const &v);
+    friend inline Serializer &operator<<(Serializer &in, Vector<T> const &v);
 
     SizeT get_size() const { return (SizeT)(end - start); }
     SizeT get_free() const { return (SizeT)(end - iter); }
@@ -76,7 +77,7 @@ inline Serializer &operator<<(Serializer &in, U64 const &v)
 }
 
 template<typename T, SizeT len>
-inline Serializer &operator<<(Serializer &in, const T (&v)[len])
+inline Serializer &operator<<(Serializer &in, Array<T, len> const &v)
 {
     assert(in.get_free() >= len * sizeof(T));
     for(SizeT i = 0; i < len; ++i) in << v[i];
@@ -84,21 +85,11 @@ inline Serializer &operator<<(Serializer &in, const T (&v)[len])
 }
 
 template<typename T>
-inline Serializer &operator<<(Serializer &in, Array<T> const &v)
+inline Serializer &operator<<(Serializer &in, Vector<T> const &v)
 {
-    in << v.len;
-    assert(in.get_free() >= v.len * sizeof(T));
-    for(SizeT i = 0; i < v.len; ++i) in << v.val[i];
-    return in;
-}
-
-template<>
-inline Serializer &operator<<<U8>(Serializer &in, Array<U8> const &v)
-{
-    in << v.len;
-    assert(in.get_free() >= v.len);
-    std::memcpy(in.iter, v.val, v.len);
-    in.iter += v.len;
+    in << v.size();
+    assert(in.get_free() >= v.size() * sizeof(T));
+    for(auto const &i : v) in << i;
     return in;
 }
 

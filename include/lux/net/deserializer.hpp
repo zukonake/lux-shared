@@ -6,8 +6,8 @@
 //
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/vector.hpp>
+#include <lux/alias/array.hpp>
 #include <lux/net/net_order.hpp>
-#include <lux/net/array.hpp>
 
 namespace net
 {
@@ -19,26 +19,21 @@ class Deserializer
         iter(start),
         end(end)
     { }
-    ~Deserializer()
-    {
-        for(auto &i : allocated_data) free(i);
-    }
 
     friend Deserializer &operator>>(Deserializer &out, U8  &v);
     friend Deserializer &operator>>(Deserializer &out, U16 &v);
     friend Deserializer &operator>>(Deserializer &out, U32 &v);
     friend Deserializer &operator>>(Deserializer &out, U64 &v);
     template<typename T, SizeT len>
-    friend Deserializer &operator>>(Deserializer &out, T (&v)[len]);
+    friend Deserializer &operator>>(Deserializer &out, Array<T, len> &v);
     template<typename T>
-    friend Deserializer &operator>>(Deserializer &out, Array<T> &v);
+    friend Deserializer &operator>>(Deserializer &out, Vector<T> &v);
 
     SizeT get_size() const { return (SizeT)(end - iter); }
 
     private:
     U8 const *iter;
     U8 const *end;
-    Vector<void *> allocated_data;
 };
 
 inline Deserializer &operator>>(Deserializer &out, U8 &v)
@@ -77,7 +72,7 @@ inline Deserializer &operator>>(Deserializer &out, U64 &v)
 }
 
 template<typename T, SizeT len>
-inline Deserializer &operator>>(Deserializer &out, T (&v)[len])
+inline Deserializer &operator>>(Deserializer &out, Array<T, len> &v)
 {
     assert(out.get_size() >= len * sizeof(T));
     for(SizeT i = 0; i < len; ++i) out >> v[i];
@@ -85,27 +80,16 @@ inline Deserializer &operator>>(Deserializer &out, T (&v)[len])
 }
 
 template<typename T>
-inline Deserializer &operator>>(Deserializer &out, Array<T> &v)
+inline Deserializer &operator>>(Deserializer &out, Vector<T> &v)
 {
-    out >> v.len;
-    assert(out.get_size() >= v.len * sizeof(T));
-    v.val = (T *)std::malloc(v.len * sizeof(T));
-    //TODO ^ check for nullptr
-    //       optimize with realloc
-    for(SizeT i = 0; i < v.len; ++i) out >> v.val[i];
-    return out;
-}
-
-template<>
-inline Deserializer &operator>><U8>(Deserializer &out, Array<U8> &v)
-{
-    out >> v.len;
-    assert(out.get_size() >= v.len);
-    v.val = (U8 *)std::malloc(v.len);
-    //TODO ^ check for nullptr
-    //       optimize with realloc
-    std::memcpy(v.val, out.iter, v.len);
-    out.iter += v.len;
+    SizeT len;
+    out >> len;
+    v.resize(len);
+    assert(out.get_size() >= len * sizeof(T));
+    for(SizeT i = 0; i < len; ++i)
+    {
+        out >> v[i];
+    }
     return out;
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lux/alias/array.hpp>
 #include <lux/consts.hpp>
 #include <lux/common/chunk.hpp>
 #include <lux/net/server/tile_data.hpp>
@@ -11,7 +12,7 @@ namespace net
 struct ChunkData
 {
     ChunkPos pos;
-    TileData tiles[consts::CHUNK_TILE_SIZE];
+    Array<TileData, consts::CHUNK_TILE_SIZE> tiles;
 };
 #pragma pack(pop)
 
