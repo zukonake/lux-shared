@@ -6,6 +6,7 @@
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/vector.hpp>
 #include <lux/alias/array.hpp>
+#include <lux/util/log.hpp>
 #include <lux/net/net_order.hpp>
 
 namespace net
@@ -20,7 +21,14 @@ class Serializer
         end(iter + n_bytes)
     { }
 
-    ~Serializer() { delete[] start; }
+    ~Serializer()
+    {
+        if(get_free() > 0)
+        {
+            util::log("SERIALIZER", util::WARN, "too many bytes allocated %zd", get_free());
+        }
+        delete[] start;
+    }
 
     friend inline Serializer &operator<<(Serializer &in, U8    const &v);
     friend inline Serializer &operator<<(Serializer &in, U16   const &v);

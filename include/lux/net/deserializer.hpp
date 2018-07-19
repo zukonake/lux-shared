@@ -7,6 +7,7 @@
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/vector.hpp>
 #include <lux/alias/array.hpp>
+#include <lux/util/log.hpp>
 #include <lux/net/net_order.hpp>
 
 namespace net
@@ -19,6 +20,14 @@ class Deserializer
         iter(start),
         end(end)
     { }
+
+    ~Deserializer()
+    {
+        if(get_size() > 0)
+        {
+            util::log("DESERIALIZER", util::WARN, "bytes discarded %zd", get_size());
+        }
+    }
 
     friend Deserializer &operator>>(Deserializer &out, U8  &v);
     friend Deserializer &operator>>(Deserializer &out, U16 &v);
