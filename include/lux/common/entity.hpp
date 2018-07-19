@@ -2,6 +2,11 @@
 
 #include <lux/linear/vec_3.hpp>
 
-typedef float EntityCoord;
-typedef linear::Vec3<EntityCoord> EntityPos;
-typedef linear::Vec3<EntityCoord> EntityVec;
+namespace entity
+{
+
+typedef float Coord;
+typedef linear::Vec3<Coord> Pos;
+typedef linear::Vec3<Coord> Vec;
+
+}

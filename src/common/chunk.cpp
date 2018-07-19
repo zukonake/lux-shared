@@ -1,10 +1,11 @@
 #include <lux/common/chunk.hpp>
-#include <lux/consts.hpp>
 
-ChunkPos to_chunk_pos(MapPos const &pos)
+namespace chunk
 {
-    auto const &SIZE = consts::CHUNK_SIZE;
-    ChunkPos result = pos;
+
+Pos to_pos(map::Pos const &pos)
+{
+    Pos result = pos;
     if(result.x < 0)
     {
         result.x -= SIZE.x - 1;
@@ -23,10 +24,9 @@ ChunkPos to_chunk_pos(MapPos const &pos)
     return result;
 }
 
-ChunkIndex to_chunk_index(MapPos const &pos)
+Index to_index(map::Pos const &pos)
 {
-    auto const &SIZE = consts::CHUNK_SIZE;
-    MapPos result = pos;
+    map::Pos result = pos;
     result.x %= SIZE.x;
     result.y %= SIZE.y;
     result.z %= SIZE.z;
@@ -42,12 +42,13 @@ ChunkIndex to_chunk_index(MapPos const &pos)
     {
         result.z += SIZE.z;
     }
-    return (ChunkIndex)(result.x + (result.y * SIZE.x) + (result.z * SIZE.x * SIZE.y));
+    return (Index)(result.x + (result.y * SIZE.x) + (result.z * SIZE.x * SIZE.y));
 }
 
-MapPos chunk_to_map_pos(ChunkPos const &pos, ChunkIndex const &idx)
+map::Pos to_map_pos(Pos const &pos, Index const &idx)
 {
-    auto const &SIZE = consts::CHUNK_SIZE;
-    return (MapPos)(pos * (ChunkPos)SIZE) +
-        MapPos(idx % SIZE.x, idx / SIZE.x, idx / SIZE.x * SIZE.y);
+    return (map::Pos)(pos * (Pos)SIZE) +
+        map::Pos(idx % SIZE.x, idx / SIZE.x, idx / SIZE.x * SIZE.y);
+}
+
 }

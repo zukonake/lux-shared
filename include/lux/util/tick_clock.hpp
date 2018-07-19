@@ -9,8 +9,9 @@ namespace util
 class TickClock
 {
     public:
+    typedef std::chrono::steady_clock Clock;
     typedef std::chrono::duration<double> Duration;
-    typedef std::chrono::time_point<std::chrono::steady_clock> TimePoint;
+    typedef std::chrono::time_point<Clock> TimePoint;
 
     TickClock(Duration rate);
     TickClock(TickClock const &that) = delete;
@@ -23,7 +24,7 @@ class TickClock
     Duration get();
     Duration synchronize();
     private:
-    std::chrono::steady_clock clock;
+    Clock clock;
     Duration  cycle;
     Duration  rate;
     TimePoint before;

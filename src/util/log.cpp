@@ -1,6 +1,3 @@
-#include <iostream>
-#include <string>
-//
 #include <lux/util/log.hpp>
 
 namespace util

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <lux/net/hash.hpp>
+#include <lux/net/serializer.hpp>
+#include <lux/net/deserializer.hpp>
 
 namespace net
 {

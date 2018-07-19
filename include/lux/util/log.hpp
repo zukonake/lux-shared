@@ -35,7 +35,7 @@ void log(std::string const &prefix, Level level, std::string const &fmt, Args co
         return;
 
     case CRITICAL:
-        output += "CRIT:  ";
+        output += "CRIT: ";
         break;
 
     case ERROR:
@@ -43,11 +43,11 @@ void log(std::string const &prefix, Level level, std::string const &fmt, Args co
         break;
 
     case WARN:
-        output += "WARN:  ";
+        output += "WARN: ";
         break;
 
     case INFO:
-        output += "INFO:  ";
+        output += "INFO: ";
         break;
 
     case DEBUG:

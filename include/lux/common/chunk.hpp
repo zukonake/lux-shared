@@ -4,11 +4,19 @@
 #include <lux/linear/vec_3.hpp>
 #include <lux/common/map.hpp>
 
-typedef I32 ChunkCoord;
-typedef linear::Vec3<ChunkCoord> ChunkPos;
-typedef linear::Vec3<U16>        ChunkSize;
-typedef SizeT ChunkIndex;
+namespace chunk
+{
 
-ChunkPos   to_chunk_pos(MapPos const &pos);
-ChunkIndex to_chunk_index(MapPos const &pos);
-MapPos     chunk_to_map_pos(ChunkPos const &pos, ChunkIndex const &idx);
+typedef I32 Coord;
+typedef linear::Vec3<Coord> Pos;
+typedef linear::Vec3<U16>   Size;
+typedef SizeT Index;
+
+Pos      to_pos  (map::Pos const &pos);
+Index    to_index(map::Pos const &pos);
+map::Pos to_map_pos(chunk::Pos const &pos, chunk::Index const &idx);
+
+constexpr Size  SIZE = {16, 16, 3};
+constexpr SizeT TILE_SIZE = SIZE.x * SIZE.y * SIZE.z;
+
+}
