@@ -14,6 +14,8 @@ struct ChunkData
 {
     chunk::Pos pos;
     Array<TileData, chunk::TILE_SIZE> tiles;
+    //^ this is not expressed as a vector, because right now ChunkData gets
+    //  allocated a few times and then reused multiple times
 };
 #pragma pack(pop)
 
