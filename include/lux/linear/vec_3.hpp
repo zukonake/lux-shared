@@ -5,8 +5,6 @@
 #include <glm/detail/type_vec3.hpp>
 //
 #include <lux/util/merge_hash.hpp>
-#include <lux/net/serializer.hpp>
-#include <lux/net/deserializer.hpp>
 
 namespace linear
 {
@@ -30,30 +28,5 @@ struct hash<Vec3<T>>
                                 util::merge_hash(hash<T>()(k.y), hash<T>()(k.z)));
     }
 };
-
-}
-
-namespace net
-{
-
-using namespace linear;
-
-template<typename T>
-inline Serializer &operator<<(Serializer &in, Vec3<T> const &v)
-{
-    in << v.x;
-    in << v.y;
-    in << v.z;
-    return in;
-}
-
-template<typename T>
-inline Deserializer &operator>>(Deserializer &out, Vec3<T> &v)
-{
-    out >> v.x;
-    out >> v.y;
-    out >> v.z;
-    return out;
-}
 
 }
