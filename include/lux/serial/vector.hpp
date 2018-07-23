@@ -4,9 +4,21 @@
 #include <lux/alias/vector.hpp>
 #include <lux/serial/serializer.hpp>
 #include <lux/serial/deserializer.hpp>
+#include <lux/serial/get_size.hpp>
 
 namespace serial
 {
+
+template<typename T>
+inline SizeT get_size(Vector<T> const &v)
+{
+    SizeT size = sizeof(SizeT); //first, the size of the vector gets sent
+    for(auto const &i : v)
+    {
+        size += get_size(i);
+    }
+    return size;
+}
 
 template<typename T>
 inline Serializer &operator<<(Serializer &in, Vector<T> const &v)

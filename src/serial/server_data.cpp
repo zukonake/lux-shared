@@ -6,6 +6,23 @@
 namespace serial
 {
 
+SizeT get_size(TileData const &v)
+{
+    return get_size(v.db_hash);
+}
+
+SizeT get_size(ChunkData const &v)
+{
+    return get_size(v.pos) + get_size(v.tiles);
+}
+
+SizeT get_size(ServerData const &v)
+{
+    return get_size(v.chunks) +
+           get_size(v.entities) +
+           get_size(v.player_pos);
+}
+
 Serializer &operator<<(Serializer &in, TileData const &v)
 {
     in << v.db_hash;

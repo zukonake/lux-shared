@@ -1,10 +1,6 @@
 #pragma once
 
-#include <cassert>
-//
 #include <lux/alias/scalar.hpp>
-#include <lux/alias/vector.hpp>
-#include <lux/alias/array.hpp>
 
 namespace serial
 {
@@ -12,16 +8,23 @@ namespace serial
 class Serializer
 {
     public:
-    friend Serializer &operator<<(Serializer &in, U8    const &v);
-    friend Serializer &operator<<(Serializer &in, U16   const &v);
-    friend Serializer &operator<<(Serializer &in, U32   const &v);
-    friend Serializer &operator<<(Serializer &in, U64   const &v);
+    Serializer();
+    ~Serializer();
 
-    Vector<U8> const &get() const;
-    void clear();
+    friend Serializer &operator<<(Serializer &in, U8  const &v);
+    friend Serializer &operator<<(Serializer &in, U16 const &v);
+    friend Serializer &operator<<(Serializer &in, U32 const &v);
+    friend Serializer &operator<<(Serializer &in, U64 const &v);
+
+    U8 const *get() const;
+    SizeT get_free() const;
+    SizeT get_size() const;
+    void reserve(SizeT n_bytes);
 
     private:
-    Vector<U8> storage;
+    U8 *start;
+    U8 *iter;
+    U8 *end;
 };
 
 Serializer &operator<<(Serializer &in, U8 const &v);

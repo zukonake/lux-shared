@@ -1,50 +1,92 @@
+#include <cstdlib>
 #include <cassert>
-#include <cstring>
+#include <stdexcept>
 //
 #include <lux/net/net_order.hpp>
-#include <lux/util/log.hpp>
 #include <lux/serial/serializer.hpp>
 
 namespace serial
 {
 
-Vector<U8> const &Serializer::get() const
+Serializer::Serializer() :
+    start(nullptr),
+    iter(nullptr),
+    end(nullptr)
 {
-    return storage;
+
 }
 
-void Serializer::clear()
+Serializer::~Serializer()
 {
-    storage.clear();
+    if(start != nullptr) std::free(start);
+}
+
+U8 const *Serializer::get() const
+{
+    return start;
+}
+
+SizeT Serializer::get_free() const
+{
+    return end - iter;
+}
+
+SizeT Serializer::get_size() const
+{
+    return (end - start) - 1;
+}
+
+void Serializer::reserve(SizeT n_bytes)
+{
+    if(start == nullptr || get_size() < n_bytes)
+    {
+        U8 *new_start = nullptr;
+        if(start == nullptr)
+        {
+            new_start = (U8 *)std::malloc(n_bytes);
+        }
+        else
+        {
+            new_start = (U8 *)std::realloc(start, n_bytes);
+            //TODO experiment with exponential allocation
+        }
+        if(new_start == nullptr) throw std::bad_alloc();
+        else start = new_start;
+
+        end = start + n_bytes;
+    }
+    iter = start;
 }
 
 Serializer &operator<<(Serializer &in, U8 const &v)
 {
-    in.storage.emplace_back(v);
+    assert(in.get_free() >= 1);
+    *in.iter = v;
+    in.iter += 1;
     return in;
 }
 
 Serializer &operator<<(Serializer &in, U16 const &v)
 {
-    U16 temp = net::net_order<U16>(v);
-    in.storage.resize(in.storage.size() + 2);
-    in.storage.insert(in.storage.end() - 2, (U8 *)&temp, (U8 *)&temp + 1);
+    assert(in.get_free() >= 2);
+    net::net_memcpy(in.iter, (U8 *)&v, 2);
+    in.iter += 2;
     return in;
 }
 
 Serializer &operator<<(Serializer &in, U32 const &v)
 {
-    U32 temp = net::net_order<U32>(v);
-    in.storage.resize(in.storage.size() + 4);
-    in.storage.insert(in.storage.end() - 4, (U8 *)&temp, (U8 *)&temp + 3);
+    assert(in.get_free() >= 4);
+    net::net_memcpy(in.iter, (U8 *)&v, 4);
+    in.iter += 4;
     return in;
 }
 
 Serializer &operator<<(Serializer &in, U64 const &v)
 {
-    U64 temp = net::net_order<U64>(v);
-    in.storage.resize(in.storage.size() + 8);
-    in.storage.insert(in.storage.end() - 8, (U8 *)&temp, (U8 *)&temp + 7);
+    assert(in.get_free() >= 8);
+    net::net_memcpy(in.iter, (U8 *)&v, 8);
+    in.iter += 8;
     return in;
 }
 

@@ -19,6 +19,7 @@ struct ClientData
 };
 #pragma pack(pop)
 
+SizeT get_size(ClientData const &v);
 Serializer &operator<<(Serializer &in, ClientData const &v);
 Deserializer &operator>>(Deserializer &out, ClientData &v);
 

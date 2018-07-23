@@ -1,9 +1,26 @@
 #pragma once
 
+#include <cstring>
+//
 #include <lux/alias/scalar.hpp>
 
 namespace net
 {
+
+inline void net_memcpy(U8 *dst, U8 *src, SizeT n)
+{
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    U8 *end = src + n - 1;
+    while(end >= src)
+    {
+        *(dst++) = *(end--);
+    }
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+    std::memcpy(dst, src, n);
+#else
+#error "invalid byte order"
+#endif
+}
 
 template<typename T>
 T net_order(T val);

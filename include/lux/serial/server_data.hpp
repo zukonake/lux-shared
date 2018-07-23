@@ -40,12 +40,15 @@ struct ChunkData
 #pragma pack(push, 1)
 struct ServerData
 {
-
     Vector<ChunkData>   chunks;
     Vector<entity::Pos> entities;
     entity::Pos         player_pos;
 };
 #pragma pack(pop)
+
+SizeT get_size(TileData const &v);
+SizeT get_size(ChunkData const &v);
+SizeT get_size(ServerData const &v);
 
 Serializer &operator<<(Serializer &in, TileData const &v);
 Serializer &operator<<(Serializer &in, ChunkData const &v);

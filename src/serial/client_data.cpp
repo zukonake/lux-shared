@@ -2,9 +2,17 @@
 #include <lux/serial/vec_2.hpp>
 #include <lux/serial/vec_3.hpp>
 #include <lux/serial/vector.hpp>
+#include <lux/serial/get_size.hpp>
 
 namespace serial
 {
+
+SizeT get_size(ClientData const &v)
+{
+    return get_size(v.chunk_requests) +
+           get_size(v.character_dir) +
+           get_size(v.is_moving);
+}
 
 Serializer &operator<<(Serializer &in, ClientData const &v)
 {
