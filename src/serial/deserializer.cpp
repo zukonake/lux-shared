@@ -8,10 +8,10 @@
 namespace serial
 {
 
-void Deserializer::set_slice(U8 const *start, U8 const *end)
+void Deserializer::set_slice(U8 const *_start, U8 const *_end)
 {
-    this->iter = start;
-    this->end  = end;
+    iter = _start;
+    end  = _end;
 }
 
 Deserializer &operator>>(Deserializer &out, U8 &v)

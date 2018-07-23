@@ -33,7 +33,7 @@ SizeT Serializer::get_free() const
 
 SizeT Serializer::get_size() const
 {
-    return (end - start) - 1;
+    return end - start;
 }
 
 void Serializer::reserve(SizeT n_bytes)

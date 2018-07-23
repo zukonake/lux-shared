@@ -33,6 +33,7 @@ inline Deserializer &operator>>(Deserializer &out, Vector<T> &v)
 {
     SizeT len;
     out >> len;
+    v.resize(len);
     for(SizeT i = 0; i < len; ++i)
     {
         out >> v[i];
