@@ -38,6 +38,7 @@ Deserializer &operator>>(Deserializer &out, I32 &v);
 Deserializer &operator>>(Deserializer &out, I64 &v);
 
 Deserializer &operator>>(Deserializer &out, bool &v);
+Deserializer &operator>>(Deserializer &out, char &v);
 Deserializer &operator>>(Deserializer &out, F32 &v);
 Deserializer &operator>>(Deserializer &out, F64 &v);
 

@@ -79,6 +79,12 @@ Deserializer &operator>>(Deserializer &out, bool &v)
     return out;
 }
 
+Deserializer &operator>>(Deserializer &out, char &v)
+{
+    out >> *((U8 *)&v);
+    return out;
+}
+
 Deserializer &operator>>(Deserializer &out, F32 &v)
 {
     out >> *((U32 *)&v);

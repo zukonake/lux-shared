@@ -38,6 +38,7 @@ Serializer &operator<<(Serializer &in, I32 const &v);
 Serializer &operator<<(Serializer &in, I64 const &v);
 
 Serializer &operator<<(Serializer &in, bool const &v);
+Serializer &operator<<(Serializer &in, char const &v);
 Serializer &operator<<(Serializer &in, F32 const &v);
 Serializer &operator<<(Serializer &in, F64 const &v);
 

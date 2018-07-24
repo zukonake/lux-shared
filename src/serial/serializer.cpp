@@ -120,6 +120,12 @@ Serializer &operator<<(Serializer &in, bool const &v)
     return in;
 }
 
+Serializer &operator<<(Serializer &in, char const &v)
+{
+    in << *((U8 const *)&v);
+    return in;
+}
+
 Serializer &operator<<(Serializer &in, F32 const &v)
 {
     in << *((U32 const *)&v);
