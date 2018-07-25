@@ -48,7 +48,7 @@ Index to_index(map::Pos const &pos)
 map::Pos to_map_pos(Pos const &pos, Index const &idx)
 {
     return (map::Pos)(pos * (Pos)SIZE) +
-        map::Pos(idx % SIZE.x, idx / SIZE.x, idx / SIZE.x * SIZE.y);
+        map::Pos(idx % SIZE.x, (idx / SIZE.x) % SIZE.y, idx / (SIZE.x * SIZE.y));
 }
 
 }
