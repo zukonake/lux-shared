@@ -25,8 +25,7 @@ Deserializer &operator>>(Deserializer &out, U8 &v)
 Deserializer &operator>>(Deserializer &out, U16 &v)
 {
     assert(out.get_size() >= 2);
-    std::memcpy((U8 *)&v, out.iter, 2);
-    v = net::net_order<U16>(v);
+    net::net_memcpy((U8 *)&v, out.iter, 2);
     out.iter += 2;
     return out;
 }
@@ -34,8 +33,7 @@ Deserializer &operator>>(Deserializer &out, U16 &v)
 Deserializer &operator>>(Deserializer &out, U32 &v)
 {
     assert(out.get_size() >= 4);
-    std::memcpy((U8 *)&v, out.iter, 4);
-    v = net::net_order<U32>(v);
+    net::net_memcpy((U8 *)&v, out.iter, 4);
     out.iter += 4;
     return out;
 }
@@ -43,8 +41,7 @@ Deserializer &operator>>(Deserializer &out, U32 &v)
 Deserializer &operator>>(Deserializer &out, U64 &v)
 {
     assert(out.get_size() >= 8);
-    std::memcpy((U8 *)&v, out.iter, 8);
-    v = net::net_order<U64>(v);
+    net::net_memcpy((U8 *)&v, out.iter, 8);
     out.iter += 8;
     return out;
 }

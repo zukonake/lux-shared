@@ -7,10 +7,10 @@
 namespace net
 {
 
-inline void net_memcpy(U8 *dst, U8 *src, SizeT n)
+inline void net_memcpy(U8 *dst, U8 const *src, SizeT n)
 {
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-    U8 *end = src + n - 1;
+    U8 const *end = src + n - 1;
     while(end >= src)
     {
         *(dst++) = *(end--);
