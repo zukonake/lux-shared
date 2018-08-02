@@ -24,6 +24,7 @@ class Serializer
 
     U8 const *get() const;
     SizeT get_free() const;
+    SizeT get_used() const;
     SizeT get_size() const;
     void reserve(SizeT n_bytes);
 
@@ -62,6 +63,11 @@ inline U8 const *Serializer::get() const
 inline SizeT Serializer::get_free() const
 {
     return end - iter;
+}
+
+inline SizeT Serializer::get_used() const
+{
+    return iter - start;
 }
 
 inline SizeT Serializer::get_size() const
