@@ -16,7 +16,7 @@ Pos      to_pos  (map::Pos const &pos);
 Index    to_index(map::Pos const &pos);
 map::Pos to_map_pos(chunk::Pos const &pos, chunk::Index const &idx);
 
-constexpr Size  SIZE = {16, 16, 3};
+constexpr Size  SIZE = {16, 16, 4};
 constexpr SizeT TILE_SIZE = SIZE.x * SIZE.y * SIZE.z;
 
 }
