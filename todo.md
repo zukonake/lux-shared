@@ -1,0 +1,41 @@
+# Lux - TODOs
+
+-in progress
+  -refactor code
+  -split client into 3 threads
+  -network classes
+-performance
+  -split batch jobs into many thread
+    -vague estimation of threads is number of cores
+      -2 * number of cores for hyper-threading
+    -for example divide tile updates into different threads
+-rendering
+  -basic entity rendering
+  -advanced meshing
+  -support for opengl 1.4
+  -support for newer opengl versions
+  -support for vulkan
+-netcode
+  -split into reliable and unreliable
+    -reliable will handle irregular data
+    -unreliable will handle per-tick data
+  -optimizations to reduce lag
+-worldgen
+  -proper dungeon generation
+  -caves
+  -towns
+  -surface world
+-meta
+  -licenses
+  -documentation
+-action
+  -basic actions
+  -create combos
+-interface
+  -basic visual interfaces
+  -input capturing
+  -variable display
+-scripting
+  -object loading
+  -api and function loading
+-ai
