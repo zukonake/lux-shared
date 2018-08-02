@@ -34,6 +34,11 @@ void TickClock::set_rate(TickClock::Duration value)
     rate = value;
 }
 
+typename TickClock::Duration TickClock::get_tick_len()
+{
+    return rate;
+}
+
 typename TickClock::Duration TickClock::synchronize()
 {
     Duration delta = rate - cycle;

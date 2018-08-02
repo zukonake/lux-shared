@@ -21,7 +21,7 @@ class TickClock
     void start();
     void stop();
     void set_rate(Duration value);
-    Duration get();
+    Duration get_tick_len();
     Duration synchronize();
     private:
     Clock clock;
