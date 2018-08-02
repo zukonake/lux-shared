@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cassert>
 //
 #include <lux/alias/scalar.hpp>
@@ -5,6 +7,7 @@
 #include <lux/serial/serializer.hpp>
 #include <lux/serial/deserializer.hpp>
 #include <lux/serial/get_size.hpp>
+#include <lux/serial/clear_buffer.hpp>
 
 namespace serial
 {
@@ -19,11 +22,17 @@ inline SizeT get_size(Array<T, len> const &v)
     else
     {
         SizeT size = 0;
-        for(auto const &i : v)
-        {
-            size += get_size(i);
-        }
+        for(auto const &i : v) size += get_size(i);
         return size;
+    }
+}
+
+template<typename T, SizeT len>
+inline void clear_buffer(Array<T, len> &v)
+{
+    if constexpr(std::is_trivial<T>::value == false)
+    {
+        for(auto const &i : v) clear_buffer(i);
     }
 }
 

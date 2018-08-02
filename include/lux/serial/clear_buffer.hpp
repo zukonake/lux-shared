@@ -6,10 +6,10 @@ namespace serial
 {
 
 template<typename T>
-inline SizeT get_size(T const &v)
+inline void clear_buffer(T &v)
 {
+    (void)v;
     static_assert(std::is_trivial<T>::value);
-    return sizeof(v);
 }
 
 }

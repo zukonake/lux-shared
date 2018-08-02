@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cassert>
 //
 #include <lux/alias/scalar.hpp>
@@ -12,18 +14,24 @@ namespace serial
 template<typename T>
 inline SizeT get_size(Vector<T> const &v)
 {
-    SizeT size = sizeof(SizeT); //first, the size of the vector gets sent
+    SizeT size = sizeof(SizeT); /* first, the size of the vector gets sent */
     if constexpr(std::is_trivial<T>::value)
     {
         return size + sizeof(T) * v.size();
     }
     else
     {
-        for(auto const &i : v)
-        {
-            size += get_size(i);
-        }
+        for(auto const &i : v) size += get_size(i);
         return size;
+    }
+}
+
+template<typename T>
+inline void clear_buffer(Vector<T> &v)
+{
+    if constexpr(std::is_trivial<T>::value == false)
+    {
+        for(auto const &i : v) clear_buffer(i);
     }
 }
 
@@ -41,10 +49,7 @@ inline Deserializer &operator>>(Deserializer &out, Vector<T> &v)
     SizeT len;
     out >> len;
     v.resize(len);
-    for(SizeT i = 0; i < len; ++i)
-    {
-        out >> v[i];
-    }
+    for(SizeT i = 0; i < len; ++i) out >> v[i];
     return out;
 }
 
