@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
 project(lux)
-set(CMAKE_BUILD_TYPE Debug)
 
 set(LUX_SHARED_VERSION_MAJOR 0)
 set(LUX_SHARED_VERSION_MINOR 0)
