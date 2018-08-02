@@ -9,19 +9,22 @@
 namespace serial
 {
 
-//TODO this is O(n), along with Vector,
-// change this to multiply the size of the first element by len,
-// as long as the elements do not contain pointers, i.e. the value of
-// the element is equal to it's byte-copy, even on another PC
 template<typename T, SizeT len>
 inline SizeT get_size(Array<T, len> const &v)
 {
-    SizeT size = 0;
-    for(auto const &i : v)
+    if constexpr(std::is_trivial<T>::value)
     {
-        size += get_size(i);
+        return sizeof(T) * len;
     }
-    return size;
+    else
+    {
+        SizeT size = 0;
+        for(auto const &i : v)
+        {
+            size += get_size(i);
+        }
+        return size;
+    }
 }
 
 template<typename T, SizeT len>

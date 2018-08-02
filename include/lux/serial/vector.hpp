@@ -13,11 +13,18 @@ template<typename T>
 inline SizeT get_size(Vector<T> const &v)
 {
     SizeT size = sizeof(SizeT); //first, the size of the vector gets sent
-    for(auto const &i : v)
+    if constexpr(std::is_trivial<T>::value)
     {
-        size += get_size(i);
+        return size + sizeof(T) * v.size();
     }
-    return size;
+    else
+    {
+        for(auto const &i : v)
+        {
+            size += get_size(i);
+        }
+        return size;
+    }
 }
 
 template<typename T>
