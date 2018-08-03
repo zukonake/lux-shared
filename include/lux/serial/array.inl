@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cassert>
+#include <type_traits>
 //
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/array.hpp>
@@ -13,7 +13,7 @@ namespace serial
 {
 
 template<typename T, SizeT len>
-inline SizeT get_size(Array<T, len> const &v)
+SizeT get_size(Array<T, len> const &v)
 {
     if constexpr(std::is_trivial<T>::value)
     {
@@ -28,7 +28,7 @@ inline SizeT get_size(Array<T, len> const &v)
 }
 
 template<typename T, SizeT len>
-inline void clear_buffer(Array<T, len> &v)
+void clear_buffer(Array<T, len> &v)
 {
     if constexpr(std::is_trivial<T>::value == false)
     {
@@ -37,14 +37,14 @@ inline void clear_buffer(Array<T, len> &v)
 }
 
 template<typename T, SizeT len>
-inline Serializer &operator<<(Serializer &in, Array<T, len> const &v)
+Serializer &operator<<(Serializer &in, Array<T, len> const &v)
 {
     for(SizeT i = 0; i < len; ++i) in << v[i];
     return in;
 }
 
 template<typename T, SizeT len>
-inline Deserializer &operator>>(Deserializer &out, Array<T, len> &v)
+Deserializer &operator>>(Deserializer &out, Array<T, len> &v)
 {
     for(SizeT i = 0; i < len; ++i) out >> v[i];
     return out;
