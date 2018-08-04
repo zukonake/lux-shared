@@ -14,6 +14,7 @@ struct ClientData
     Vector<chunk::Pos> chunk_requests;
     linear::Vec2<F32>  character_dir;
     bool               is_moving;
+    bool               is_jumping;
 };
 #pragma pack(pop)
 
