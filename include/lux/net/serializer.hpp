@@ -2,7 +2,7 @@
 
 #include <lux/alias/scalar.hpp>
 
-namespace serial
+namespace net
 {
 
 class Serializer

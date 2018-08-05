@@ -1,15 +1,15 @@
 #pragma once
 
 #include <lux/alias/scalar.hpp>
-#include <lux/linear/vec_3.hpp>
+#include <lux/alias/vec_3.hpp>
 #include <lux/common/map.hpp>
 
 namespace chunk
 {
 
 typedef I32 Coord;
-typedef linear::Vec3<Coord> Pos;
-typedef linear::Vec3<U16>   Size;
+typedef Vec3<Coord> Pos;
+typedef Vec3<U16>   Size;
 typedef SizeT Index;
 
 Pos      to_pos  (map::Pos const &pos);

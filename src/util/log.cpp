@@ -3,6 +3,6 @@
 namespace util
 {
 
-Level logger_report_level(ALL);
+LogLevel logger_report_level(ALL);
 
 }

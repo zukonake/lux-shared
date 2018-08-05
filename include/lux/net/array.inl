@@ -4,12 +4,12 @@
 //
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/array.hpp>
-#include <lux/serial/serializer.hpp>
-#include <lux/serial/deserializer.hpp>
-#include <lux/serial/get_size.hpp>
-#include <lux/serial/clear_buffer.hpp>
+#include <lux/net/serializer.hpp>
+#include <lux/net/deserializer.hpp>
+#include <lux/net/get_size.hpp>
+#include <lux/net/clear_buffer.hpp>
 
-namespace serial
+namespace net
 {
 
 template<typename T, SizeT len>

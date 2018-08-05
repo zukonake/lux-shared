@@ -1,9 +1,9 @@
 #include <cassert>
 //
 #include <lux/net/net_order.hpp>
-#include <lux/serial/deserializer.hpp>
+#include <lux/net/deserializer.hpp>
 
-namespace serial
+namespace net
 {
 
 void Deserializer::set_slice(U8 const *_start, U8 const *_end)

@@ -7,18 +7,11 @@
 #include <lux/alias/scalar.hpp>
 #include <lux/util/merge_hash.hpp>
 
-namespace linear
-{
-
 template<typename T>
 using Vec2 = glm::tvec2<T>;
 
-}
-
 namespace std
 {
-
-using namespace linear;
 
 template<typename T>
 struct hash<Vec2<T>>
@@ -31,22 +24,19 @@ struct hash<Vec2<T>>
 
 }
 
-namespace serial
+namespace net
 {
 
 class Serializer;
 class Deserializer;
 
 template<typename T>
-SizeT get_size(linear::Vec2<T> const &v);
-
+SizeT get_size(Vec2<T> const &v);
 template<typename T>
-void clear_buffer(linear::Vec2<T> const &v);
-
+void clear_buffer(Vec2<T> const &v);
 template<typename T>
-Serializer &operator<<(Serializer &in, linear::Vec2<T> const &v);
-
+Serializer &operator<<(Serializer &in, Vec2<T> const &v);
 template<typename T>
-Deserializer &operator>>(Deserializer &out, linear::Vec2<T> &v);
+Deserializer &operator>>(Deserializer &out, Vec2<T> &v);
 
 }

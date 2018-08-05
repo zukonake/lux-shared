@@ -7,7 +7,7 @@
 namespace util
 {
 
-enum Level
+enum LogLevel
 {
     OFF,
     CRITICAL,
@@ -19,10 +19,10 @@ enum Level
     ALL = TRACE
 };
 
-extern Level logger_report_level;
+extern LogLevel logger_report_level;
 
 template<typename... Args>
-void log(std::string const &prefix, Level level, std::string const &fmt, Args const &...args)
+void log(std::string const &prefix, LogLevel level, std::string const &fmt, Args const &...args)
 {
     if(level > logger_report_level)
     {

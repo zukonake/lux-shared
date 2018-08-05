@@ -8,7 +8,10 @@ namespace net
 
 ENetHandle::ENetHandle()
 {
-    if(enet_initialize() != 0) throw std::runtime_error("failed to initialize enet handle");
+    if(enet_initialize() != 0)
+    {
+        throw std::runtime_error("failed to initialize enet handle");
+    }
 }
 
 ENetHandle::~ENetHandle()

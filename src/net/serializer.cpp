@@ -3,9 +3,9 @@
 #include <stdexcept>
 //
 #include <lux/net/net_order.hpp>
-#include <lux/serial/serializer.hpp>
+#include <lux/net/serializer.hpp>
 
-namespace serial
+namespace net
 {
 
 void Serializer::reserve(SizeT n_bytes)

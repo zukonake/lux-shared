@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace serial
+namespace net
 {
 
 template<typename T>
