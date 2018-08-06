@@ -3,7 +3,7 @@
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/vector.hpp>
 
-namespace net::server::signal
+namespace net::server
 {
 
 struct Conf
@@ -16,4 +16,4 @@ struct Conf
 
 #include <lux/net/register_net_functions.hpp>
 
-namespace net { REGISTER_NET_FUNCTIONS(server::signal::Conf); }
+namespace net { REGISTER_NET_FUNCTIONS(server::Conf); }

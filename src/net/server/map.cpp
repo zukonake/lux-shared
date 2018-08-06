@@ -3,12 +3,12 @@
 #include <lux/net/get_size.hpp>
 #include <lux/net/clear_buffer.hpp>
 #include <lux/net/vector.inl>
-#include <lux/net/server/signal/map.hpp>
+#include <lux/net/server/map.hpp>
 
 namespace net
 {
 
-using namespace server::signal;
+using namespace server;
 
 SizeT get_size(Map const &v)
 {

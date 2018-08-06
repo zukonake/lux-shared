@@ -4,7 +4,7 @@
 #include <lux/alias/vector.hpp>
 #include <lux/util/log.hpp>
 
-namespace net::server::signal
+namespace net::server
 {
 
 struct Msg
@@ -17,4 +17,4 @@ struct Msg
 
 #include <lux/net/register_net_functions.hpp>
 
-namespace net { REGISTER_NET_FUNCTIONS(server::signal::Msg); }
+namespace net { REGISTER_NET_FUNCTIONS(server::Msg); }

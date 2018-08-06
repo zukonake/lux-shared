@@ -3,7 +3,7 @@
 #include <lux/alias/vector.hpp>
 #include <lux/net/server/chunk.hpp>
 
-namespace net::server::signal
+namespace net::server
 {
 
 struct Map
@@ -15,4 +15,4 @@ struct Map
 
 #include <lux/net/register_net_functions.hpp>
 
-namespace net { REGISTER_NET_FUNCTIONS(server::signal::Map); }
+namespace net { REGISTER_NET_FUNCTIONS(server::Map); }
