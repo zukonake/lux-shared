@@ -34,6 +34,7 @@ void clear_buffer(Vector<T> &v)
     {
         for(auto const &i : v) clear_buffer(i);
     }
+    v.clear();
 }
 
 template<typename T>
