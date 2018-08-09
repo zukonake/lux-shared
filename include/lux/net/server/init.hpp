@@ -3,13 +3,14 @@
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/vector.hpp>
 #include <lux/alias/vec_3.hpp>
+#include <lux/net/server/conf.hpp>
 
 namespace net::server
 {
 
 struct Init
 {
-    F64          tick_rate;
+    Conf         conf;
     Vector<char> server_name;
     Vec3<U16>    chunk_size;
 };

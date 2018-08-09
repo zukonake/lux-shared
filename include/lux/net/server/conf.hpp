@@ -1,7 +1,6 @@
 #pragma once
 
 #include <lux/alias/scalar.hpp>
-#include <lux/alias/vector.hpp>
 
 namespace net::server
 {
@@ -9,7 +8,6 @@ namespace net::server
 struct Conf
 {
     F64          tick_rate;
-    Vector<char> server_name;
 };
 
 }
