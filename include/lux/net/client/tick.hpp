@@ -15,6 +15,8 @@ struct Tick
     Vec2<F32>          character_dir;
     bool is_moving;
     bool is_jumping;
+    F32  pitch;
+    F32  yaw;
 };
 
 }
