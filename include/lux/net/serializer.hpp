@@ -5,6 +5,7 @@
 namespace net
 {
 
+//TODO test candidate
 class Serializer
 {
     public:
