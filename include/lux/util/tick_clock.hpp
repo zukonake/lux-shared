@@ -1,11 +1,11 @@
 #pragma once
 
-#include <thread>
 #include <chrono>
 
 namespace util
 {
 
+//TODO use util::Clock?
 class TickClock
 {
     public:
