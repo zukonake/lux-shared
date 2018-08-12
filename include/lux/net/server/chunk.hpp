@@ -2,7 +2,7 @@
 
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/array.hpp>
-#include <lux/common/chunk.hpp>
+#include <lux/common/map.hpp>
 #include <lux/net/server/tile.hpp>
 
 namespace net::server
@@ -10,8 +10,8 @@ namespace net::server
 
 struct Chunk
 {
-    chunk::Pos pos;
-    Array<Tile, chunk::TILE_SIZE> tiles;
+    ChkPos pos;
+    Array<Tile, CHK_VOLUME> tiles;
 };
 
 }

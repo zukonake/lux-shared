@@ -8,7 +8,7 @@ namespace net::server
 
 struct Map
 {
-    Vector<Chunk>   chunks;
+    Vector<Chunk> chunks;
 };
 
 }

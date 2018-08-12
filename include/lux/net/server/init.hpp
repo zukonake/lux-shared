@@ -12,7 +12,7 @@ struct Init
 {
     Conf         conf;
     Vector<char> server_name;
-    Vec3<U16>    chunk_size;
+    Vec3<U32>    chunk_size;
 };
 
 }

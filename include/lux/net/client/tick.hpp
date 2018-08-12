@@ -4,15 +4,15 @@
 #include <lux/alias/vector.hpp>
 #include <lux/alias/vec_2.hpp>
 #include <lux/net/register_net_functions.hpp>
-#include <lux/common/chunk.hpp>
+#include <lux/common/map.hpp>
 
 namespace net::client
 {
 
 struct Tick
 {
-    Vector<chunk::Pos> chunk_requests;
-    Vec2<F32>          character_dir;
+    Vector<ChkPos> chunk_requests;
+    Vec2<F32>      character_dir;
     bool is_moving;
     bool is_jumping;
     F32  pitch;

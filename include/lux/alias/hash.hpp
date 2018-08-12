@@ -2,4 +2,4 @@
 
 #include <lux/alias/scalar.hpp>
 
-typedef U8 Hash;
+typedef U64 Hash;
