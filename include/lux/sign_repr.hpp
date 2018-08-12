@@ -8,5 +8,5 @@
 #define SIGN_REPR (-1 & 3)
 
 #if SIGN_REPR == SIGN_REPR_UNKNOWN
-#   warning "unknown signed representation, expect glitches"
+#   warning "unknown signed representation"
 #endif

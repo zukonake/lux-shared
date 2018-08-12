@@ -12,6 +12,9 @@ typedef Vec3<Coord> Pos;
 typedef Vec3<U16>   Size;
 typedef SizeT Index;
 
+//TODO test candidate
+//TODO add explanations
+//TODO add iteration functions
 Pos      to_pos  (map::Pos const &pos);
 Index    to_index(map::Pos const &pos);
 map::Pos to_map_pos(chunk::Pos const &pos, chunk::Index const &idx);

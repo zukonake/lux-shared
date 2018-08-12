@@ -7,6 +7,7 @@
 namespace net
 {
 
+//TODO test candidate
 class Deserializer
 {
     public:
