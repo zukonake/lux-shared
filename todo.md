@@ -4,6 +4,11 @@
   -graphical improvements and optimalizations
   -basic action system
   -basic interfaces
+-multithreading
+  -networking
+  -chunk loading
+  -rendering
+  -maybe physics
 -performance
   -split batch jobs into many thread
     -vague estimation of threads is number of cores
@@ -12,13 +17,9 @@
 -rendering
   -basic entity rendering
   -advanced meshing
-  -support for opengl 1.4
   -support for newer opengl versions
   -support for vulkan
 -netcode
-  -split into reliable and unreliable
-    -reliable will handle irregular data
-    -unreliable will handle per-tick data
   -optimizations to reduce lag
 -worldgen
   -proper dungeon generation
