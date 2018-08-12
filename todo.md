@@ -1,9 +1,9 @@
 # Lux - TODOs
 
 -in progress
-  -refactor code
-  -split client into 3 threads
-  -network classes
+  -graphical improvements and optimalizations
+  -basic action system
+  -basic interfaces
 -performance
   -split batch jobs into many thread
     -vague estimation of threads is number of cores
