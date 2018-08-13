@@ -12,23 +12,23 @@ using namespace client;
 
 SizeT get_size(Conf const &v)
 {
-    return get_size(v.view_range);
+    return get_size(v.load_range);
 }
 
 void clear_buffer(Conf &v)
 {
-    clear_buffer(v.view_range);
+    clear_buffer(v.load_range);
 }
 
 Serializer &operator<<(Serializer &in, Conf const &v)
 {
-    in << v.view_range;
+    in << v.load_range;
     return in;
 }
 
 Deserializer &operator>>(Deserializer &out, Conf &v)
 {
-    out >> v.view_range;
+    out >> v.load_range;
     return out;
 }
 
