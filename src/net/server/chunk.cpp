@@ -13,26 +13,26 @@ using namespace server;
 
 SizeT get_size(Chunk const &v)
 {
-    return get_size(v.pos) + get_size(v.tiles);
+    return get_size(v.pos) + get_size(v.tile_ids);
 }
 
 void clear_buffer(Chunk &v)
 {
     clear_buffer(v.pos);
-    clear_buffer(v.tiles);
+    clear_buffer(v.tile_ids);
 }
 
 Serializer &operator<<(Serializer &in, Chunk const &v)
 {
     in << v.pos;
-    in << v.tiles;
+    in << v.tile_ids;
     return in;
 }
 
 Deserializer &operator>>(Deserializer &out, Chunk &v)
 {
     out >> v.pos;
-    out >> v.tiles;
+    out >> v.tile_ids;
     return out;
 }
 
