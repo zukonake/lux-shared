@@ -1,13 +1,13 @@
 #pragma once
 
-#include <lux/alias/hash.hpp>
+#include <lux/common/tile.hpp>
 
 namespace net::server
 {
 
 struct Tile
 {
-    Hash db_hash;
+    tile::Id id;
 };
 
 }

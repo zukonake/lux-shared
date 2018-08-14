@@ -11,23 +11,23 @@ using namespace server;
 
 SizeT get_size(Tile const &v)
 {
-    return get_size(v.db_hash);
+    return get_size(v.id);
 }
 
 void clear_buffer(Tile &v)
 {
-    clear_buffer(v.db_hash);
+    clear_buffer(v.id);
 }
 
 Serializer &operator<<(Serializer &in, Tile const &v)
 {
-    in << v.db_hash;
+    in << v.id;
     return in;
 }
 
 Deserializer &operator>>(Deserializer &out, Tile &v)
 {
-    out >> v.db_hash;
+    out >> v.id;
     return out;
 }
 

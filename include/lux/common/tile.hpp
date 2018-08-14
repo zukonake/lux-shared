@@ -2,4 +2,9 @@
 
 #include <lux/alias/scalar.hpp>
 
-typedef U64 Hash;
+namespace tile
+{
+
+typedef U16 Id;
+
+}
