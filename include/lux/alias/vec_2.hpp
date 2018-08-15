@@ -3,9 +3,7 @@
 #include <functional>
 //
 #include <glm/detail/type_vec2.hpp>
-//
 #include <lux/alias/scalar.hpp>
-#include <lux/util/merge_hash.hpp>
 
 template<typename T>
 using Vec2 = glm::tvec2<T>;
@@ -18,7 +16,7 @@ struct hash<Vec2<T>>
 {
     size_t operator()(Vec2<T> const &k) const
     {
-        return util::merge_hash(hash<T>()(k.x), hash<T>()(k.y));
+        return ((size_t)k.y << 32) | ((size_t)k.x & 0xFFFF'FFFF);
     }
 };
 
