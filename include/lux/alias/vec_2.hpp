@@ -3,24 +3,31 @@
 #include <functional>
 //
 #include <glm/detail/type_vec2.hpp>
+//
 #include <lux/alias/scalar.hpp>
+#include <lux/util/merge_hash.hpp>
+#include <lux/util/packer.hpp>
 
 template<typename T>
 using Vec2 = glm::tvec2<T>;
 
-namespace std
-{
-
 template<typename T>
-struct hash<Vec2<T>>
+struct std::hash<Vec2<T>>
 {
-    size_t operator()(Vec2<T> const &k) const
+    SizeT operator()(Vec2<T> const &k) const
     {
-        return ((size_t)k.y << 32) | ((size_t)k.x & 0xFFFF'FFFF);
+        return util::merge_hash(std::hash<T>()(k.x), std::hash<T>()(k.y));
     }
 };
 
-}
+template<typename T>
+struct util::Packer<Vec2<T>>
+{
+    SizeT operator()(Vec2<T> const &k) const
+    {
+        return ((SizeT)k.y << 32) | ((SizeT)k.x & 0xFFFF'FFFF);
+    }
+};
 
 namespace net
 {

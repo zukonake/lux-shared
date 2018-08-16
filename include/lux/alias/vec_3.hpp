@@ -5,25 +5,32 @@
 #include <glm/detail/type_vec3.hpp>
 //
 #include <lux/alias/scalar.hpp>
+#include <lux/util/merge_hash.hpp>
+#include <lux/util/packer.hpp>
 
 template<typename T>
 using Vec3 = glm::tvec3<T>;
 
-namespace std
-{
-
 template<typename T>
-struct hash<Vec3<T>>
+struct std::hash<Vec3<T>>
 {
-    size_t operator()(Vec3<T> const &k) const
+    SizeT operator()(Vec3<T> const &k) const
     {
-        return  ((size_t)k.z            << 40) |
-               (((size_t)k.y & 0xFFFFF) << 20) |
-                ((size_t)k.x & 0xFFFFF);
+        return util::merge_hash(std::hash<T>()(k.x),
+               util::merge_hash(std::hash<T>()(k.y), std::hash<T>()(k.z)));
     }
 };
 
-}
+template<typename T>
+struct util::Packer<Vec3<T>>
+{
+    SizeT operator()(Vec3<T> const &k) const
+    {
+        return  ((SizeT)k.z            << 40) |
+               (((SizeT)k.y & 0xFFFFF) << 20) |
+                ((SizeT)k.x & 0xFFFFF);
+    }
+};
 
 namespace net
 {
