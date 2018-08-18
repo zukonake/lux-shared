@@ -25,14 +25,43 @@ void clear_buffer(Chunk &v)
 Serializer &operator<<(Serializer &in, Chunk const &v)
 {
     in << v.pos;
-    in << v.tile_ids;
+    U8       id_len = 0;
+    tile::Id id_buf = v.tile_ids[0];
+    for(U32 i = 1; i < CHK_VOLUME; ++i)
+    {
+        if(v.tile_ids[i] == id_buf && id_len < 0xFF)
+        {
+            id_len++;
+        }
+        else
+        {
+            in << id_len;
+            in << id_buf;
+            id_len = 0;
+            id_buf = v.tile_ids[i];
+        }
+    }
+    in << id_len;
+    in << id_buf;
     return in;
 }
 
 Deserializer &operator>>(Deserializer &out, Chunk &v)
 {
     out >> v.pos;
-    out >> v.tile_ids;
+    U32 i = 0;
+    U8  id_num;
+    tile::Id id_buf;
+    while(i < CHK_VOLUME)
+    {
+        out >> id_num;
+        out >> id_buf;
+        for(U32 j = i; j < i + id_num + 1; ++j)
+        {
+            v.tile_ids[j] = id_buf;
+        }
+        i += id_num + 1;
+    }
     return out;
 }
 
