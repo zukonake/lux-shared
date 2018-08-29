@@ -78,7 +78,7 @@ inline MapPos to_map_pos(ChkPos const &chk_pos, ChkIdx const &chk_idx)
 void build_chunk_mesh(
     ChkPos const &pos,
     std::function<bool(MapPos const &, MapPos const &)> has_face,
-    std::function<void(MapPos const &base, U32 plane, ChkIdx chk_idx,
+    std::function<void(Vec3<U32> const &base, U32 plane, ChkIdx chk_idx,
                        Vec3<U32> const &f_side,
                        Vec3<U32> const &s_side)> add_quad);
 

@@ -10,7 +10,7 @@
 void build_chunk_mesh(
     ChkPos const &pos,
     std::function<bool(MapPos const &, MapPos const &)> has_face,
-    std::function<void(MapPos const &base, U32 plane, ChkIdx chk_idx,
+    std::function<void(Vec3<U32> const &base, U32 plane, ChkIdx chk_idx,
                        Vec3<U32> const &f_side,
                        Vec3<U32> const &s_side)> add_quad)
     //TODO this is probably slow as fuck
@@ -82,7 +82,7 @@ void build_chunk_mesh(
                     }
                 }
 
-                add_quad(base_pos + (MapPos)i_pos + offsets[s], s, i,
+                add_quad((MapPos)i_pos + offsets[s], s, i,
                          f_d * f_axis, s_d * s_axis);
             }
         }
