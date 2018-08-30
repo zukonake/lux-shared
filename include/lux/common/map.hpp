@@ -1,9 +1,6 @@
 #pragma once
 
-#include <functional>
-//
 #define GLM_ENABLE_EXPERIMENTAL
-#include <glm/glm.hpp>
 #include <glm/gtx/component_wise.hpp>
 #undef GLM_ENABLE_EXPERIMENTAL
 //
@@ -74,11 +71,3 @@ inline MapPos to_map_pos(ChkPos const &chk_pos, ChkIdx const &chk_idx)
 {
     return (chk_pos << CHK_POS_SHIFT) | (MapPos const &)to_idx_pos(chk_idx);
 }
-
-void build_chunk_mesh(
-    ChkPos const &pos,
-    std::function<bool(MapPos const &, MapPos const &)> has_face,
-    std::function<void(MapPos const &base, U32 plane, ChkIdx chk_idx,
-                       Vec3<U32> const &f_side,
-                       Vec3<U32> const &s_side)> add_quad);
-
