@@ -11,6 +11,14 @@
 template<typename T>
 using Vec3 = glm::tvec3<T>;
 
+typedef Vec3<U16> Vec3US;
+typedef Vec3<U32> Vec3UI;
+typedef Vec3<I16> Vec3S;
+typedef Vec3<I32> Vec3I;
+typedef Vec3<I64> Vec3L;
+typedef Vec3<F32> Vec3F;
+typedef Vec3<F64> Vec3D;
+
 template<typename T>
 struct std::hash<Vec3<T>>
 {

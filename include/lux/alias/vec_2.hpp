@@ -11,6 +11,14 @@
 template<typename T>
 using Vec2 = glm::tvec2<T>;
 
+typedef Vec2<U16> Vec2US;
+typedef Vec2<U32> Vec2UI;
+typedef Vec2<I16> Vec2S;
+typedef Vec2<I32> Vec2I;
+typedef Vec2<I64> Vec2L;
+typedef Vec2<F32> Vec2F;
+typedef Vec2<F64> Vec2D;
+
 template<typename T>
 struct std::hash<Vec2<T>>
 {
