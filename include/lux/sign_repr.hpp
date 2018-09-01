@@ -7,6 +7,8 @@
 
 #define SIGN_REPR (-1 & 3)
 
-#if SIGN_REPR == SIGN_REPR_UNKNOWN
+#if SIGN_REPR != SIGN_REPR_SIGN_AND_MAGNITUDE &&  \
+    SIGN_REPR != SIGN_REPR_ONES_COMPLEMENT &&     \
+    SIGN_REPR != SIGN_REPR_TWOS_COMPLEMENT
 #   warning "unknown signed representation"
 #endif
