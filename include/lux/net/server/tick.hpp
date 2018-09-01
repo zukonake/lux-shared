@@ -9,8 +9,8 @@ namespace net::server
 
 struct Tick
 {
-    Vector<entity::Pos> entities;
-    entity::Pos         player_pos;
+    Vector<EntityPos> entities;
+    EntityPos         player_pos;
 };
 
 }

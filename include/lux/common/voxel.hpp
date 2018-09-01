@@ -2,9 +2,4 @@
 
 #include <lux/alias/scalar.hpp>
 
-namespace tile
-{
-
-typedef U16 Id;
-
-}
+typedef U16 VoxelId;
