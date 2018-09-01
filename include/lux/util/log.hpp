@@ -22,7 +22,8 @@ enum LogLevel
 extern LogLevel logger_report_level;
 
 template<typename... Args>
-void log(std::string const &prefix, LogLevel level, std::string const &fmt, Args const &...args)
+void log(std::string const &prefix, LogLevel level,
+         std::string const &fmt, Args &&...args)
 {
     if(level > logger_report_level)
     {

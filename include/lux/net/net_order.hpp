@@ -10,10 +10,8 @@ namespace net
 inline void net_memcpy(U8 *dst, U8 const *src, SizeT n)
 {
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-    U8 const *end = src + n - 1;
-    while(end >= src)
-    {
-        *(dst++) = *(end--);
+    for(SizeT i = 0; i < n; ++i) {
+        *(dst + i) = *(src + (n - 1) - i);
     }
 #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
     std::memcpy(dst, src, n);
@@ -37,30 +35,30 @@ inline U8 net_order(U8 val)
 template<>
 inline U16 net_order(U16 val)
 {
-    return (U16)((val & 0x00FF) << 8) |
-                ((val & 0xFF00) >> 8);
+    return (U16)((val & (0xFFull <<  0)) << 8) |
+                ((val & (0xFFull <<  8)) >> 8);
 }
 
 template<>
 inline U32 net_order(U32 val)
 {
-    return (U32)((val & 0x000000FF) << 24) |
-                ((val & 0x0000FF00) <<  8) |
-                ((val & 0x00FF0000) >>  8) |
-                ((val & 0xFF000000) >> 24);
+    return (U32)((val & (0xFFull <<  0)) << 24) |
+                ((val & (0xFFull <<  8)) <<  8) |
+                ((val & (0xFFull << 16)) >>  8) |
+                ((val & (0xFFull << 24)) >> 24);
 }
 
 template<>
 inline U64 net_order(U64 val)
 {
-    return (U64)((val & 0x00000000000000FF) << 56) |
-                ((val & 0x000000000000FF00) << 40) |
-                ((val & 0x0000000000FF0000) << 24) |
-                ((val & 0x00000000FF000000) <<  8) |
-                ((val & 0x000000FF00000000) >>  8) |
-                ((val & 0x0000FF0000000000) >> 24) |
-                ((val & 0x00FF000000000000) >> 40) |
-                ((val & 0xFF00000000000000) >> 56);
+    return (U64)((val & (0xFFull <<  0)) << 56) |
+                ((val & (0xFFull <<  8)) << 40) |
+                ((val & (0xFFull << 16)) << 24) |
+                ((val & (0xFFull << 24)) <<  8) |
+                ((val & (0xFFull << 32)) >>  8) |
+                ((val & (0xFFull << 40)) >> 24) |
+                ((val & (0xFFull << 48)) >> 40) |
+                ((val & (0xFFull << 56)) >> 56);
 }
 
 #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__

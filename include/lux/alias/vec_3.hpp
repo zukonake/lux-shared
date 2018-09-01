@@ -40,6 +40,7 @@ struct util::Packer<Vec3<T>>
     }
 };
 
+//TODO move to net folder?
 namespace net
 {
 

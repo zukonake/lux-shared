@@ -12,11 +12,11 @@ namespace net::client
 struct Tick
 {
     Vector<ChkPos> chunk_requests;
-    Vec2<F32>      character_dir;
-    bool is_moving;
-    bool is_jumping;
-    F32  pitch;
-    F32  yaw;
+    Vec2F character_dir;
+    bool  is_moving;
+    bool  is_jumping;
+    F32   pitch;
+    F32   yaw;
 };
 
 }

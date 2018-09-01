@@ -7,7 +7,7 @@ namespace net::server
 
 struct Conf
 {
-    F64          tick_rate;
+    F64 tick_rate;
 };
 
 }
