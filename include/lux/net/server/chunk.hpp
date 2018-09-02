@@ -3,7 +3,6 @@
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/array.hpp>
 #include <lux/common/map.hpp>
-#include <lux/common/voxel.hpp>
 
 namespace net::server
 {

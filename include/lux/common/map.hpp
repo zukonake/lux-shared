@@ -20,6 +20,9 @@ typedef Vec3<ChkCoord> ChkPos;
 typedef Vec3<MapCoord> MapPos;
 typedef Vec3<ChkIdx>   IdxPos;
 
+typedef U16 VoxelId;
+typedef U16 LightLvl;
+
 constexpr Vec3US CHK_SIZE_EXP  = {4, 4, 2};
 constexpr Vec3UI CHK_SIZE      = {1 << CHK_SIZE_EXP.x,
                                   1 << CHK_SIZE_EXP.y,
