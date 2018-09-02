@@ -13,13 +13,14 @@ using namespace server;
 
 SizeT get_size(Chunk const &v)
 {
-    return get_size(v.pos) + get_size(v.voxels);
+    return get_size(v.pos) + get_size(v.voxels) + get_size(v.light_lvls);
 }
 
 void clear_buffer(Chunk &v)
 {
     clear_buffer(v.pos);
     clear_buffer(v.voxels);
+    clear_buffer(v.light_lvls);
 }
 
 Serializer &operator<<(Serializer &in, Chunk const &v)
@@ -44,6 +45,7 @@ Serializer &operator<<(Serializer &in, Chunk const &v)
     }
     in << id_len;
     in << id_buf;
+    in << v.light_lvls;
     return in;
 }
 
@@ -63,6 +65,7 @@ Deserializer &operator>>(Deserializer &out, Chunk &v)
         }
         i += id_num + 1;
     }
+    out >> v.light_lvls;
     return out;
 }
 

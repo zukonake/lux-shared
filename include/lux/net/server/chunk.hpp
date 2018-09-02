@@ -10,7 +10,8 @@ namespace net::server
 struct Chunk
 {
     ChkPos pos;
-    Array<VoxelId, CHK_VOLUME> voxels;
+    Array<VoxelId , CHK_VOLUME> voxels;
+    Array<LightLvl, CHK_VOLUME> light_lvls;
 };
 
 }
