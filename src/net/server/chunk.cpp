@@ -13,6 +13,10 @@ using namespace server;
 
 SizeT get_size(Chunk const &v)
 {
+    //TODO this is wrong with run-length encoding, it can actually cause a crash
+    //if the chunk is not compressed with the encoding, but enlarged, thus the
+    //run-length encoding is disabled for now, perhaps it should be enabled
+    //globally using enet's compressing support
     return get_size(v.pos) + get_size(v.voxels) + get_size(v.light_lvls);
 }
 
@@ -26,7 +30,7 @@ void clear_buffer(Chunk &v)
 Serializer &operator<<(Serializer &in, Chunk const &v)
 {
     //TODO generalized function
-    in << v.pos;
+    in << v.pos; /*
     U8       id_len = 0;
     VoxelId id_buf = v.voxels[0];
     for(U32 i = 1; i < CHK_VOLUME; ++i)
@@ -44,7 +48,8 @@ Serializer &operator<<(Serializer &in, Chunk const &v)
         }
     }
     in << id_len;
-    in << id_buf;
+    in << id_buf; */
+    in << v.voxels;
     in << v.light_lvls;
     return in;
 }
@@ -52,6 +57,8 @@ Serializer &operator<<(Serializer &in, Chunk const &v)
 Deserializer &operator>>(Deserializer &out, Chunk &v)
 {
     out >> v.pos;
+    out >> v.voxels;
+    /*
     U32 i = 0;
     U8  id_num;
     VoxelId id_buf;
@@ -64,7 +71,7 @@ Deserializer &operator>>(Deserializer &out, Chunk &v)
             v.voxels[j] = id_buf;
         }
         i += id_num + 1;
-    }
+    }*/
     out >> v.light_lvls;
     return out;
 }
