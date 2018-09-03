@@ -23,7 +23,7 @@ typedef Vec3<ChkIdx>   IdxPos;
 typedef U16 VoxelId;
 typedef U16 LightLvl;
 
-constexpr Vec3US CHK_SIZE_EXP  = {4, 4, 2};
+constexpr Vec3US CHK_SIZE_EXP  = {3, 3, 2};
 constexpr Vec3UI CHK_SIZE      = {1 << CHK_SIZE_EXP.x,
                                   1 << CHK_SIZE_EXP.y,
                                   1 << CHK_SIZE_EXP.z};
