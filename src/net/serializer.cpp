@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <cassert>
-#include <stdexcept>
 //
+#include <lux/common.hpp>
 #include <lux/net/net_order.hpp>
 #include <lux/net/serializer.hpp>
 
@@ -22,7 +22,10 @@ void Serializer::reserve(SizeT n_bytes)
             new_start = (U8 *)std::realloc(start, n_bytes);
             //TODO experiment with exponential allocation
         }
-        if(new_start == nullptr) throw std::bad_alloc();
+        if(new_start == nullptr) {
+            lux::error("NET_SERIALIZER", "allocation error, size : %zu",
+                       n_bytes);
+        }
         else start = new_start;
 
         end = start + n_bytes;

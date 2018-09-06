@@ -1,6 +1,6 @@
-#include <stdexcept>
 #include <enet/enet.h>
 //
+#include <lux/common.hpp>
 #include <lux/net/enet_handle.hpp>
 
 namespace net
@@ -10,7 +10,7 @@ ENetHandle::ENetHandle()
 {
     if(enet_initialize() != 0)
     {
-        throw std::runtime_error("failed to initialize enet handle");
+        lux::error("ENET_HANDLE", "couldn't create enet handle");
     }
 }
 
