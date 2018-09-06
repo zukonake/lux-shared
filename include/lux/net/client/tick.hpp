@@ -4,7 +4,7 @@
 #include <lux/alias/vector.hpp>
 #include <lux/alias/vec_2.hpp>
 #include <lux/net/register_net_functions.hpp>
-#include <lux/common/map.hpp>
+#include <lux/world/map.hpp>
 
 namespace net::client
 {

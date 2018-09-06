@@ -2,7 +2,7 @@
 
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/array.hpp>
-#include <lux/common/map.hpp>
+#include <lux/world/map.hpp>
 
 namespace net::server
 {

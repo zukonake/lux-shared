@@ -2,7 +2,7 @@
 
 #include <lux/alias/scalar.hpp>
 #include <lux/alias/vector.hpp>
-#include <lux/common/entity.hpp>
+#include <lux/world/entity.hpp>
 
 namespace net::server
 {

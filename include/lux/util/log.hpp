@@ -25,7 +25,7 @@ template<typename... Args>
 void log(std::string const &prefix, LogLevel level,
          std::string const &fmt, Args &&...args)
 {
-    if(level > logger_report_level)
+    if(level > logger_report_level) //TODO constexpr?
     {
         return;
     }
