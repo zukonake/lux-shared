@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
-//
 #include <tinyformat.h>
+//
+#include <lux/alias/string.hpp>
 
 namespace util
 {
@@ -22,14 +22,14 @@ enum LogLevel
 extern LogLevel logger_report_level;
 
 template<typename... Args>
-void log(std::string const &prefix, LogLevel level,
-         std::string const &fmt, Args &&...args)
+void log(const char *prefix, LogLevel level,
+         const char *fmt, Args &&...args)
 {
     if(level > logger_report_level) //TODO constexpr?
     {
         return;
     }
-    std::string output = prefix == "" ? "" : "[" + prefix + "] ";
+    String output = String(prefix) == "" ? "" : "[" + String(prefix) + "] ";
     switch(level)
     {
     case OFF:
@@ -59,7 +59,7 @@ void log(std::string const &prefix, LogLevel level,
         output += "TRACE: ";
         break;
     }
-    output += fmt;
+    output += String(fmt);
     output += '\n';
     tfm::printf(output.c_str(), args...);
 }
