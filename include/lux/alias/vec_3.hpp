@@ -34,9 +34,9 @@ struct util::Packer<Vec3<T>>
 {
     SizeT operator()(Vec3<T> const &k) const
     {
-        return  ((SizeT)k.z            << 40) |
-               (((SizeT)k.y & 0xFFFFF) << 20) |
-                ((SizeT)k.x & 0xFFFFF);
+        return  (*(SizeT const *)&k.z            << 40) |
+               ((*(SizeT const *)&k.y & 0xFFFFF) << 20) |
+                (*(SizeT const *)&k.x & 0xFFFFF);
     }
 };
 

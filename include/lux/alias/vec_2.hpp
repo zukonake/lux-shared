@@ -33,7 +33,8 @@ struct util::Packer<Vec2<T>>
 {
     SizeT operator()(Vec2<T> const &k) const
     {
-        return ((SizeT)k.y << 32) | ((SizeT)k.x & 0xFFFF'FFFF);
+        return (*(SizeT const *)&k.y << 32) |
+               (*(SizeT const *)&k.x & 0xFFFF'FFFF);
     }
 };
 

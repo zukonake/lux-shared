@@ -35,10 +35,10 @@ struct util::Packer<Vec4<T>>
 {
     SizeT operator()(Vec4<T> const &k) const
     {
-        return  ((SizeT)k.w           << 48) |
-               (((SizeT)k.z & 0xFFFF) << 32) |
-               (((SizeT)k.y & 0xFFFF) << 16) |
-                ((SizeT)k.x & 0xFFFF);
+        return  (*(SizeT const *)&k.w           << 48) |
+               ((*(SizeT const *)&k.z & 0xFFFF) << 32) |
+               ((*(SizeT const *)&k.y & 0xFFFF) << 16) |
+                (*(SizeT const *)&k.x & 0xFFFF);
     }
 };
 
