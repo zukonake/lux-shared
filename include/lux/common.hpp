@@ -14,4 +14,10 @@ template<typename ...Args>
     std::quick_exit(EXIT_FAILURE);
 }
 
+template<typename ...Args>
+void trace(const char *fmt, Args &&...args)
+{
+    util::log("TRACE", util::TRACE, fmt, args...);
+}
+
 }
