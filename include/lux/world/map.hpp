@@ -13,7 +13,10 @@
             "different than two's complement, testing needed"
 #endif
 
+//TODO static asserts
+
 typedef I32 ChkCoord;
+//TODO U16?
 typedef U32 ChkIdx;
 typedef I32 MapCoord;
 typedef Vec3<ChkCoord> ChkPos;
