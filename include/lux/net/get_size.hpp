@@ -1,6 +1,8 @@
 #pragma once
 
 #include <type_traits>
+//
+#include <lux/alias/scalar.hpp>
 
 namespace net
 {

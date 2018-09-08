@@ -32,7 +32,7 @@ void clear_buffer(Vector<T> &v)
 {
     if constexpr(std::is_trivial<T>::value == false)
     {
-        for(auto const &i : v) clear_buffer(i);
+        for(auto &i : v) clear_buffer(i);
     }
     v.clear();
 }

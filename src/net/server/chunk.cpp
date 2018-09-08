@@ -2,9 +2,9 @@
 #include <lux/net/deserializer.hpp>
 #include <lux/net/get_size.hpp>
 #include <lux/net/clear_buffer.hpp>
+#include <lux/net/server/chunk.hpp>
 #include <lux/net/array.inl>
 #include <lux/net/vec_3.inl>
-#include <lux/net/server/chunk.hpp>
 
 namespace net
 {

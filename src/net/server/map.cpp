@@ -2,8 +2,8 @@
 #include <lux/net/deserializer.hpp>
 #include <lux/net/get_size.hpp>
 #include <lux/net/clear_buffer.hpp>
-#include <lux/net/vector.inl>
 #include <lux/net/server/map.hpp>
+#include <lux/net/vector.inl>
 
 namespace net
 {
