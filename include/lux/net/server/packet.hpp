@@ -19,7 +19,7 @@ struct Packet
         CONF        = 0x02,
         MSG         = 0x03,
         MAP         = 0x04,
-        MAP_UPDATE  = 0x05,
+        MAP_UPDATES = 0x05,
     } type;
     Tick       tick;
     Init       init;
