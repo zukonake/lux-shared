@@ -13,3 +13,7 @@
 #define LUX_NO_COPY(ident) \
     ident(ident const &) = delete; \
     ident &operator=(ident const &) = delete;
+
+#define LUX_MOVEABLE(ident) \
+    ident(ident &&) = default; \
+    ident &operator=(ident &&) = default;
