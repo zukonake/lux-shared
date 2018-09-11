@@ -1,5 +1,7 @@
 #pragma once
 
+#include <enet/enet.h>
+//
 #include <lux/alias/scalar.hpp>
 
 namespace net
@@ -23,6 +25,8 @@ class Serializer
     SizeT get_size() const;
     void reserve(SizeT n_bytes);
 
+    template<typename Buff>
+    void serialize_packet(ENetPacket *pack, Buff &buff);
     private:
     U8 *start;
     U8 *iter;

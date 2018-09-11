@@ -2,6 +2,8 @@
 
 #include <cassert>
 //
+#include <enet/enet.h>
+//
 #include <lux/alias/scalar.hpp>
 
 namespace net
@@ -20,6 +22,8 @@ class Deserializer
 
     SizeT get_size() const;
 
+    template<typename Buff>
+    void deserialize_packet(ENetPacket *pack, Buff &buff);
     private:
     U8 const *iter;
     U8 const *end;
