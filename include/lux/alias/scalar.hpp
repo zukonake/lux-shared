@@ -16,17 +16,10 @@ typedef int64_t  I64;
 typedef float    F32;
 typedef double   F64;
 
+typedef int_fast32_t  Int;
+typedef uint_fast32_t UInt;
+
 typedef std::size_t SizeT;
-
-static_assert(sizeof(U8)  == 1);
-static_assert(sizeof(U16) == 2);
-static_assert(sizeof(U32) == 4);
-static_assert(sizeof(U64) == 8);
-
-static_assert(sizeof(I8)  == 1);
-static_assert(sizeof(I16) == 2);
-static_assert(sizeof(I32) == 4);
-static_assert(sizeof(I64) == 8);
 
 static_assert(sizeof(F32) == 4);
 static_assert(sizeof(F64) == 8);
