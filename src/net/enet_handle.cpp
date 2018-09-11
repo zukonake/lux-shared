@@ -8,9 +8,8 @@ namespace net
 
 ENetHandle::ENetHandle()
 {
-    if(enet_initialize() != 0)
-    {
-        lux::error("ENET_HANDLE", "couldn't create enet handle");
+    if(enet_initialize() != 0) {
+        LUX_LOG("ENET_HANDLE", FATAL, "couldn't create enet handle");
     }
 }
 

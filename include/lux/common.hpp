@@ -4,20 +4,12 @@
 //
 #include <lux/util/log.hpp>
 
-namespace lux
-{
+#define LUX_LOG(prefix, lvl, fmt, ...) \
+    util::log(prefix, util::lvl, fmt __VA_OPT__(,) __VA_ARGS__);
 
-template<typename ...Args>
-[[noreturn]] void error(const char *prefix, const char *fmt, Args &&...args)
-{
-    util::log(prefix, util::CRITICAL, fmt, args...);
-    std::quick_exit(EXIT_FAILURE);
-}
+#define LUX_TRACE(fmt, ...) \
+    util::log("LUX_TRACE", util::TRACE, fmt __VA_OPT(,) __VA_ARGS__);
 
-template<typename ...Args>
-void trace(const char *fmt, Args &&...args)
-{
-    util::log("TRACE", util::TRACE, fmt, args...);
-}
-
-}
+#define LUX_NO_COPY(ident) \
+    ident(ident const &) = delete; \
+    ident &operator=(ident const &) = delete;

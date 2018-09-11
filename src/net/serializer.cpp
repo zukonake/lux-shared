@@ -23,8 +23,8 @@ void Serializer::reserve(SizeT n_bytes)
             //TODO experiment with exponential allocation
         }
         if(new_start == nullptr) {
-            lux::error("NET_SERIALIZER", "allocation error, size : %zu",
-                       n_bytes);
+            LUX_LOG("SERIALIZER", FATAL, "allocation error, size : %zu",
+                    n_bytes);
         }
         else start = new_start;
 
