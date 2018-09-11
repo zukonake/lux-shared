@@ -10,7 +10,7 @@ namespace net::server
 
 struct Init
 {
-    Conf         conf;
+    F64          tick_rate;
     Vector<char> server_name;
     Vec3UI       chunk_size;
 };

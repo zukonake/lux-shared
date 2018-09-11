@@ -12,26 +12,26 @@ using namespace client;
 
 SizeT get_size(Init const &v)
 {
-    return get_size(v.conf) +
+    return get_size(v.load_range) +
            get_size(v.client_name);
 }
 
 void clear_buffer(Init &v)
 {
-    clear_buffer(v.conf);
+    clear_buffer(v.load_range);
     clear_buffer(v.client_name);
 }
 
 Serializer &operator<<(Serializer &in, Init const &v)
 {
-    in << v.conf;
+    in << v.load_range;
     in << v.client_name;
     return in;
 }
 
 Deserializer &operator>>(Deserializer &out, Init &v)
 {
-    out >> v.conf;
+    out >> v.load_range;
     out >> v.client_name;
     return out;
 }

@@ -9,7 +9,7 @@ namespace net::client
 
 struct Init
 {
-    Conf         conf;
+    F32          load_range;
     Vector<char> client_name;
 };
 

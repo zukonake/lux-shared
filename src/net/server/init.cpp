@@ -13,21 +13,21 @@ using namespace server;
 
 SizeT get_size(Init const &v)
 {
-    return get_size(v.conf) +
+    return get_size(v.tick_rate) +
            get_size(v.server_name) +
            get_size(v.chunk_size);
 }
 
 void clear_buffer(Init &v)
 {
-    clear_buffer(v.conf);
+    clear_buffer(v.tick_rate);
     clear_buffer(v.server_name);
     clear_buffer(v.chunk_size);
 }
 
 Serializer &operator<<(Serializer &in, Init const &v)
 {
-    in << v.conf;
+    in << v.tick_rate;
     in << v.server_name;
     in << v.chunk_size;
     return in;
@@ -35,7 +35,7 @@ Serializer &operator<<(Serializer &in, Init const &v)
 
 Deserializer &operator>>(Deserializer &out, Init &v)
 {
-    out >> v.conf;
+    out >> v.tick_rate;
     out >> v.server_name;
     out >> v.chunk_size;
     return out;
