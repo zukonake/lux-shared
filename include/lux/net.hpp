@@ -16,7 +16,7 @@ U8  constexpr SIGNAL_CHANNEL = 0x02;
 Uns constexpr SERVER_NAME_LEN = 32;
 Uns constexpr CLIENT_NAME_LEN = 16;
 
-inline U8* get_ip(ENetPeer* peer) {
-    static_assert(sizeof(peer->address.host) == 4);
-    return (U8*)&peer->address.host;
+inline U8* get_ip(ENetAddress const& addr) {
+    static_assert(sizeof(addr.host) == 4);
+    return (U8*)&addr.host;
 }
