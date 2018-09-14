@@ -1,9 +1,5 @@
 #pragma once
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/component_wise.hpp>
-#undef GLM_ENABLE_EXPERIMENTAL
-//
 #include <lux_shared/common.hpp>
 
 #if LUX_SIGN_REPR != LUX_SIGN_REPR_TWOS_COMPLEMENT
@@ -13,10 +9,9 @@
 
 //TODO static asserts
 
-typedef I32 ChkCoord;
-//TODO U16?
-typedef U32 ChkIdx;
-typedef I32 MapCoord;
+typedef I64 ChkCoord;
+typedef U16 ChkIdx;
+typedef I64 MapCoord;
 typedef Vec3<ChkCoord> ChkPos;
 typedef Vec3<MapCoord> MapPos;
 typedef Vec3<ChkIdx>   IdxPos;
@@ -24,21 +19,28 @@ typedef Vec3<ChkIdx>   IdxPos;
 typedef U16 VoxelId;
 typedef U16 LightLvl;
 
-constexpr Vec3US CHK_SIZE_EXP  = {3, 3, 2};
-constexpr Vec3UI CHK_SIZE      = {1 << CHK_SIZE_EXP.x,
-                                  1 << CHK_SIZE_EXP.y,
-                                  1 << CHK_SIZE_EXP.z};
-constexpr SizeT  CHK_VOLUME    = CHK_SIZE.x * CHK_SIZE.y * CHK_SIZE.z;
-constexpr Vec3UI CHK_IDX_SIDE  = {0,
-                                  CHK_SIZE_EXP.x,
-                                  CHK_SIZE_EXP.x + CHK_SIZE_EXP.y};
-constexpr Vec3UI CHK_IDX_MASK  = {CHK_SIZE.x - 1,
-                                  CHK_SIZE.y - 1,
-                                  CHK_SIZE.z - 1};
-constexpr Vec3I  CHK_POS_MASK  = {~CHK_IDX_MASK.x,
-                                  ~CHK_IDX_MASK.y,
-                                  ~CHK_IDX_MASK.z};
-constexpr Vec3I  CHK_POS_SHIFT = CHK_SIZE_EXP;
+///if you need to change the chunk size, change this only
+Vec3U constexpr CHK_SIZE_EXP  = {3, 3, 2};
+
+Vec3U constexpr CHK_SIZE      = {1 << CHK_SIZE_EXP.x,
+                                 1 << CHK_SIZE_EXP.y,
+                                 1 << CHK_SIZE_EXP.z};
+SizeT constexpr CHK_VOL       = CHK_SIZE.x * CHK_SIZE.y * CHK_SIZE.z;
+static_assert(CHK_VOL <= 1 << (sizeof(ChkIdx) * 8));
+
+Vec3<U16> constexpr CHK_IDX_SIDE  = {0,
+                                     CHK_SIZE_EXP.x,
+                                     CHK_SIZE_EXP.x + CHK_SIZE_EXP.y};
+Vec3<U16> constexpr CHK_IDX_MASK  = {CHK_SIZE.x - 1,
+                                     CHK_SIZE.y - 1,
+                                     CHK_SIZE.z - 1};
+Vec3<I64> constexpr CHK_POS_MASK  = {~CHK_IDX_MASK.x,
+                                     ~CHK_IDX_MASK.y,
+                                     ~CHK_IDX_MASK.z};
+Vec3<U16> constexpr CHK_IDX_OFF   = {1,
+                                     CHK_SIZE.x,
+                                     CHK_SIZE.x + CHK_SIZE.y};
+Vec3<I64> constexpr CHK_POS_SHIFT = CHK_SIZE_EXP;
 
 inline ChkPos to_chk_pos(MapPos const &map_pos)
 {
@@ -57,7 +59,7 @@ inline IdxPos to_idx_pos(ChkIdx const &chk_idx)
 
 inline ChkIdx to_chk_idx(IdxPos const &idx_pos)
 {
-    Vec3UI shifted = idx_pos << CHK_IDX_SIDE;
+    Vec3U shifted = idx_pos << CHK_IDX_SIDE;
     return shifted.x | shifted.y | shifted.z;
 }
 
