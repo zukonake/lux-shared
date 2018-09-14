@@ -4,11 +4,9 @@
 #include <glm/gtx/component_wise.hpp>
 #undef GLM_ENABLE_EXPERIMENTAL
 //
-#include <lux/alias/scalar.hpp>
-#include <lux/alias/vec_3.hpp>
-#include <lux/sign_repr.hpp>
+#include <lux/common.hpp>
 
-#if SIGN_REPR != SIGN_REPR_TWOS_COMPLEMENT
+#if LUX_SIGN_REPR != LUX_SIGN_REPR_TWOS_COMPLEMENT
 #   warning "the bitwise coordinates might not work on signed representations" \
             "different than two's complement, testing needed"
 #endif
