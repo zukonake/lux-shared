@@ -1,6 +1,6 @@
 #pragma once
 
-#include <lux/alias/scalar.hpp>
+#include <lux_shared/common.hpp>
 
 namespace util
 {

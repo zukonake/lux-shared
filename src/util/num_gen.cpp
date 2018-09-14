@@ -1,4 +1,4 @@
-#include <lux/util/num_gen.hpp>
+#include <lux_shared/util/num_gen.hpp>
 
 namespace util
 {

@@ -4,7 +4,7 @@
 #include <glm/gtx/component_wise.hpp>
 #undef GLM_ENABLE_EXPERIMENTAL
 //
-#include <lux/common.hpp>
+#include <lux_shared/common.hpp>
 
 #if LUX_SIGN_REPR != LUX_SIGN_REPR_TWOS_COMPLEMENT
 #   warning "the bitwise coordinates might not work on signed representations" \

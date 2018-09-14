@@ -2,7 +2,7 @@
 
 #include <glm/detail/type_vec.hpp>
 //
-#include <lux/int.hpp>
+#include <lux_shared/int.hpp>
 
 template<SizeT dim, typename T>
 using Vec = glm::vec<dim, T, glm::defaultp>;

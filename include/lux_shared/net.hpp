@@ -2,7 +2,7 @@
 
 #include <enet/enet.h>
 //
-#include <lux/common.hpp>
+#include <lux_shared/common.hpp>
 
 U8 constexpr NET_VERSION_MAJOR = 0;
 U8 constexpr NET_VERSION_MINOR = 0;
