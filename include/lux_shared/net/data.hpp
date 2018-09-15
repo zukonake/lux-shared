@@ -22,9 +22,6 @@ struct NetServerTick {
 };
 
 struct NetServerSignal {
-    enum : U8 {
-        MAP_LOAD = 0x00,
-    } type;
     struct MapLoad {
         struct Chunk {
             ChkPos pos;
@@ -32,7 +29,13 @@ struct NetServerSignal {
             Arr<LightLvl, CHK_VOL> light_lvls;
         };
         NetDynArr<Chunk> chunks;
-    } map_load;
+    };
+    enum Type : U8 {
+        MAP_LOAD = 0x00,
+    } type;
+    union {
+        MapLoad map_load;
+    };
 };
 
 struct NetClientInit {
@@ -48,9 +51,15 @@ struct NetClientInit {
 };
 
 struct NetClientSignal {
-    enum {
+    struct MapRequest {
+        NetDynArr<ChkPos> requests;
+    };
+    enum Type : U8 {
         MAP_REQUEST = 0x00,
     } type;
+    union {
+        MapRequest map_request;
+    };
 };
 
 #pragma pack(pop)
