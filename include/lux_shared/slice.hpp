@@ -38,12 +38,6 @@ Slice<T>& Slice<T>::operator=(Slice<ThatT> const& that) {
     return *this;
 }
 
-template<>
-void Slice<U8>::set(U8* beg, SizeT len) {
-    this->beg = beg;
-    this->len = len;
-}
-
 template<typename T>
 void Slice<T>::set(U8* beg, SizeT len) {
     this->beg = (T*)beg;
