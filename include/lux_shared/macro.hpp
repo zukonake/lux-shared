@@ -3,6 +3,24 @@
 #include <cstdio>
 #include <cstdlib>
 
+#ifdef defer
+    #error "defer macro is already defined"
+#endif
+
+///zero-overhead defer mechanism in c++, neat
+struct DeferDummy {};
+template<typename F>
+struct Deferrer
+{
+    F f;
+    ~Deferrer() { f(); }
+};
+template<typename F>
+Deferrer<F> operator*(DeferDummy, F f) { return {f}; }
+#define DEFER_(LINE) zz_defer##LINE
+#define DEFER(LINE) DEFER_(LINE)
+#define defer auto DEFER(__LINE__) = DeferDummy { } *[&]()
+
 //@TODO use tinyprintf
 #define LUX_LOG(fmt, ...) { \
     std::printf("%s(): " fmt "\n", __func__ __VA_OPT__(,) __VA_ARGS__); }
@@ -39,4 +57,3 @@
     LUX_SIGN_REPR != LUX_SIGN_REPR_TWOS_COMPLEMENT
 #   warning "unknown signed representation"
 #endif
-
