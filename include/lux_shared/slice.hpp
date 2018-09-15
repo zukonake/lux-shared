@@ -39,22 +39,16 @@ Slice<T>::Slice(That const& that) {
 }
 
 template<typename T>
-template<typename That>
-Slice<T>& Slice<T>::operator=(That const& that) {
-    this->set((U8*)&that, sizeof(That));
-}
-
-template<typename T>
-template<typename That>
-Slice<T>::operator That() const {
-    LUX_ASSERT(this->len == sizeof(That));
-    return *(That*)this->beg;
-}
-
-template<typename T>
 template<typename ThatT>
 Slice<T>::Slice(Slice<ThatT> const& that) {
     this->set((U8*)that.beg, that.len * sizeof(ThatT));
+}
+
+template<typename T>
+template<typename That>
+Slice<T>& Slice<T>::operator=(That const& that) {
+    this->set((U8*)&that, sizeof(That));
+    return *this;
 }
 
 template<typename T>
@@ -62,6 +56,13 @@ template<typename ThatT>
 Slice<T>& Slice<T>::operator=(Slice<ThatT> const& that) {
     this->set((U8*)that.beg, that.len * sizeof(ThatT));
     return *this;
+}
+
+template<typename T>
+template<typename That>
+Slice<T>::operator That() const {
+    LUX_ASSERT(this->len == sizeof(That));
+    return *(That*)this->beg;
 }
 
 template<typename T>
