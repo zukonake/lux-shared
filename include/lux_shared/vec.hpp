@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <glm/detail/type_vec.hpp>
+#include <glm/detail/qualifier.hpp>
 //
 #include <lux_shared/int.hpp>
 
