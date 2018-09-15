@@ -8,6 +8,8 @@
 #include <deque>
 #include <unordered_map>
 #include <unordered_set>
+//
+#include <lux_shared/slice.hpp>
 
 template<typename T>
 using DynArr = std::vector<T>;
