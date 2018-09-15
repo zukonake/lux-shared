@@ -6,10 +6,17 @@ template<typename T>
 struct Slice {
     Slice() = default;
     Slice(U8* beg, SizeT _len);
+    template<typename That>
+    explicit Slice(That const& that);
     template<typename ThatT>
     Slice(Slice<ThatT> const& that);
     template<typename ThatT>
     Slice<T>& operator=(Slice<ThatT> const& that);
+    template<typename That>
+    Slice<T>& operator=(That const& that);
+
+    template<typename That>
+    explicit operator That() const;
 
     void set(U8* beg, SizeT len);
 
@@ -23,6 +30,25 @@ struct Slice {
 template<typename T>
 Slice<T>::Slice(U8* beg, SizeT len) {
     this->set(beg, len);
+}
+
+template<typename T>
+template<typename That>
+Slice<T>::Slice(That const& that) {
+    this->set((U8*)&that, sizeof(That));
+}
+
+template<typename T>
+template<typename That>
+Slice<T>& Slice<T>::operator=(That const& that) {
+    this->set((U8*)&that, sizeof(That));
+}
+
+template<typename T>
+template<typename That>
+Slice<T>::operator That() const {
+    LUX_ASSERT(this->len == sizeof(That));
+    return *(That*)this->beg;
 }
 
 template<typename T>
