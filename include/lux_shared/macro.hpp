@@ -3,10 +3,6 @@
 #include <cstdio>
 #include <cstdlib>
 
-#ifdef defer
-    #error "defer macro is already defined"
-#endif
-
 ///zero-overhead defer mechanism in c++, neat
 struct DeferDummy {};
 template<typename F>
@@ -19,7 +15,8 @@ template<typename F>
 Deferrer<F> operator*(DeferDummy, F f) { return {f}; }
 #define DEFER_(LINE) zz_defer##LINE
 #define DEFER(LINE) DEFER_(LINE)
-#define defer auto DEFER(__LINE__) = DeferDummy { } *[&]()
+#define LUX_DEFER auto DEFER(__LINE__) = DeferDummy { } *[&]()
+
 #define LUX_RVAL [[nodiscard]] LuxRval
 
 //@TODO use tinyprintf
