@@ -20,6 +20,7 @@ Deferrer<F> operator*(DeferDummy, F f) { return {f}; }
 #define DEFER_(LINE) zz_defer##LINE
 #define DEFER(LINE) DEFER_(LINE)
 #define defer auto DEFER(__LINE__) = DeferDummy { } *[&]()
+#define LUX_RVAL [[nodiscard]] LuxRval
 
 //@TODO use tinyprintf
 #define LUX_LOG(fmt, ...) { \
