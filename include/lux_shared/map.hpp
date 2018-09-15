@@ -20,47 +20,39 @@ typedef U16 VoxelId;
 typedef U16 LightLvl;
 
 ///if you need to change the chunk size, change this only
-Vec3U constexpr CHK_SIZE_EXP  = {3, 3, 2};
+Uns constexpr CHK_SIZE_EXP  = 3;
 
-Vec3U constexpr CHK_SIZE      = {1 << CHK_SIZE_EXP.x,
-                                 1 << CHK_SIZE_EXP.y,
-                                 1 << CHK_SIZE_EXP.z};
-SizeT constexpr CHK_VOL       = CHK_SIZE.x * CHK_SIZE.y * CHK_SIZE.z;
+Uns constexpr CHK_SIZE      = 1 << CHK_SIZE_EXP;
+Uns constexpr CHK_VOL     = CHK_SIZE * CHK_SIZE * CHK_SIZE;
 static_assert(CHK_VOL <= 1 << (sizeof(ChkIdx) * 8));
-
-Vec3<U16> constexpr CHK_IDX_SIDE  = {0,
-                                     CHK_SIZE_EXP.x,
-                                     CHK_SIZE_EXP.x + CHK_SIZE_EXP.y};
-Vec3<U16> constexpr CHK_IDX_MASK  = {CHK_SIZE.x - 1,
-                                     CHK_SIZE.y - 1,
-                                     CHK_SIZE.z - 1};
-Vec3<I64> constexpr CHK_POS_MASK  = {~CHK_IDX_MASK.x,
-                                     ~CHK_IDX_MASK.y,
-                                     ~CHK_IDX_MASK.z};
-Vec3<U16> constexpr CHK_IDX_OFF   = {1,
-                                     CHK_SIZE.x,
-                                     CHK_SIZE.x + CHK_SIZE.y};
-Vec3<I64> constexpr CHK_POS_SHIFT = CHK_SIZE_EXP;
 
 inline ChkPos to_chk_pos(MapPos const &map_pos)
 {
-    return (map_pos & CHK_POS_MASK) >> CHK_POS_SHIFT;
+    return {map_pos.x & ~(CHK_SIZE - 1) >> CHK_SIZE_EXP,
+            map_pos.y & ~(CHK_SIZE - 1) >> CHK_SIZE_EXP,
+            map_pos.z & ~(CHK_SIZE - 1) >> CHK_SIZE_EXP};
 }
 
 inline IdxPos to_idx_pos(MapPos const &map_pos)
 {
-    return (IdxPos const &)map_pos & CHK_IDX_MASK;
+    return {map_pos.x & (CHK_SIZE - 1),
+            map_pos.y & (CHK_SIZE - 1),
+            map_pos.z & (CHK_SIZE - 1)};
 }
 
 inline IdxPos to_idx_pos(ChkIdx const &chk_idx)
 {
-    return (chk_idx & (CHK_IDX_MASK << CHK_IDX_SIDE)) >> CHK_IDX_SIDE;
+    return { chk_idx &  (CHK_SIZE - 1),
+            (chk_idx & ((CHK_SIZE - 1) << CHK_SIZE_EXP)) >> CHK_SIZE_EXP,
+            (chk_idx & ((CHK_SIZE - 1) << 2 * CHK_SIZE_EXP))
+                                       >> 2 * CHK_SIZE_EXP};
 }
 
 inline ChkIdx to_chk_idx(IdxPos const &idx_pos)
 {
-    Vec3U shifted = idx_pos << CHK_IDX_SIDE;
-    return shifted.x | shifted.y | shifted.z;
+    return idx_pos.x |
+          (idx_pos.y << CHK_SIZE_EXP) |
+          (idx_pos.z << (2 * CHK_SIZE_EXP));
 }
 
 inline ChkIdx to_chk_idx(MapPos const &map_pos)
@@ -70,10 +62,11 @@ inline ChkIdx to_chk_idx(MapPos const &map_pos)
 
 inline MapPos to_map_pos(ChkPos const &chk_pos, IdxPos const &idx_pos)
 {
-    return (chk_pos << CHK_POS_SHIFT) | (MapPos const &)idx_pos;
+    return (chk_pos << (ChkCoord)CHK_SIZE_EXP) | (MapPos const &)idx_pos;
 }
 
 inline MapPos to_map_pos(ChkPos const &chk_pos, ChkIdx const &chk_idx)
 {
-    return (chk_pos << CHK_POS_SHIFT) | (MapPos const &)to_idx_pos(chk_idx);
+    return (chk_pos << (ChkCoord)CHK_SIZE_EXP) |
+           (MapPos const &)to_idx_pos(chk_idx);
 }

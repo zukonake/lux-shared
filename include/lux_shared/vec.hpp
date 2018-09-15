@@ -1,5 +1,7 @@
 #pragma once
 
+///for those constexpr ctors
+#define GLM_FORCE_PURE
 #include <glm/glm.hpp>
 #include <glm/detail/qualifier.hpp>
 //
@@ -29,4 +31,3 @@ typedef Vec<4, F32> Vec4F;
 typedef Vec<4, F64> Vec4D;
 typedef Vec<4, Int> Vec4I;
 typedef Vec<4, Uns> Vec4U;
-
