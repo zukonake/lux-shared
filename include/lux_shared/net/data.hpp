@@ -6,10 +6,11 @@
 
 #pragma pack(push, 1)
 
+///actual dynamic data should be allocated after the struct data, in the same
+///order as it is defined in the type
 template<typename T>
 struct NetDynArr {
     U32 len;
-    T*  val;
 };
 
 struct NetServerInit {
