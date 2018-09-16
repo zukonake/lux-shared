@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lux_shared/common.hpp>
+#include <lux_shared/net/common.hpp>
 #include <lux_shared/map.hpp>
 #include <lux_shared/entity.hpp>
 
