@@ -61,7 +61,7 @@ Slice<T>& Slice<T>::operator=(Slice<ThatT> const& that) {
 template<typename T>
 template<typename That>
 Slice<T>::operator That() const {
-    LUX_ASSERT(this->len == sizeof(That));
+    LUX_ASSERT(this->len <= sizeof(That));
     return *(That*)this->beg;
 }
 

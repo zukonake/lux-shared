@@ -13,11 +13,16 @@ struct Deferrer
 };
 template<typename F>
 Deferrer<F> operator*(DeferDummy, F f) { return {f}; }
-#define DEFER_(LINE) zz_defer##LINE
-#define DEFER(LINE) DEFER_(LINE)
-#define LUX_DEFER auto DEFER(__LINE__) = DeferDummy { } *[&]()
+#define _LUX_DEFER_(LINE) zz_defer##LINE
+#define _LUX_DEFER(LINE) _LUX_DEFER_(LINE)
+#define LUX_DEFER auto _LUX_DEFER(__LINE__) = DeferDummy { } *[&]()
 
-#define LUX_RVAL [[nodiscard]] LuxRval
+enum LuxRval : Int {
+    LUX_OK   = 0,
+    LUX_FAIL = -1,
+};
+
+#define LUX_MAY_FAIL [[nodiscard]] LuxRval
 
 //@TODO use tinyprintf
 #define LUX_LOG(fmt, ...) { \

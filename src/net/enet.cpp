@@ -4,32 +4,33 @@
 #include <lux_shared/net/common.hpp>
 #include <lux_shared/net/enet.hpp>
 
-LUX_RVAL send_packet(ENetPeer* peer, ENetHost *host,
-                    Slice<U8> slice, U8 channel, U32 flags) {
+LUX_MAY_FAIL send_packet(ENetPeer* peer, ENetHost *host,
+                         Slice<U8> slice, U8 channel, U32 flags) {
     ENetPacket* pack = enet_packet_create(slice.beg, slice.len,
         ENET_PACKET_FLAG_NO_ALLOCATE | flags);
     if(pack == nullptr) {
-        return LUX_RVAL_ENET_PACKET;
+        LUX_LOG("failed to create enet packet"); //@TODO more info
+        return LUX_FAIL;
     }
     if(enet_peer_send(peer, channel, pack) < 0) {
-        return LUX_RVAL_ENET_SEND;
-        //@TODO some info here
+        LUX_LOG("failed to send enet packet"); //@TODO more info
+        return LUX_FAIL;
     }
     enet_host_flush(host);
-    return LUX_RVAL_OK;
+    return LUX_OK;
 }
 
-LUX_RVAL send_init(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
+LUX_MAY_FAIL send_init(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
     return send_packet(peer, host, slice,
                        INIT_CHANNEL, ENET_PACKET_FLAG_RELIABLE);
 }
 
-LUX_RVAL send_tick(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
+LUX_MAY_FAIL send_tick(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
     return send_packet(peer, host, slice,
                        TICK_CHANNEL, ENET_PACKET_FLAG_UNSEQUENCED);
 }
 
-LUX_RVAL send_signal(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
+LUX_MAY_FAIL send_signal(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
     return send_packet(peer, host, slice,
                        SIGNAL_CHANNEL, ENET_PACKET_FLAG_RELIABLE);
 }
