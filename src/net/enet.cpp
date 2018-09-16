@@ -4,7 +4,7 @@
 #include <lux_shared/net/common.hpp>
 #include <lux_shared/net/enet.hpp>
 
-LuxRval send_packet(ENetPeer* peer, ENetHost *host,
+LUX_RVAL send_packet(ENetPeer* peer, ENetHost *host,
                     Slice<U8> slice, U8 channel, U32 flags) {
     ENetPacket* pack = enet_packet_create(slice.beg, slice.len,
         ENET_PACKET_FLAG_NO_ALLOCATE | flags);
@@ -19,17 +19,17 @@ LuxRval send_packet(ENetPeer* peer, ENetHost *host,
     return LUX_RVAL_OK;
 }
 
-LuxRval send_init(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
+LUX_RVAL send_init(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
     return send_packet(peer, host, slice,
                        INIT_CHANNEL, ENET_PACKET_FLAG_RELIABLE);
 }
 
-LuxRval send_tick(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
+LUX_RVAL send_tick(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
     return send_packet(peer, host, slice,
                        TICK_CHANNEL, ENET_PACKET_FLAG_UNSEQUENCED);
 }
 
-LuxRval send_signal(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
+LUX_RVAL send_signal(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
     return send_packet(peer, host, slice,
                        SIGNAL_CHANNEL, ENET_PACKET_FLAG_RELIABLE);
 }
