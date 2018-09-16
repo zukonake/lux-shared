@@ -13,9 +13,9 @@ struct Deferrer
 };
 template<typename F>
 Deferrer<F> operator*(DeferDummy, F f) { return {f}; }
-#define _LUX_DEFER_(LINE) zz_defer##LINE
-#define _LUX_DEFER(LINE) _LUX_DEFER_(LINE)
-#define LUX_DEFER auto _LUX_DEFER(__LINE__) = DeferDummy { } *[&]()
+#define LUX_DEFER_0(LINE) zz_defer##LINE
+#define LUX_DEFER_1(LINE) LUX_DEFER_0(LINE)
+#define LUX_DEFER auto LUX_DEFER_1(__LINE__) = DeferDummy { } *[&]()
 
 enum LuxRval : Int {
     LUX_OK   = 0,
