@@ -7,13 +7,21 @@
 template<typename T>
 inline T* lux_alloc(SizeT sz) {
     LUX_ASSERT(sz != 0);
-    return (T*) std::malloc(sizeof(T) * sz);
+    T* data = (T*)std::malloc(sizeof(T) * sz);
+    if(data == nullptr) {
+        LUX_FATAL("failed to allocate block of %zux%zuB", sizeof(T), sz);
+    }
+    return data;
 }
 
 template<typename T>
 inline T* lux_realloc(T* ptr, SizeT sz) {
     LUX_ASSERT(sz != 0);
-    return (T*) std::realloc(ptr, sizeof(T) * sz);
+    T* data = (T*)std::realloc(ptr, sizeof(T) * sz);
+    if(data == nullptr) {
+        LUX_FATAL("failed to re-allocate block of %zux%zuB", sizeof(T), sz);
+    }
+    return data;
 }
 
 template<typename T>
