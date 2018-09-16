@@ -6,21 +6,28 @@
 
 #pragma pack(push, 1)
 
+#define LUX_ASSERT_POD(ident) \
+    static_assert(std::is_trivial<ident>::value); \
+    static_assert(std::is_standard_layout<ident>::value);
+
 ///actual dynamic data should be allocated after the struct data, in the same
 ///order as it is defined in the type
 template<typename T>
 struct NetDynArr {
     U32 len;
 };
+LUX_ASSERT_POD(NetDynArr<void>);
 
 struct NetServerInit {
     Arr<U8, SERVER_NAME_LEN> name;
     U16 tick_rate;
 };
+LUX_ASSERT_POD(NetServerInit);
 
 struct NetServerTick {
     EntityVec player_pos;
 };
+LUX_ASSERT_POD(NetServerTick);
 
 struct NetServerSignal {
     struct MapLoad {
@@ -38,6 +45,7 @@ struct NetServerSignal {
         MapLoad map_load;
     };
 };
+LUX_ASSERT_POD(NetServerSignal);
 
 struct NetClientInit {
     struct {
@@ -50,6 +58,7 @@ struct NetClientInit {
     } net_ver;
     Arr<U8, CLIENT_NAME_LEN> name;
 };
+LUX_ASSERT_POD(NetClientInit);
 
 struct NetClientSignal {
     struct MapRequest {
@@ -62,5 +71,6 @@ struct NetClientSignal {
         MapRequest map_request;
     };
 };
+LUX_ASSERT_POD(NetClientSignal);
 
 #pragma pack(pop)
