@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <forward_list>
 #include <vector>
 #include <string>
 #include <array>
@@ -19,6 +20,8 @@ template<typename T>
 using Queue = std::queue<T>;
 template<typename T>
 using Deque = std::deque<T>;
+template<typename T>
+using List = std::forward_list<T>;
 template<typename K, typename V, typename Hasher>
 using HashMap = std::unordered_map<K, V, Hasher>;
 template<typename V, typename Hasher>
