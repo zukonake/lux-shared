@@ -4,8 +4,7 @@
 #include <lux_shared/net/common.hpp>
 #include <lux_shared/net/enet.hpp>
 
-LUX_MAY_FAIL send_packet(ENetPeer* peer, ENetHost *host,
-                         Slice<U8> slice, U8 channel, U32 flags) {
+LUX_MAY_FAIL send_packet(ENetPeer* peer, Slice<U8> slice, U8 channel, U32 flags) {
     auto log_fail= [&]() {
         U8* ip = get_ip(peer->address);
         LUX_LOG("    data size: %zuB", slice.len);
@@ -26,21 +25,18 @@ LUX_MAY_FAIL send_packet(ENetPeer* peer, ENetHost *host,
         log_fail();
         return LUX_FAIL;
     }
-    enet_host_flush(host);
+    enet_host_flush(peer->host);
     return LUX_OK;
 }
 
-LUX_MAY_FAIL send_init(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
-    return send_packet(peer, host, slice,
-                       INIT_CHANNEL, ENET_PACKET_FLAG_RELIABLE);
+LUX_MAY_FAIL send_init(ENetPeer* peer, Slice<U8> slice) {
+    return send_packet(peer, slice, INIT_CHANNEL, ENET_PACKET_FLAG_RELIABLE);
 }
 
-LUX_MAY_FAIL send_tick(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
-    return send_packet(peer, host, slice,
-                       TICK_CHANNEL, ENET_PACKET_FLAG_UNSEQUENCED);
+LUX_MAY_FAIL send_tick(ENetPeer* peer, Slice<U8> slice) {
+    return send_packet(peer, slice, TICK_CHANNEL, ENET_PACKET_FLAG_UNSEQUENCED);
 }
 
-LUX_MAY_FAIL send_signal(ENetPeer* peer, ENetHost *host, Slice<U8> slice) {
-    return send_packet(peer, host, slice,
-                       SIGNAL_CHANNEL, ENET_PACKET_FLAG_RELIABLE);
+LUX_MAY_FAIL send_signal(ENetPeer* peer, Slice<U8> slice) {
+    return send_packet(peer, slice, SIGNAL_CHANNEL, ENET_PACKET_FLAG_RELIABLE);
 }
