@@ -4,98 +4,79 @@
 #include <lux_shared/vec.hpp>
 
 template<typename T>
-T net_order(T const& val);
+void net_order(T* dst, T const* src);
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 
-template<>
-inline U8 net_order(U8 const& val)
-{
-    return val;
+template<SizeT n>
+void net_order_n(U8* dst, U8 const* src);
+template<typename T>
+void net_order(T* dst, T const* src) {
+    LUX_ASSERT(dst != src);
+    net_order_n<sizeof(T)>((U8*)dst, (U8 const*)src);
 }
 
 template<>
-inline U16 net_order(U16 const& val)
+inline void net_order_n<1>(U8* dst, U8 const* src)
 {
-    return (U16)((val & (0xFFull <<  0)) << 8) |
-                ((val & (0xFFull <<  8)) >> 8);
+    *dst = *src;
 }
 
 template<>
-inline U32 net_order(U32 const& val)
+inline void net_order_n<2>(U8* dst, U8 const* src)
 {
-    return (U32)((val & (0xFFull <<  0)) << 24) |
-                ((val & (0xFFull <<  8)) <<  8) |
-                ((val & (0xFFull << 16)) >>  8) |
-                ((val & (0xFFull << 24)) >> 24);
+    dst[1] = src[0];
+    dst[0] = src[1];
 }
 
 template<>
-inline U64 net_order(U64 const& val)
+inline void net_order_n<4>(U8* dst, U8 const* src)
 {
-    return (U64)((val & (0xFFull <<  0)) << 56) |
-                ((val & (0xFFull <<  8)) << 40) |
-                ((val & (0xFFull << 16)) << 24) |
-                ((val & (0xFFull << 24)) <<  8) |
-                ((val & (0xFFull << 32)) >>  8) |
-                ((val & (0xFFull << 40)) >> 24) |
-                ((val & (0xFFull << 48)) >> 40) |
-                ((val & (0xFFull << 56)) >> 56);
+    dst[3] = src[0];
+    dst[2] = src[1];
+    dst[1] = src[2];
+    dst[0] = src[3];
 }
 
-template<> inline bool net_order(bool const& val) {
-    return net_order<U8>(*(U8*)&val);
-}
-
-template<> inline I8  net_order(I8  const& val) {
-    return net_order<U8 >(*(U8* )&val);
-}
-
-template<> inline I16 net_order(I16 const& val) {
-    return net_order<U16>(*(U16*)&val);
-}
-
-template<> inline I32 net_order(I32 const& val) {
-    return net_order<U32>(*(U32*)&val);
-}
-
-template<> inline I64 net_order(I64 const& val) {
-    return net_order<U64>(*(U64*)&val);
-}
-
-template<> inline F32 net_order(F32 const& val) {
-    return net_order<U32>(*(U32*)&val);
-}
-
-template<> inline F64 net_order(F64 const& val) {
-    return net_order<U64>(*(U64*)&val);
+template<>
+inline void net_order_n<8>(U8* dst, U8 const* src)
+{
+    dst[7] = src[0];
+    dst[6] = src[1];
+    dst[5] = src[2];
+    dst[4] = src[3];
+    dst[3] = src[4];
+    dst[2] = src[5];
+    dst[1] = src[6];
+    dst[0] = src[7];
 }
 
 template<typename T>
-inline Vec2<T> net_order(Vec2<T> const& val) {
-    return Vec2<T> { net_order<T>(val.x), net_order<T>(val.y) };
+inline void net_order(Vec2<T>* dst, Vec2<T> const* src) {
+    net_order<T>(&dst->x, &src->x);
+    net_order<T>(&dst->y, &src->y);
 }
 
 template<typename T>
-inline Vec3<T> net_order(Vec3<T> const& val) {
-    return Vec3<T> { net_order<T>(val.x),
-                     net_order<T>(val.y),
-                     net_order<T>(val.z) };
+inline void net_order(Vec3<T>* dst, Vec3<T> const* src) {
+    net_order<T>(&dst->x, &src->x);
+    net_order<T>(&dst->y, &src->y);
+    net_order<T>(&dst->z, &src->z);
 }
 
 template<typename T>
-inline Vec4<T> net_order(Vec4<T> const& val) {
-    return Vec4<T> { net_order<T>(val.x),
-                     net_order<T>(val.y),
-                     net_order<T>(val.z),
-                     net_order<T>(val.w) };
+inline void net_order(Vec4<T>* dst, Vec4<T> const* src) {
+    net_order<T>(&dst->x, &src->x);
+    net_order<T>(&dst->y, &src->y);
+    net_order<T>(&dst->z, &src->z);
+    net_order<T>(&dst->w, &src->w);
 }
 
 #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
 
 template<typename T>
-inline T net_order(T const& val) {
-    return val;
+void net_order(T* dst, T const* src) {
+    *dst = *src;
 }
 
 #else
