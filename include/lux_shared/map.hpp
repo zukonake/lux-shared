@@ -21,17 +21,17 @@ typedef U16 LightLvl;
 
 ///if you need to change the chunk size, change this only
 ///chunks' height is assumed to be 1
-Uns constexpr CHK_SIZE_EXP  = 5;
+U64 constexpr CHK_SIZE_EXP  = 5;
 
-Uns constexpr CHK_SIZE = 1 << CHK_SIZE_EXP;
-Uns constexpr CHK_VOL  = CHK_SIZE * CHK_SIZE;
+U64 constexpr CHK_SIZE = 1 << CHK_SIZE_EXP;
+U64 constexpr CHK_VOL  = CHK_SIZE * CHK_SIZE;
 static_assert(CHK_VOL <= 1 << (sizeof(ChkIdx) * 8));
 
 inline ChkPos to_chk_pos(MapPos const &map_pos)
 {
-    return {map_pos.x & ~(CHK_SIZE - 1) >> CHK_SIZE_EXP,
-            map_pos.y & ~(CHK_SIZE - 1) >> CHK_SIZE_EXP,
-            map_pos.z};
+    return {(map_pos.x & (I64)~(CHK_SIZE - 1)) >> (I64)CHK_SIZE_EXP,
+            (map_pos.y & (I64)~(CHK_SIZE - 1)) >> (I64)CHK_SIZE_EXP,
+             map_pos.z};
 }
 
 inline IdxPos to_idx_pos(MapPos const &map_pos)
