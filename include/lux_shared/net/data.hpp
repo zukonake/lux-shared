@@ -39,14 +39,28 @@ struct NetServerSignal {
         };
         NetDynArr<Chunk> chunks;
     };
+    struct LightUpdate {
+        struct Chunk {
+            ChkPos pos;
+            Arr<LightLvl, CHK_VOL> light_lvls;
+        };
+        NetDynArr<Chunk> chunks;
+    };
     enum Type : U8 {
-        MAP_LOAD = 0x00,
+        MAP_LOAD     = 0x00,
+        LIGHT_UPDATE = 0x01,
     } type;
     union {
-        MapLoad map_load;
+        MapLoad     map_load;
+        LightUpdate light_update;
     };
 };
 LUX_ASSERT_POD(NetServerSignal);
+
+struct NetClientTick {
+    Vec2F player_dir;
+};
+LUX_ASSERT_POD(NetServerTick);
 
 struct NetClientInit {
     struct {
