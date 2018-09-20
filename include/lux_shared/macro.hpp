@@ -24,7 +24,6 @@ enum LuxRval : Int {
 
 #define LUX_MAY_FAIL [[nodiscard]] LuxRval
 
-//@TODO use tinyprintf
 #define LUX_LOG(fmt, ...) { \
     std::printf("%s(): " fmt "\n", __func__ __VA_OPT__(,) __VA_ARGS__); }
 
@@ -37,9 +36,6 @@ enum LuxRval : Int {
     std::fprintf(stderr, "PANIC %s(): " fmt "\n", \
             __func__ __VA_OPT__(,) __VA_ARGS__); \
     std::abort(); }
-
-//we don't want our code to call assert from <assert.h>
-#undef assert
 
 #ifndef NDEBUG
     #define LUX_ASSERT(expr) { \
@@ -58,5 +54,8 @@ enum LuxRval : Int {
 #if LUX_SIGN_REPR != LUX_SIGN_REPR_SIGN_AND_MAGNITUDE &&  \
     LUX_SIGN_REPR != LUX_SIGN_REPR_ONES_COMPLEMENT    &&  \
     LUX_SIGN_REPR != LUX_SIGN_REPR_TWOS_COMPLEMENT
-#   warning "unknown signed representation"
+
+    #warning "unknown signed representation"
+    #undef LUX_SIGN_REPR
+    #define LUX_SIGN_REPR LUX_SIGN_REPR_UNKNOWN
 #endif

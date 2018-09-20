@@ -11,6 +11,7 @@
 #include <unordered_set>
 //
 #include <lux_shared/slice.hpp>
+#include <lux_shared/util/packer.hpp>
 
 template<typename T>
 using DynArr = std::vector<T>;
@@ -26,6 +27,10 @@ template<typename K, typename V, typename Hasher>
 using HashMap = std::unordered_map<K, V, Hasher>;
 template<typename V, typename Hasher>
 using HashSet = std::unordered_set<V, Hasher>;
+template<typename K, typename V>
+using VecMap = HashMap<K, V, util::Packer<K>>;
+template<typename V>
+using VecSet = HashSet<V, util::Packer<V>>;
 template<typename T>
 using AlignArr = std::aligned_storage_t<sizeof(T), alignof(T)>;
 
