@@ -21,7 +21,7 @@ typedef U16 LightLvl;
 
 ///if you need to change the chunk size, change this only
 ///chunks' height is assumed to be 1
-U64 constexpr CHK_SIZE_EXP  = 5;
+U64 constexpr CHK_SIZE_EXP  = 3;
 
 U64 constexpr CHK_SIZE = 1 << CHK_SIZE_EXP;
 U64 constexpr CHK_VOL  = CHK_SIZE * CHK_SIZE;
