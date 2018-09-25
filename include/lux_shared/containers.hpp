@@ -16,7 +16,7 @@
 template<typename T>
 using DynArr = std::vector<T>;
 template<typename T, std::size_t len>
-using Arr = std::array<T, len>;
+using Arr = T[len];
 template<typename T>
 using Queue = std::queue<T>;
 template<typename T>
