@@ -1,6 +1,7 @@
 #include <enet/enet.h>
 //
 #include <lux_shared/common.hpp>
+#include <lux_shared/net/net_order.hpp>
 
 LUX_MAY_FAIL check_pack_size_atleast(SizeT expected,
                                      U8 const* iter, ENetPacket* pack) {
