@@ -4,9 +4,10 @@
 //
 #include <lux_shared/common.hpp>
 
+//@CONSIDER moving to server/client
 U8 constexpr NET_VERSION_MAJOR = 0;
 U8 constexpr NET_VERSION_MINOR = 1;
-U8 constexpr NET_VERSION_PATCH = 0;
+U8 constexpr NET_VERSION_PATCH = 1;
 
 Uns constexpr CHANNEL_NUM  = 3;
 U8  constexpr INIT_CHANNEL   = 0x00;

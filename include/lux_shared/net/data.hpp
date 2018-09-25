@@ -7,30 +7,21 @@
 
 #pragma pack(push, 1)
 
-#define LUX_ASSERT_POD(ident) \
-    static_assert(std::is_trivial<ident>::value); \
-    static_assert(std::is_standard_layout<ident>::value);
-
-///actual dynamic data should be allocated after the struct data, in the same
-///order as it is defined in the type
 template<typename T>
 struct NetDynArr {
     U32 len;
 };
-LUX_ASSERT_POD(NetDynArr<void>);
 
-struct NetServerInit {
+struct NetSsInit {
     Arr<U8, SERVER_NAME_LEN> name;
     U16 tick_rate;
 };
-LUX_ASSERT_POD(NetServerInit);
 
-struct NetServerTick {
-    EntityVec player_pos;
+struct NetSsTick {
+    Vec3F player_pos;
 };
-LUX_ASSERT_POD(NetServerTick);
 
-struct NetServerSignal {
+struct NetSsSgnl {
     struct MapLoad {
         struct Chunk {
             ChkPos pos;
@@ -46,23 +37,22 @@ struct NetServerSignal {
         };
         NetDynArr<Chunk> chunks;
     };
-    enum Type : U8 {
+    enum Header : U8 {
         MAP_LOAD     = 0x00,
         LIGHT_UPDATE = 0x01,
-    } type;
+        HEADER_MAX,
+    } header;
     union {
         MapLoad     map_load;
         LightUpdate light_update;
     };
 };
-LUX_ASSERT_POD(NetServerSignal);
 
-struct NetClientTick {
+struct NetCsTick {
     Vec2F player_dir;
 };
-LUX_ASSERT_POD(NetServerTick);
 
-struct NetClientInit {
+struct NetCsInit {
     struct {
         U8 major;
         U8 minor;
@@ -73,19 +63,18 @@ struct NetClientInit {
     } net_ver;
     Arr<U8, CLIENT_NAME_LEN> name;
 };
-LUX_ASSERT_POD(NetClientInit);
 
-struct NetClientSignal {
+struct NetCsSgnl {
     struct MapRequest {
         NetDynArr<ChkPos> requests;
     };
-    enum Type : U8 {
+    enum Header : U8 {
         MAP_REQUEST = 0x00,
-    } type;
+        HEADER_MAX,
+    } header;
     union {
         MapRequest map_request;
     };
 };
-LUX_ASSERT_POD(NetClientSignal);
 
 #pragma pack(pop)

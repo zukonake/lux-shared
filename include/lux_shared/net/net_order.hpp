@@ -51,27 +51,6 @@ inline void net_order_n<8>(U8* dst, U8 const* src)
     dst[0] = src[7];
 }
 
-template<typename T>
-inline void net_order(Vec2<T>* dst, Vec2<T> const* src) {
-    net_order<T>(&dst->x, &src->x);
-    net_order<T>(&dst->y, &src->y);
-}
-
-template<typename T>
-inline void net_order(Vec3<T>* dst, Vec3<T> const* src) {
-    net_order<T>(&dst->x, &src->x);
-    net_order<T>(&dst->y, &src->y);
-    net_order<T>(&dst->z, &src->z);
-}
-
-template<typename T>
-inline void net_order(Vec4<T>* dst, Vec4<T> const* src) {
-    net_order<T>(&dst->x, &src->x);
-    net_order<T>(&dst->y, &src->y);
-    net_order<T>(&dst->z, &src->z);
-    net_order<T>(&dst->w, &src->w);
-}
-
 #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
 
 template<typename T>
