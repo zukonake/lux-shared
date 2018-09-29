@@ -37,14 +37,19 @@ struct NetSsSgnl {
         };
         NetDynArr<Chunk> chunks;
     };
+    struct Msg {
+        NetDynArr<char> contents;
+    };
     enum Header : U8 {
         MAP_LOAD     = 0x00,
         LIGHT_UPDATE = 0x01,
+        MSG          = 0x02,
         HEADER_MAX,
     } header;
     union {
         MapLoad     map_load;
         LightUpdate light_update;
+        Msg         msg;
     };
 };
 
@@ -68,12 +73,17 @@ struct NetCsSgnl {
     struct MapRequest {
         NetDynArr<ChkPos> requests;
     };
+    struct Command {
+        NetDynArr<char> contents;
+    };
     enum Header : U8 {
         MAP_REQUEST = 0x00,
+        COMMAND     = 0x01,
         HEADER_MAX,
     } header;
     union {
         MapRequest map_request;
+        Command    command;
     };
 };
 
