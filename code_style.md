@@ -10,3 +10,4 @@
   * code should use zero-cost abstractions
     * for example use CRTP instead of virtual methods when possible
   * follow the DRY principle
+  * don't blindly follow OOP, use it where it is actually useful

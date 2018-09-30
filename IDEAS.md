@@ -1,4 +1,4 @@
-# Lux in Tenebris ideas
+# Lux ideas
 ### General
 * goal is to reach top of the map (unsure)
 ### Map
@@ -11,6 +11,7 @@
         * high-value treasure/gear/materials inside
     * the rest is like a wilderness
         * filled with animals and "plants"
+    * the high levels have cracks that let sunlight in
     * there are different zones or "biomes" of dungeons
         * they are procedurally generated
         * generated monsters and items
@@ -29,8 +30,6 @@
 * various game modes
     * start in a cold biome with a furnace
     * start without eyes but with very good hearing abilities
-* surface could exist, but would be probably barren, still - interesting things could be
-  found from time to time
 ### Mechanics
 * co-op survival multiplayer
     * players specializing in various schools of magic being efficient
@@ -136,11 +135,9 @@
     * on very low sanity you see horryfing abominations and the world becomes bloody
     * dark magic should be really dark and dangerous to play with, but equally powerful
 ### Graphics
-* 3d
-* the view is first person
+* top-down 2d
 * you can see levels below, darker or something
 * extensive light system
 * extensive field of vision system
 * minimap showing the dungeon zones
 * pixelated textures
-* voxel models
