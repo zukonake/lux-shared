@@ -61,3 +61,21 @@ enum LuxRval : Int {
     #undef LUX_SIGN_REPR
     #define LUX_SIGN_REPR LUX_SIGN_REPR_UNKNOWN
 #endif
+
+#if defined(_WIN32) || defined(_WIN64)
+    #if _WIN64
+        #define LUX_64BIT
+    #else
+        #define LUX_32BIT
+    #endif
+#elif defined(__x86_64__) || defined(__ppc64__)
+    #if __x86_64__
+        #define LUX_64BIT
+    #else
+        #define LUX_32BIT
+    #endif
+#endif
+
+#if !defined(LUX_32BIT) && !defined(LUX_64BIT)
+    #error "neither LUX_32BIT, neither LUX_64BIT is defined"
+#endif

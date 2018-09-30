@@ -20,7 +20,6 @@ typedef std::size_t   SizeT;
 //@CONSIDER moving those to places that need those assumptions
 static_assert(sizeof(F32) == 4);
 static_assert(sizeof(F64) == 8);
-static_assert(sizeof(SizeT) >= 8);
 
 typedef std::int_fast32_t  Int;
 typedef std::uint_fast32_t Uns;
