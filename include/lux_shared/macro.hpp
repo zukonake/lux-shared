@@ -44,7 +44,8 @@ enum LuxRval : Int {
     #define LUX_ASSERT(expr) do {} while(false)
 #endif
 
-#define LUX_UNREACHABLE() LUX_ASSERT(false)
+#define LUX_UNREACHABLE()   LUX_ASSERT(false)
+#define LUX_UNIMPLEMENTED() LUX_LOG("unimplemented")
 
 #define LUX_SIGN_REPR_UNKNOWN            0
 #define LUX_SIGN_REPR_SIGN_AND_MAGNITUDE 1
