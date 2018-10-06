@@ -12,6 +12,7 @@
 //
 #include <lux_shared/slice.hpp>
 #include <lux_shared/util/packer.hpp>
+#include <lux_shared/util/identity.hpp>
 
 template<typename T>
 using DynArr = std::vector<T>;
@@ -24,9 +25,11 @@ using Deque = std::deque<T>;
 template<typename T>
 using List = std::forward_list<T>;
 template<typename K, typename V, typename Hasher>
-using HashMap = std::unordered_map<K, V, Hasher>;
+using HashMap   = std::unordered_map<K, V, Hasher>;
 template<typename V, typename Hasher>
 using HashSet = std::unordered_set<V, Hasher>;
+template<typename K, typename V>
+using HashTable = HashMap<K, V, util::Identity<K>>;
 template<typename K, typename V>
 using VecMap = HashMap<K, V, util::Packer<K>>;
 template<typename V>
