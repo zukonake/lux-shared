@@ -21,5 +21,6 @@ typedef std::size_t   SizeT;
 static_assert(sizeof(F32) == 4);
 static_assert(sizeof(F64) == 8);
 
+//@TODO fix when sizeof == 4 not 8
 typedef std::int_fast32_t  Int;
 typedef std::uint_fast32_t Uns;
