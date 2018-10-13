@@ -92,7 +92,7 @@ void serialize(U8** buff, T const& val) {
 template<typename K, typename Hasher>
 SizeT get_real_sz(HashSet<K, Hasher> const& val) {
     static_assert(HasStaticSz<K>::val);
-    return val.size() * sizeof(K);
+    return sizeof(U32) + val.size() * sizeof(K);
 }
 
 template<typename K, typename Hasher>
@@ -123,7 +123,7 @@ template<typename K, typename V, typename Hasher>
 SizeT get_real_sz(HashMap<K, V, Hasher> const& val) {
     static_assert(HasStaticSz<K>::val);
     if constexpr(HasStaticSz<V>::val) {
-        return val.size() * (sizeof(K) + sizeof(V));
+        return sizeof(U32) + val.size() * (sizeof(K) + sizeof(V));
     } else {
         SizeT sz = val.size() * sizeof(K);
         for(auto const& x : val) {
@@ -174,7 +174,7 @@ void serialize(U8** buff, HashMap<K, V, Hasher> const& val) {
 template<typename T>
 SizeT get_real_sz(DynArr<T> const& val) {
     if constexpr(HasStaticSz<T>::val) {
-        return val.size() * sizeof(T);
+        return sizeof(U32) + val.size() * sizeof(T);
     } else {
         SizeT sz = 0;
         for(auto const& x : val) {
