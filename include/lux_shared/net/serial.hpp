@@ -153,7 +153,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
         for(Uns i = 0; i < len; ++i) {
             K key;
             if(deserialize(buff, buff_end, &key)      != LUX_OK ||
-               deserialize(buff, buff_end, &val[key]) != LUX_OK) {
+               deserialize(buff, buff_end, &(*val)[key]) != LUX_OK) {
                 return LUX_FAIL;
             }
         }
@@ -219,7 +219,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
                          Vec<T, len>* val) {
     static_assert(HasStaticSz<T>::val);
     static_assert(len > 1);
-    for(Uns i = 0; i < len; ++i) (void)deserialize(buff, buff_end, &val[i]);
+    for(Uns i = 0; i < len; ++i) (void)deserialize(buff, buff_end, &(*val)[i]);
     return LUX_OK;
 }
 
