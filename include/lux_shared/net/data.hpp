@@ -18,7 +18,15 @@ struct NetSsInit {
 };
 
 struct NetSsTick {
-    Vec3F player_pos;
+    struct EntityComps {
+        struct Pos {
+            U32   id;
+            Vec3F pos;
+        };
+        NetDynArr<Pos> pos;
+    };
+    U32            player_id;
+    EntityComps    comps;
 };
 
 struct NetSsSgnl {
