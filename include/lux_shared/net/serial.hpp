@@ -238,11 +238,11 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
             return LUX_FAIL;
         }
         for(Uns i = 0; i < len; ++i) {
-            (void)deserialize(buff, buff_end, val + i);
+            (void)deserialize<T>(buff, buff_end, *val + i);
         }
     } else {
         for(Uns i = 0; i < len; ++i) {
-            if(deserialize(buff, buff_end, val + i) != LUX_OK) return LUX_FAIL;
+            if(deserialize(buff, buff_end, *val + i) != LUX_OK) return LUX_FAIL;
         }
     }
     return LUX_OK;

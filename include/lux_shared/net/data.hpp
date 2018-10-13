@@ -6,6 +6,7 @@
 #include <lux_shared/map.hpp>
 #include <lux_shared/entity.hpp>
 
+//@TODO improve - use buffers
 //@TODO disable packing
 #pragma pack(push, 1)
 
