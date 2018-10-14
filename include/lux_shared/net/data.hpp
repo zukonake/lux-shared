@@ -7,42 +7,19 @@
 #include <lux_shared/entity.hpp>
 
 //@TODO improve - use buffers
-//@TODO disable packing
-#pragma pack(push, 1)
-
-#define LUX_NET_DATA_STT(ident) \
-    template<> \
-    struct HasStaticSz<ident> { bool static constexpr val = true; }; \
-    LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, ident*); \
-    void serialize(U8** buff, ident const&)
-#define LUX_NET_DATA_DYN(ident) \
-    SizeT get_real_sz(ident const& val); \
-    LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, ident*); \
-    void serialize(U8** buff, ident const&)
 
 typedef U16 NetMagic;
 NetMagic constexpr net_magic = 0x1337;
-
-//LUX_NET_DATA_STT(EntityComps::Pos); //typedef
-//LUX_NET_DATA_STT(EntityComps::Vel); //typedef
-LUX_NET_DATA_STT(EntityComps::Shape);
-LUX_NET_DATA_STT(EntityComps::Visible);
-LUX_NET_DATA_STT(EntityComps::Item);
-LUX_NET_DATA_STT(EntityComps::Destructible);
-LUX_NET_DATA_STT(EntityComps::Animated);
-LUX_NET_DATA_DYN(EntityComps);
 
 struct NetSsInit {
     Arr<U8, SERVER_NAME_LEN> name;
     U16                 tick_rate;
 };
-LUX_NET_DATA_STT(NetSsInit);
 
 struct NetSsTick {
     EntityHandle player_id;
     EntityComps  comps;
 };
-LUX_NET_DATA_DYN(NetSsTick);
 
 struct NetSsSgnl {
     struct MapLoad {
@@ -72,14 +49,10 @@ struct NetSsSgnl {
     LightUpdate light_update;
     Msg         msg;
 };
-LUX_NET_DATA_STT(NetSsSgnl::MapLoad::Chunk);
-LUX_NET_DATA_STT(NetSsSgnl::LightUpdate::Chunk);
-LUX_NET_DATA_DYN(NetSsSgnl);
 
 struct NetCsTick {
     Vec2F player_dir;
 };
-LUX_NET_DATA_STT(NetCsTick);
 
 struct NetCsInit {
     struct {
@@ -92,7 +65,6 @@ struct NetCsInit {
     } net_ver;
     Arr<U8, CLIENT_NAME_LEN> name;
 };
-LUX_NET_DATA_STT(NetCsInit);
 
 struct NetCsSgnl {
     struct MapRequest {
@@ -110,15 +82,3 @@ struct NetCsSgnl {
     MapRequest map_request;
     Command    command;
 };
-LUX_NET_DATA_DYN(NetCsSgnl);
-
-#ifndef LUX_NET_DATA_STT
-    #pragma message("cleanup here")
-#endif
-#ifndef LUX_NET_DATA_DYN
-    #pragma message("cleanup here")
-#endif
-#undef LUX_NET_DATA_STT
-#undef LUX_NET_DATA_DYN
-
-#pragma pack(pop)
