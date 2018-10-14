@@ -9,6 +9,8 @@
 #include <deque>
 #include <unordered_map>
 #include <unordered_set>
+#include <map>
+#include <set>
 //
 #include <lux_shared/slice.hpp>
 #include <lux_shared/sparse_dyn_arr.hpp>
@@ -27,15 +29,18 @@ template<typename T>
 using List = std::forward_list<T>;
 template<typename K, typename V, typename Hasher>
 using HashMap   = std::unordered_map<K, V, Hasher>;
+template<typename K, typename V>
+using SortMap   = std::map<K, V>;
 template<typename V, typename Hasher>
 using HashSet = std::unordered_set<V, Hasher>;
+template<typename V>
+using SortSet = std::unordered_set<V>;
 template<typename K, typename V>
 using HashTable = HashMap<K, V, util::Identity<K>>;
 template<typename K, typename V>
 using VecMap = HashMap<K, V, util::Packer<K>>;
 template<typename V>
 using VecSet = HashSet<V, util::Packer<V>>;
-template<typename T>
-using AlignArr = std::aligned_storage_t<sizeof(T), alignof(T)>;
 
-typedef std::string String;
+typedef std::string DynStr;
+typedef const char* SttStr;
