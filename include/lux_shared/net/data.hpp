@@ -8,9 +8,6 @@
 
 //@TODO improve - use buffers
 
-typedef U16 NetMagic;
-NetMagic constexpr net_magic = 0x1337;
-
 struct NetSsInit {
     Arr<U8, SERVER_NAME_LEN> name;
     U16                 tick_rate;

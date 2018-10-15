@@ -4,6 +4,9 @@
 //
 #include <lux_shared/common.hpp>
 
+typedef U16 NetMagic;
+NetMagic constexpr net_magic = 0x1337;
+
 //@CONSIDER moving to server/client
 U8 constexpr NET_VERSION_MAJOR = 0;
 U8 constexpr NET_VERSION_MINOR = 0;
