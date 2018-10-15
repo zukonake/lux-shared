@@ -9,38 +9,86 @@ define(`_arg1', `$1')
 define(`_foreach', `ifelse(quote($2), `', `',
     `define(`$1', `_arg1($2)')$3`'$0(`$1', `shift($2)', `$3')')')
 
-define(`m4_get_members', `shift(shift($@))')
-
+define(`m4_formember', `foreach(`member', `shift(shift($1))', `$2')')
 define(`m4_lux_net_data', `dnl
+dnl
+dnl
 ifelse(`$2', `static', `dnl
+
 template<> struct HasStaticSz<$1> { bool static constexpr val = true; };
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
     if(buff_sz_at_least(sizeof($1), *buff, buff_end) != LUX_OK) {
         return LUX_FAIL;
-    }
-foreach(`x', `m4_get_members($@)', `    (void)deserialize(buff, buff_end, &val->x);
-')
+    }dnl
+    m4_formember(`$@', `
+    (void)deserialize(buff, buff_end, &val->member);')
     return LUX_OK;
-}', `
+}
+
+void serialize(U8** buff, $1 const& val) {dnl
+    m4_formember(`$@', `
+    serialize(buff, val.member);')
+}', `dnl
+dnl
+dnl
+ifelse(`$2', `dynamic', `dnl
+
 SizeT get_real_sz($1 const& val) {
-    return foreach(`x', `m4_get_members($@)', `get_real_sz(val.x) +
-           ')0;
+    return m4_formember(`$@', `
+        get_real_sz(val.member) +')
+        0;
 }
 
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
-    if(foreach(`x', `m4_get_members($@)',
-`deserialize(buff, buff_end, &val->x) != LUX_OK ||
-       ')false) {
-        return LUX_FAIL;
+    if(m4_formember(`$@',`
+       deserialize(buff, buff_end, &val->member) != LUX_OK ||')
+       false) {
+       return LUX_FAIL;
     }
     return LUX_OK;
 }
-')
+
+void serialize(U8** buff, $1 const& val) {dnl
+    m4_formember(`$@', `
+    serialize(buff, val.member);')
+}', `dnl
+dnl
+dnl
+ifelse(`$2', `tagged', `dnl
+SizeT get_real_sz($1 const& val) {
+    switch(val.tag) {dnl
+        m4_formember(`$@', `
+        case $1::translit(member, `a-z', `A-Z'):
+            return sizeof($1::Tag) + get_real_sz(val.member);')
+        default: LUX_UNREACHABLE();
+    }
+}
+
+LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
+    if(deserialize(buff, buff_end, (U8*)&val->tag) != LUX_OK) {
+        return LUX_FAIL;
+    }
+    switch(val->tag) {dnl
+        m4_formember(`$@', `
+        case $1::translit(member, `a-z', `A-Z'):
+            return deserialize(buff, buff_end, &val->member);')
+        default:
+            LUX_LOG("unexpected packet tag %u", val->tag);
+            return LUX_FAIL;
+    }
+}
 
 void serialize(U8** buff, $1 const& val) {
-foreach(`x', `m4_get_members($@)', `    serialize(buff, val.x);
-')}
-')
+    serialize(buff, (U8 const&)val.tag);
+    switch(val.tag) {dnl
+        m4_formember(`$@', `
+        case $1::translit(member, `a-z', `A-Z'):
+            serialize(buff, val.member); break;')
+        default: LUX_UNREACHABLE();
+    }
+}dnl
+',)')')dnl
+')dnl
 divert(0)dnl
 #include <lux_shared/net/serial.hpp>
 #include <lux_shared/net/data.hpp>
@@ -59,119 +107,11 @@ m4_lux_net_data(NetSsSgnl::MapLoad::Chunk, static, voxels, light_lvls)
 m4_lux_net_data(NetSsSgnl::MapLoad, dynamic, chunks)
 m4_lux_net_data(NetSsSgnl::LightUpdate::Chunk, static, light_lvls)
 m4_lux_net_data(NetSsSgnl::LightUpdate, dynamic, chunks)
+m4_lux_net_data(NetSsSgnl::Msg, dynamic, contents)
+m4_lux_net_data(NetSsSgnl, tagged, map_load, light_update, msg)
 m4_lux_net_data(NetCsSgnl::MapRequest, dynamic, requests)
 m4_lux_net_data(NetCsSgnl::Command, dynamic, contents)
+m4_lux_net_data(NetCsSgnl, tagged, map_request, command)
 m4_lux_net_data(NetCsInit, static,
     net_ver.major, net_ver.minor, net_ver.patch, name)
 m4_lux_net_data(NetCsTick, static, player_dir)
-
-SizeT get_real_sz(NetSsSgnl const& sgnl) {
-    SizeT sz = sizeof(NetSsSgnl::Header);
-    switch(sgnl.header) {
-        case NetSsSgnl::MAP_LOAD: {
-            sz += get_real_sz(sgnl.map_load);
-        } break;
-        case NetSsSgnl::LIGHT_UPDATE: {
-            sz += get_real_sz(sgnl.light_update);
-        } break;
-        case NetSsSgnl::MSG: {
-            sz += get_real_sz(sgnl.msg.contents);
-        } break;
-        default: LUX_UNREACHABLE();
-    }
-    return sz;
-}
-
-LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, NetSsSgnl* sgnl) {
-    if(deserialize(buff, buff_end, (U8*)&sgnl->header) != LUX_OK) {
-        return LUX_FAIL;
-    }
-    switch(sgnl->header) {
-        case NetSsSgnl::MAP_LOAD: {
-            if(deserialize(buff, buff_end, &sgnl->map_load) != LUX_OK) {
-                return LUX_FAIL;
-            }
-        } break;
-        case NetSsSgnl::LIGHT_UPDATE: {
-            if(deserialize(buff, buff_end, &sgnl->light_update) != LUX_OK) {
-                return LUX_FAIL;
-            }
-        } break;
-        case NetSsSgnl::MSG: {
-            if(deserialize(buff, buff_end, &sgnl->msg.contents) != LUX_OK) {
-                return LUX_FAIL;
-            }
-        } break;
-        default: {
-            LUX_LOG("unexpected signal header %u", sgnl->header);
-            return LUX_FAIL;
-        } break;
-    }
-    return LUX_OK;
-}
-
-void serialize(U8** buff, NetSsSgnl const& sgnl) {
-    serialize(buff, (U8 const&)sgnl.header);
-    switch(sgnl.header) {
-        case NetSsSgnl::MAP_LOAD: {
-            serialize(buff, sgnl.map_load);
-        } break;
-        case NetSsSgnl::LIGHT_UPDATE: {
-            serialize(buff, sgnl.light_update);
-        } break;
-        case NetSsSgnl::MSG: {
-            serialize(buff, sgnl.msg.contents);
-        } break;
-        default: LUX_UNREACHABLE();
-    }
-}
-
-SizeT get_real_sz(NetCsSgnl const& sgnl) {
-    SizeT sz = sizeof(NetCsSgnl::Header);
-    switch(sgnl.header) {
-        case NetCsSgnl::MAP_REQUEST: {
-            sz += get_real_sz(sgnl.map_request);
-        } break;
-        case NetCsSgnl::COMMAND: {
-            sz += get_real_sz(sgnl.command);
-        } break;
-        default: LUX_UNREACHABLE();
-    }
-    return sz;
-}
-
-LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, NetCsSgnl* sgnl) {
-    if(deserialize(buff, buff_end, (U8*)&sgnl->header) != LUX_OK) {
-        return LUX_FAIL;
-    }
-    switch(sgnl->header) {
-        case NetCsSgnl::MAP_REQUEST: {
-            if(deserialize(buff, buff_end, &sgnl->map_request) != LUX_OK) {
-                return LUX_FAIL;
-            }
-        } break;
-        case NetCsSgnl::COMMAND: {
-            if(deserialize(buff, buff_end, &sgnl->command) != LUX_OK) {
-                return LUX_FAIL;
-            }
-        } break;
-        default: {
-            LUX_LOG("unexpected signal header %u", sgnl->header);
-            return LUX_FAIL;
-        } break;
-    }
-    return LUX_OK;
-}
-
-void serialize(U8** buff, NetCsSgnl const& sgnl) {
-    serialize(buff, (U8 const&)sgnl.header);
-    switch(sgnl.header) {
-        case NetCsSgnl::MAP_REQUEST: {
-            serialize(buff, sgnl.map_request);
-        } break;
-        case NetCsSgnl::COMMAND: {
-            serialize(buff, sgnl.command);
-        } break;
-        default: LUX_UNREACHABLE();
-    }
-}

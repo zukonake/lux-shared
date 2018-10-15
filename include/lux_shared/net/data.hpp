@@ -35,12 +35,12 @@ struct NetSsSgnl {
     struct Msg {
         DynArr<char> contents;
     };
-    enum Header : U8 {
+    enum Tag : U8 {
         MAP_LOAD     = 0x00,
         LIGHT_UPDATE = 0x01,
         MSG          = 0x02,
-        HEADER_MAX,
-    } header;
+        TAG_MAX,
+    } tag;
 
     MapLoad     map_load;
     LightUpdate light_update;
@@ -70,11 +70,11 @@ struct NetCsSgnl {
     struct Command {
         DynArr<char> contents;
     };
-    enum Header : U8 {
+    enum Tag : U8 {
         MAP_REQUEST = 0x00,
         COMMAND     = 0x01,
-        HEADER_MAX,
-    } header;
+        TAG_MAX,
+    } tag;
 
     MapRequest map_request;
     Command    command;

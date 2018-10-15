@@ -102,6 +102,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
     U32 len;
     if(deserialize(buff, buff_end, &len) != LUX_OK ||
        buff_sz_at_least(len * sizeof(K), *buff, buff_end) != LUX_OK) {
+        LUX_LOG("failed to deserialize hash set");
         return LUX_FAIL;
     }
     for(Uns i = 0; i < len; ++i) {
@@ -142,6 +143,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
     if constexpr(HasStaticSz<V>::val) {
         if(buff_sz_at_least(len * (sizeof(K) + sizeof(V)), *buff, buff_end)
                != LUX_OK) {
+            LUX_LOG("failed to deserialize hash map");
             return LUX_FAIL;
         }
         for(Uns i = 0; i < len; ++i) {
@@ -154,6 +156,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
             K key;
             if(deserialize(buff, buff_end, &key)      != LUX_OK ||
                deserialize(buff, buff_end, &(*val)[key]) != LUX_OK) {
+                LUX_LOG("failed to deserialize hash map");
                 return LUX_FAIL;
             }
         }
@@ -191,6 +194,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, DynArr<T>* val) {
     val->resize(len);
     if constexpr(HasStaticSz<T>::val) {
         if(buff_sz_at_least(len * sizeof(T), *buff, buff_end) != LUX_OK) {
+            LUX_LOG("failed to deserialize dynamic array");
             return LUX_FAIL;
         }
         for(Uns i = 0; i < len; ++i) {
@@ -199,6 +203,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, DynArr<T>* val) {
     } else {
         for(Uns i = 0; i < len; ++i) {
             if(deserialize(buff, buff_end, val->data() + i) != LUX_OK) {
+                LUX_LOG("failed to deserialize dynamic array");
                 return LUX_FAIL;
             }
         }
@@ -235,6 +240,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
                          Arr<T, len>* val) {
     if constexpr(HasStaticSz<T>::val) {
         if(buff_sz_at_least(len * sizeof(T), *buff, buff_end) != LUX_OK) {
+            LUX_LOG("failed to deserialize array");
             return LUX_FAIL;
         }
         for(Uns i = 0; i < len; ++i) {
@@ -242,7 +248,10 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
         }
     } else {
         for(Uns i = 0; i < len; ++i) {
-            if(deserialize(buff, buff_end, *val + i) != LUX_OK) return LUX_FAIL;
+            if(deserialize(buff, buff_end, *val + i) != LUX_OK) {
+                LUX_LOG("failed to deserialize array");
+                return LUX_FAIL;
+            }
         }
     }
     return LUX_OK;
