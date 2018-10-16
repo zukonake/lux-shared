@@ -17,15 +17,16 @@ Deferrer<F> operator*(DeferDummy, F f) { return {f}; }
 #define LUX_DEFER_1(LINE) LUX_DEFER_0(LINE)
 #define LUX_DEFER auto LUX_DEFER_1(__LINE__) = DeferDummy { } *[&]()
 
-enum LuxRval : Int {
-    LUX_OK   = 0,
-    LUX_FAIL = -1,
+enum LuxRval : bool {
+    LUX_FAIL = false,
+    LUX_OK   = true,
 };
-
-#define LUX_MAY_FAIL [[nodiscard]] LuxRval
 
 #define LUX_LOG(fmt, ...) { \
     std::printf("%s(): " fmt "\n", __func__ __VA_OPT__(,) __VA_ARGS__); }
+
+#define LUX_ERR_LOG(fmt, ...) { \
+    std::printf("ERROR %s(): " fmt "\n", __func__ __VA_OPT__(,) __VA_ARGS__); }
 
 #define LUX_FATAL(fmt, ...) { \
     std::fprintf(stderr, "FATAL %s(): " fmt "\n", \
@@ -36,6 +37,13 @@ enum LuxRval : Int {
     std::fprintf(stderr, "PANIC %s(): " fmt "\n", \
             __func__ __VA_OPT__(,) __VA_ARGS__); \
     std::abort(); }
+
+#define LUX_MAY_FAIL [[nodiscard]] LuxRval
+#define LUX_RETHROW(expr, ...) { \
+    if((expr) != LUX_OK) { \
+        LUX_ERR_LOG(__VA_ARGS__); \
+        return LUX_FAIL; \
+    } }
 
 #ifndef NDEBUG
     #define LUX_ASSERT(expr) { \

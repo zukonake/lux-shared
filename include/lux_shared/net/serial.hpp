@@ -125,7 +125,7 @@ SizeT get_real_sz(T const& val) {
 template<typename T>
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, T* val) {
     static_assert(HasStaticSz<T>::val);
-    if(buff_sz_at_least(sizeof(T), *buff, buff_end) != LUX_OK) return LUX_FAIL;
+    LUX_RETHROW(buff_sz_at_least(sizeof(T), *buff, buff_end));
     net_order(val, (T const*)*buff);
     *buff += sizeof(T);
     return LUX_OK;
@@ -149,11 +149,9 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
                          HashSet<K, Hasher>* val) {
     static_assert(HasStaticSz<K>::val);
     U32 len;
-    if(deserialize(buff, buff_end, &len) != LUX_OK ||
-       buff_sz_at_least(len * sizeof(K), *buff, buff_end) != LUX_OK) {
-        LUX_LOG("failed to deserialize hash set");
-        return LUX_FAIL;
-    }
+    LUX_RETHROW(deserialize(buff, buff_end, &len) &&
+                buff_sz_at_least(len * sizeof(K), *buff, buff_end),
+                "failed to deserialize hash set");
     for(Uns i = 0; i < len; ++i) {
         K key;
         (void)deserialize(buff, buff_end, &key);
@@ -188,13 +186,12 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
                          HashMap<K, V, Hasher>* val) {
     static_assert(HasStaticSz<K>::val);
     U32 len;
-    if(deserialize(buff, buff_end, &len) != LUX_OK) return LUX_FAIL;
+    LUX_RETHROW(deserialize(buff, buff_end, &len),
+                "failed to deserialize hash map length");
     if constexpr(HasStaticSz<V>::val) {
-        if(buff_sz_at_least(len * (sizeof(K) + sizeof(V)), *buff, buff_end)
-               != LUX_OK) {
-            LUX_LOG("failed to deserialize hash map");
-            return LUX_FAIL;
-        }
+        LUX_RETHROW(buff_sz_at_least(len * (sizeof(K) + sizeof(V)),
+                                     *buff, buff_end),
+                    "failed to deserialize hash map");
         for(Uns i = 0; i < len; ++i) {
             K key;
             (void)deserialize(buff, buff_end, &key);
@@ -203,11 +200,9 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
     } else {
         for(Uns i = 0; i < len; ++i) {
             K key;
-            if(deserialize(buff, buff_end, &key)      != LUX_OK ||
-               deserialize(buff, buff_end, &(*val)[key]) != LUX_OK) {
-                LUX_LOG("failed to deserialize hash map");
-                return LUX_FAIL;
-            }
+            LUX_RETHROW(deserialize(buff, buff_end, &key) &&
+                        deserialize(buff, buff_end, &(*val)[key]),
+                        "failed to deserialize hash map");
         }
     }
     return LUX_OK;
@@ -239,22 +234,19 @@ SizeT get_real_sz(DynArr<T> const& val) {
 template<typename T>
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, DynArr<T>* val) {
     U32 len;
-    if(deserialize(buff, buff_end, &len) != LUX_OK) return LUX_FAIL;
+    LUX_RETHROW(deserialize(buff, buff_end, &len),
+                "failed to deserialize dynamic array length");
     val->resize(len);
     if constexpr(HasStaticSz<T>::val) {
-        if(buff_sz_at_least(len * sizeof(T), *buff, buff_end) != LUX_OK) {
-            LUX_LOG("failed to deserialize dynamic array");
-            return LUX_FAIL;
-        }
+        LUX_RETHROW(buff_sz_at_least(len * sizeof(T), *buff, buff_end),
+                    "failed to deserialize dynamic array");
         for(Uns i = 0; i < len; ++i) {
             (void)deserialize(buff, buff_end, val->data() + i);
         }
     } else {
         for(Uns i = 0; i < len; ++i) {
-            if(deserialize(buff, buff_end, val->data() + i) != LUX_OK) {
-                LUX_LOG("failed to deserialize dynamic array");
-                return LUX_FAIL;
-            }
+            LUX_RETHROW(deserialize(buff, buff_end, val->data() + i),
+                        "failed to deserialize dynamic array");
         }
     }
     return LUX_OK;
@@ -288,19 +280,15 @@ template<typename T, SizeT len>
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
                          Arr<T, len>* val) {
     if constexpr(HasStaticSz<T>::val) {
-        if(buff_sz_at_least(len * sizeof(T), *buff, buff_end) != LUX_OK) {
-            LUX_LOG("failed to deserialize array");
-            return LUX_FAIL;
-        }
+        LUX_RETHROW(buff_sz_at_least(len * sizeof(T), *buff, buff_end),
+                    "failed to deserialize array");
         for(Uns i = 0; i < len; ++i) {
             (void)deserialize<T>(buff, buff_end, *val + i);
         }
     } else {
         for(Uns i = 0; i < len; ++i) {
-            if(deserialize(buff, buff_end, *val + i) != LUX_OK) {
-                LUX_LOG("failed to deserialize array");
-                return LUX_FAIL;
-            }
+            LUX_RETHROW(deserialize(buff, buff_end, *val + i),
+                        "failed to deserialize array");
         }
     }
     return LUX_OK;

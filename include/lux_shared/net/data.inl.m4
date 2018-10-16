@@ -22,9 +22,7 @@ void clear_net_data($1* val) {
 }
 
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
-    if(buff_sz_at_least(sizeof($1), *buff, buff_end) != LUX_OK) {
-        return LUX_FAIL;
-    }dnl
+    LUX_RETHROW(buff_sz_at_least(sizeof($1), *buff, buff_end));dnl
     m4_formember(`$@', `
     (void)deserialize(buff, buff_end, &val->member);')
     return LUX_OK;
@@ -50,11 +48,9 @@ SizeT get_real_sz($1 const& val) {
 }
 
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
-    if(m4_formember(`$@',`
-       deserialize(buff, buff_end, &val->member) != LUX_OK ||')
-       false) {
-       return LUX_FAIL;
-    }
+    LUX_RETHROW(m4_formember(`$@',`
+       deserialize(buff, buff_end, &val->member) &&')
+       true);
     return LUX_OK;
 }
 
@@ -87,15 +83,14 @@ SizeT get_real_sz($1 const& val) {
 }
 
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
-    if(deserialize(buff, buff_end, (U8*)&val->tag) != LUX_OK) {
-        return LUX_FAIL;
-    }
+    LUX_RETHROW(deserialize(buff, buff_end, (U8*)&val->tag),
+                "failed to deserialize $1 tag");
     switch(val->tag) {dnl
         m4_formember(`$@', `
         case $1::translit(member, `a-z', `A-Z'):
             return deserialize(buff, buff_end, &val->member);')
         default:
-            LUX_LOG("unexpected packet tag %u", val->tag);
+            LUX_ERR_LOG("unexpected packet tag %u for $1", val->tag);
             return LUX_FAIL;
     }
 }
