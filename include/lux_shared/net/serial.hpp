@@ -37,12 +37,15 @@ struct HasStaticSz<Vec<T, len>> {
 
 template<typename T>
 void clear_net_data(T* val);
-template<typename F, typename S>
-void clear_net_data(std::pair<F, S>* val);
-template<template<typename> typename Container, typename ...T>
-void clear_net_data(Container<T...>* val);
-template<template<typename, SizeT> typename Container, typename T, SizeT len>
-void clear_net_data(Container<T, len>* val);
+template<typename K, typename Hasher>
+void clear_net_data(HashSet<K, Hasher>* val);
+template<typename K, typename V, typename Hasher>
+void clear_net_data(HashMap<K, V, Hasher>* val);
+template<typename T>
+void clear_net_data(DynArr<T>* val);
+template<typename T, SizeT len>
+void clear_net_data(Arr<T, len>* val);
+
 template<typename T>
 SizeT get_real_sz(T const& val);
 template<typename K, typename Hasher>
@@ -80,29 +83,36 @@ void serialize(U8** buff, Arr<T, len> const&);
 
 template<typename T>
 void clear_net_data(T* val) {
+    static_assert(HasStaticSz<T>::val);
     (void)val;
 }
 
-template<typename F, typename S>
-void clear_net_data(std::pair<F, S>* val) {
-    clear_net_data(&val->first);
-    clear_net_data(&val->second);
+template<typename K, typename Hasher>
+void clear_net_data(HashSet<K, Hasher>* val) {
+    val->clear();
 }
 
-template<template<typename> typename Container, typename ...T>
-void clear_net_data(Container<T...>* val) {
-    for(auto it = std::begin(*val); it != std::end(*val); ++it) {
-        clear_net_data(&*it);
+template<typename K, typename V, typename Hasher>
+void clear_net_data(HashMap<K, V, Hasher>* val) {
+    for(auto& it : *val) {
+        clear_net_data(&it.second);
     }
     val->clear();
 }
 
-template<template<typename, SizeT> typename Container, typename T, SizeT len>
-void clear_net_data(Container<T, len>* val) {
+template<typename T>
+void clear_net_data(DynArr<T>* val) {
+    for(auto& it : *val) {
+        clear_net_data(&it);
+    }
+    val->clear();
+}
+
+template<typename T, SizeT len>
+void clear_net_data(Arr<T, len>* val) {
     for(Uns i = 0; i < len; ++i) {
-        clear_net_data(&(*val)[i]);
+        clear_net_data(*val + i);
     }
-    val->clear();
 }
 
 template<typename T>

@@ -73,7 +73,7 @@ void clear_net_data($1* val) {
             m4_formember(`$@', `
             clear_net_data(&val->member);')
             break;')
-        default: LUX_UNREACHABLE();
+        default: break;
     }
 }
 
