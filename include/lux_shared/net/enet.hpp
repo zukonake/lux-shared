@@ -11,16 +11,17 @@ LUX_MAY_FAIL create_reliable_pack(ENetPacket*& pack, SizeT sz);
 LUX_MAY_FAIL create_unreliable_pack(ENetPacket*& pack, SizeT sz);
 
 template<typename T>
-LUX_MAY_FAIL send_net_data(ENetPeer* peer, T const& data, U8 channel) {
+LUX_MAY_FAIL send_net_data(ENetPeer* peer, T* data, U8 channel) {
     ENetPacket* out_pack;
-    if(create_reliable_pack(out_pack, get_real_sz(data) + sizeof(NetMagic))
+    if(create_reliable_pack(out_pack, get_real_sz(*data) + sizeof(NetMagic))
         != LUX_OK) {
         return LUX_FAIL;
     }
 
     U8* buff = out_pack->data;
     serialize(&buff, net_magic);
-    serialize(&buff, data);
+    serialize(&buff, *data);
+    clear_net_data(data);
     LUX_ASSERT(buff == out_pack->data + out_pack->dataLength);
     if(send_packet(peer, out_pack, channel) != LUX_OK) return LUX_FAIL;
     return LUX_OK;
