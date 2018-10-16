@@ -16,6 +16,11 @@ dnl
 ifelse(`$2', `static', `dnl
 
 template<> struct HasStaticSz<$1> { bool static constexpr val = true; };
+void clear_net_data($1* val) {
+    m4_formember(`$@', `
+    clear_net_data(&val->member);')
+}
+
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
     if(buff_sz_at_least(sizeof($1), *buff, buff_end) != LUX_OK) {
         return LUX_FAIL;
@@ -32,6 +37,11 @@ void serialize(U8** buff, $1 const& val) {dnl
 dnl
 dnl
 ifelse(`$2', `dynamic', `dnl
+
+void clear_net_data($1* val) {
+    m4_formember(`$@', `
+    clear_net_data(&val->member);')
+}
 
 SizeT get_real_sz($1 const& val) {
     return m4_formember(`$@', `
@@ -55,6 +65,18 @@ void serialize(U8** buff, $1 const& val) {dnl
 dnl
 dnl
 ifelse(`$2', `tagged', `dnl
+
+void clear_net_data($1* val) {
+    switch(val->tag) {dnl
+        m4_formember(`$@', `
+        case $1::translit(member, `a-z', `A-Z'):
+            m4_formember(`$@', `
+            clear_net_data(&val->member);')
+            break;')
+        default: LUX_UNREACHABLE();
+    }
+}
+
 SizeT get_real_sz($1 const& val) {
     switch(val.tag) {dnl
         m4_formember(`$@', `

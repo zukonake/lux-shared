@@ -21,6 +21,10 @@ template<> struct HasStaticSz<I64>  { bool static constexpr val = true; };
 template<> struct HasStaticSz<F32>  { bool static constexpr val = true; };
 template<> struct HasStaticSz<F64>  { bool static constexpr val = true; };
 
+template<typename F, typename S>
+struct HasStaticSz<std::pair<F, S>> {
+    bool static constexpr val = HasStaticSz<F>::val && HasStaticSz<S>::val;
+};
 template<typename T, SizeT len>
 struct HasStaticSz<Arr<T, len>> {
     bool static constexpr val = HasStaticSz<T>::val;
@@ -31,6 +35,14 @@ struct HasStaticSz<Vec<T, len>> {
     bool static constexpr val = true;
 };
 
+template<typename T>
+void clear_net_data(T* val);
+template<typename F, typename S>
+void clear_net_data(std::pair<F, S>* val);
+template<template<typename> typename Container, typename ...T>
+void clear_net_data(Container<T...>* val);
+template<template<typename, SizeT> typename Container, typename T, SizeT len>
+void clear_net_data(Container<T, len>* val);
 template<typename T>
 SizeT get_real_sz(T const& val);
 template<typename K, typename Hasher>
@@ -65,6 +77,33 @@ template<typename T, I32 len>
 void serialize(U8** buff, Vec<T, len> const&);
 template<typename T, SizeT len>
 void serialize(U8** buff, Arr<T, len> const&);
+
+template<typename T>
+void clear_net_data(T* val) {
+    (void)val;
+}
+
+template<typename F, typename S>
+void clear_net_data(std::pair<F, S>* val) {
+    clear_net_data(&val->first);
+    clear_net_data(&val->second);
+}
+
+template<template<typename> typename Container, typename ...T>
+void clear_net_data(Container<T...>* val) {
+    for(auto it = std::begin(*val); it != std::end(*val); ++it) {
+        clear_net_data(&*it);
+    }
+    val->clear();
+}
+
+template<template<typename, SizeT> typename Container, typename T, SizeT len>
+void clear_net_data(Container<T, len>* val) {
+    for(Uns i = 0; i < len; ++i) {
+        clear_net_data(&(*val)[i]);
+    }
+    val->clear();
+}
 
 template<typename T>
 SizeT get_real_sz(T const& val) {

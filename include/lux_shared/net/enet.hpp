@@ -28,6 +28,7 @@ LUX_MAY_FAIL send_net_data(ENetPeer* peer, T const& data, U8 channel) {
 
 template<typename T>
 LUX_MAY_FAIL deserialize_packet(ENetPacket* in_pack, T* data) {
+    clear_net_data(data);
     U8 const* iter = in_pack->data;
     U8 const* end  = in_pack->data + in_pack->dataLength;
     NetMagic magic;
