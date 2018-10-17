@@ -6,24 +6,22 @@
 template<typename T>
 class SparseDynArr {
     public:
-    class Iter {
+    struct Iter {
         public:
-        Iter(T* ptr, SparseDynArr<T>& arr);
         Iter& operator++();
         bool operator!=(Iter const& other);
         T& operator*();
-        private:
-        T* ptr;
+
+        SizeT idx;
         SparseDynArr<T>& arr;
     };
-    class CIter {
+    struct CIter {
         public:
-        CIter(T const* ptr, SparseDynArr<T> const& arr);
         CIter& operator++();
         bool operator!=(CIter const& other);
         T const& operator*();
-        private:
-        T const* ptr;
+
+        SizeT idx;
         SparseDynArr<T> const& arr;
     };
     friend class Iter;
@@ -117,75 +115,55 @@ SizeT SparseDynArr<T>::size() const {
 
 template<typename T>
 typename SparseDynArr<T>::Iter SparseDynArr<T>::begin() {
-    return {data.data(), *this};
+    return {0, *this};
 }
 
 template<typename T>
 typename SparseDynArr<T>::CIter SparseDynArr<T>::cbegin() const {
-    return {data.data(), *this};
+    return {0, *this};
 }
 
 template<typename T>
 typename SparseDynArr<T>::Iter SparseDynArr<T>::end() {
-    return {data.data() + data.size(), *this};
+    return {data.size(), *this};
 }
 
 template<typename T>
 typename SparseDynArr<T>::CIter SparseDynArr<T>::cend() const {
-    return {data.data() + data.size(), *this};
-}
-
-template<typename T>
-SparseDynArr<T>::Iter::Iter(T* ptr, SparseDynArr<T>& arr) :
-    ptr(ptr),
-    arr(arr) {
-
+    return {data.size(), *this};
 }
 
 template<typename T>
 typename SparseDynArr<T>::Iter& SparseDynArr<T>::Iter::operator++() {
-    ++ptr;
-    SizeT idx = ptr - arr.data.data();
-    SizeT new_idx = std::find(arr.slots.begin() + idx,
-                              arr.slots.end(), true) - arr.slots.begin();
-    ptr = arr.data.data() + new_idx;
+    idx = std::find(arr.slots.begin() + idx + 1,
+                    arr.slots.end(), true) - arr.slots.begin();
     return *this;
 }
 
 template<typename T>
 bool SparseDynArr<T>::Iter::operator!=(Iter const& other) {
-    return ptr != other.ptr;
+    return idx != other.idx;
 }
 
 
 template<typename T>
 T& SparseDynArr<T>::Iter::operator*() {
-    return *ptr;
-}
-
-template<typename T>
-SparseDynArr<T>::CIter::CIter(T const* ptr, SparseDynArr<T> const& arr) :
-    ptr(ptr),
-    arr(arr) {
-
+    return arr[idx];
 }
 
 template<typename T>
 typename SparseDynArr<T>::CIter& SparseDynArr<T>::CIter::operator++() {
-    ++ptr;
-    SizeT idx = ptr - arr.data.data();
-    SizeT new_idx = std::find(arr.slots.cbegin() + idx,
-                              arr.slots.cend(), true) - arr.slots.cbegin();
-    ptr = arr.data.data() + new_idx;
+    idx = std::find(arr.slots.cbegin() + idx + 1,
+                    arr.slots.cend(), true) - arr.slots.cbegin();
     return *this;
 }
 
 template<typename T>
 bool SparseDynArr<T>::CIter::operator!=(CIter const& other) {
-    return ptr != other.ptr;
+    return idx != other.idx;
 }
 
 template<typename T>
 T const& SparseDynArr<T>::CIter::operator*() {
-    return *ptr;
+    return arr[idx];
 }
