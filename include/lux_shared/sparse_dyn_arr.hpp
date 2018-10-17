@@ -13,7 +13,7 @@ class SparseDynArr {
         T& operator*();
 
         SizeT idx;
-        SparseDynArr<T>& arr;
+        SparseDynArr<T>* arr;
     };
     struct CIter {
         public:
@@ -22,7 +22,7 @@ class SparseDynArr {
         T const& operator*();
 
         SizeT idx;
-        SparseDynArr<T> const& arr;
+        SparseDynArr<T> const* arr;
     };
     friend class Iter;
     friend class CIter;
@@ -115,28 +115,30 @@ SizeT SparseDynArr<T>::size() const {
 
 template<typename T>
 typename SparseDynArr<T>::Iter SparseDynArr<T>::begin() {
-    return {0, *this};
+    return {(SizeT)(std::find(slots.begin(),
+                              slots.end(), true) - slots.begin()), this};
 }
 
 template<typename T>
 typename SparseDynArr<T>::CIter SparseDynArr<T>::cbegin() const {
-    return {0, *this};
+    return {(SizeT)(std::find(slots.cbegin(),
+                              slots.cend(), true) - slots.cbegin()), this};
 }
 
 template<typename T>
 typename SparseDynArr<T>::Iter SparseDynArr<T>::end() {
-    return {data.size(), *this};
+    return {data.size(), this};
 }
 
 template<typename T>
 typename SparseDynArr<T>::CIter SparseDynArr<T>::cend() const {
-    return {data.size(), *this};
+    return {data.size(), this};
 }
 
 template<typename T>
 typename SparseDynArr<T>::Iter& SparseDynArr<T>::Iter::operator++() {
-    idx = std::find(arr.slots.begin() + idx + 1,
-                    arr.slots.end(), true) - arr.slots.begin();
+    idx = std::find(arr->slots.begin() + idx + 1,
+                    arr->slots.end(), true) - arr->slots.begin();
     return *this;
 }
 
@@ -148,13 +150,13 @@ bool SparseDynArr<T>::Iter::operator!=(Iter const& other) {
 
 template<typename T>
 T& SparseDynArr<T>::Iter::operator*() {
-    return arr[idx];
+    return (*arr)[idx];
 }
 
 template<typename T>
 typename SparseDynArr<T>::CIter& SparseDynArr<T>::CIter::operator++() {
-    idx = std::find(arr.slots.cbegin() + idx + 1,
-                    arr.slots.cend(), true) - arr.slots.cbegin();
+    idx = std::find(arr->slots.cbegin() + idx + 1,
+                    arr->slots.cend(), true) - arr->slots.cbegin();
     return *this;
 }
 
@@ -165,5 +167,5 @@ bool SparseDynArr<T>::CIter::operator!=(CIter const& other) {
 
 template<typename T>
 T const& SparseDynArr<T>::CIter::operator*() {
-    return arr[idx];
+    return (*arr)[idx];
 }
