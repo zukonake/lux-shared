@@ -8,8 +8,21 @@ set(LUX_SHARED_VERSION_PATCH 0)
 set(CMAKE_CXX_STANDARD 17)
 
 configure_file("${PROJECT_SOURCE_DIR}/config.h.in"
-               "${PROJECT_BINARY_DIR}/include/lux/config.h")
+               "${PROJECT_BINARY_DIR}/include/lux_shared/config.h")
 
 include_directories(SYSTEM "include" "${PROJECT_BINARY_DIR}/include")
+file(GLOB_RECURSE m4_files RELATIVE "${PROJECT_SOURCE_DIR}" "*.m4")
+foreach(m4_file IN LISTS m4_files)
+    string(REPLACE ".m4" "" out_file ${m4_file})
+    string(CONCAT out_file ${PROJECT_BINARY_DIR}/ ${out_file})
+    string(CONCAT m4_file ${PROJECT_SOURCE_DIR}/ ${m4_file})
+    get_filename_component(out_dir ${out_file} DIRECTORY)
+    file(MAKE_DIRECTORY ${out_dir})
+    add_custom_command(OUTPUT ${out_file}
+                       COMMAND m4 ${m4_file} > ${out_file}
+                       VERBATIM)
+    list(APPEND m4_out_files ${out_file})
+endforeach(m4_file)
+
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-add_library(lux STATIC ${SOURCES})
+add_library(lux STATIC ${SOURCES} ${m4_out_files})
