@@ -173,7 +173,7 @@ SizeT get_real_sz(HashMap<K, V, Hasher> const& val) {
     if constexpr(HasStaticSz<V>::val) {
         return sizeof(U32) + val.size() * (sizeof(K) + sizeof(V));
     } else {
-        SizeT sz = val.size() * sizeof(K);
+        SizeT sz = sizeof(U32) + val.size() * sizeof(K);
         for(auto const& x : val) {
             sz += get_real_sz(x.second);
         }
