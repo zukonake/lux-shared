@@ -42,6 +42,9 @@ LUX_MAY_FAIL deserialize_packet(ENetPacket* in_pack, T* data) {
     }
     LUX_RETHROW(deserialize(&iter, end, data), "failed to deserialize packet");
     //@TODO LUX_HEX_DUMP or something
-    LUX_ASSERT(iter == end);
+    if(iter < end) {
+        LUX_LOG("trailing %zuB after deserialization", end - iter);
+        return LUX_FAIL;
+    }
     return LUX_OK;
 }
