@@ -8,6 +8,7 @@ typedef U32 EntityHandle;
 struct EntityComps {
     typedef EntityVec Pos;
     typedef EntityVec Vel;
+    typedef DynArr<char> Name;
     struct Shape {
         F32 rad;
     };
@@ -28,6 +29,7 @@ struct EntityComps {
 
     HashTable<EntityHandle, Pos>          pos;
     HashTable<EntityHandle, Vel>          vel;
+    HashTable<EntityHandle, Name>         name;
     HashTable<EntityHandle, Shape>        shape;
     HashTable<EntityHandle, Visible>      visible;
     HashTable<EntityHandle, Item>         item;

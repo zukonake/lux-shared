@@ -116,7 +116,7 @@ m4_lux_net_data(EntityComps::Item, static, weight)
 m4_lux_net_data(EntityComps::Destructible, static, dur, dur_max)
 m4_lux_net_data(EntityComps::Animated, static, time, time_max)
 m4_lux_net_data(EntityComps, dynamic,
-    pos, vel, shape, visible, item, destructible, animated)
+    pos, vel, name, shape, visible, item, destructible, animated)
 
 m4_lux_net_data(NetSsInit, static, name, tick_rate)
 m4_lux_net_data(NetSsTick, dynamic, player_id, comps)
