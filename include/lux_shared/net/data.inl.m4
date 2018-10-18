@@ -90,7 +90,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
         case $1::translit(member, `a-z', `A-Z'):
             return deserialize(buff, buff_end, &val->member);')
         default:
-            LUX_ERR_LOG("unexpected packet tag %u for $1", val->tag);
+            LUX_LOG_ERR("unexpected packet tag %u for $1", val->tag);
             return LUX_FAIL;
     }
 }

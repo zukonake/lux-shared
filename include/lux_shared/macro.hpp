@@ -25,8 +25,11 @@ enum LuxRval : bool {
 #define LUX_LOG(fmt, ...) { \
     std::printf("%s(): " fmt "\n", __func__ __VA_OPT__(,) __VA_ARGS__); }
 
-#define LUX_ERR_LOG(fmt, ...) { \
+#define LUX_LOG_ERR(fmt, ...) { \
     std::printf("ERROR %s(): " fmt "\n", __func__ __VA_OPT__(,) __VA_ARGS__); }
+
+#define LUX_LOG_DBG(fmt, ...) { \
+    std::printf("DEBUG %s(): " fmt "\n", __func__ __VA_OPT__(,) __VA_ARGS__); }
 
 #define LUX_FATAL(fmt, ...) { \
     std::fprintf(stderr, "FATAL %s(): " fmt "\n", \
@@ -41,7 +44,7 @@ enum LuxRval : bool {
 #define LUX_MAY_FAIL [[nodiscard]] LuxRval
 #define LUX_RETHROW(expr, ...) { \
     if((expr) != LUX_OK) { \
-        LUX_ERR_LOG(__VA_ARGS__); \
+        LUX_LOG_ERR(__VA_ARGS__); \
         return LUX_FAIL; \
     } }
 

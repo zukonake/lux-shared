@@ -36,14 +36,14 @@ LUX_MAY_FAIL deserialize_packet(ENetPacket* in_pack, T* data) {
     LUX_RETHROW(deserialize(&iter, end, &magic),
         "failed to deserialize magic header");
     if(magic != net_magic) {
-        LUX_ERR_LOG("invalid magic header %04x instead of %04x",
+        LUX_LOG_ERR("invalid magic header %04x instead of %04x",
                     magic, net_magic);
         return LUX_FAIL;
     }
     LUX_RETHROW(deserialize(&iter, end, data), "failed to deserialize packet");
     //@TODO LUX_HEX_DUMP or something
     if(iter < end) {
-        LUX_LOG("trailing %zuB after deserialization", end - iter);
+        LUX_LOG_ERR("trailing %zuB after deserialization", end - iter);
         return LUX_FAIL;
     }
     return LUX_OK;
