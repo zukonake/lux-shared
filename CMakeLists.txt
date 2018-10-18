@@ -20,6 +20,7 @@ foreach(m4_file IN LISTS m4_files)
     file(MAKE_DIRECTORY ${out_dir})
     add_custom_command(OUTPUT ${out_file}
                        COMMAND m4 ${m4_file} > ${out_file}
+                       MAIN_DEPENDENCY ${m4_file}
                        VERBATIM)
     list(APPEND m4_out_files ${out_file})
 endforeach(m4_file)
