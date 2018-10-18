@@ -175,7 +175,7 @@ SizeT get_real_sz(HashMap<K, V, Hasher> const& val) {
     } else {
         SizeT sz = val.size() * sizeof(K);
         for(auto const& x : val) {
-            sz += get_real_sz(x);
+            sz += get_real_sz(x.second);
         }
         return sz;
     }
