@@ -6,8 +6,6 @@
 #include <lux_shared/map.hpp>
 #include <lux_shared/entity.hpp>
 
-//@TODO improve - use buffers
-
 struct NetSsInit {
     Arr<U8, SERVER_NAME_LEN> name;
     U16                 tick_rate;

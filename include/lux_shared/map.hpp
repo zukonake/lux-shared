@@ -7,8 +7,6 @@
             "different than two's complement, testing needed"
 #endif
 
-//TODO static asserts
-
 typedef I64 ChkCoord;
 typedef U16 ChkIdx;
 typedef I64 MapCoord;
