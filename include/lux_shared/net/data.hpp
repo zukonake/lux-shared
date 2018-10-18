@@ -38,7 +38,7 @@ struct NetSsSgnl {
         LIGHT_UPDATE = 0x01,
         MSG          = 0x02,
         TAG_MAX,
-    } tag;
+    } tag = TAG_MAX;
 
     MapLoad     map_load;
     LightUpdate light_update;
@@ -72,7 +72,7 @@ struct NetCsSgnl {
         MAP_REQUEST = 0x00,
         COMMAND     = 0x01,
         TAG_MAX,
-    } tag;
+    } tag = TAG_MAX;
 
     MapRequest map_request;
     Command    command;
