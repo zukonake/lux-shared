@@ -82,6 +82,7 @@ struct NetSsSgnl {
 
 struct NetCsTick {
     Vec2F player_dir;
+    F32   player_aim_angle;
 };
 
 struct NetCsInit {
