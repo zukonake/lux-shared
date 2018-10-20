@@ -10,8 +10,8 @@
 typedef I64 ChkCoord;
 typedef U16 ChkIdx;
 typedef I64 MapCoord;
-typedef Vec3<ChkCoord> ChkPos;
-typedef Vec3<MapCoord> MapPos;
+typedef Vec2<ChkCoord> ChkPos;
+typedef Vec2<MapCoord> MapPos;
 typedef Vec2<ChkIdx>   IdxPos;
 
 typedef U16 VoxelId;
@@ -28,8 +28,7 @@ static_assert(CHK_VOL <= 1 << (sizeof(ChkIdx) * 8));
 inline ChkPos to_chk_pos(MapPos const &map_pos)
 {
     return {(map_pos.x & (I64)~(CHK_SIZE - 1)) >> (I64)CHK_SIZE_EXP,
-            (map_pos.y & (I64)~(CHK_SIZE - 1)) >> (I64)CHK_SIZE_EXP,
-             map_pos.z};
+            (map_pos.y & (I64)~(CHK_SIZE - 1)) >> (I64)CHK_SIZE_EXP};
 }
 
 inline IdxPos to_idx_pos(MapPos const &map_pos)
@@ -57,8 +56,7 @@ inline ChkIdx to_chk_idx(MapPos const &map_pos)
 inline MapPos to_map_pos(ChkPos const &chk_pos, IdxPos const &idx_pos)
 {
     return {(chk_pos.x << (ChkCoord)CHK_SIZE_EXP) | idx_pos.x,
-            (chk_pos.y << (ChkCoord)CHK_SIZE_EXP) | idx_pos.y,
-             chk_pos.z};
+            (chk_pos.y << (ChkCoord)CHK_SIZE_EXP) | idx_pos.y};
 }
 
 inline MapPos to_map_pos(ChkPos const &chk_pos, ChkIdx const &chk_idx)
