@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <vector>
+//
+#include <lux_shared/memory.hpp>
 
 template<typename T>
 class SparseDynArr {
@@ -27,11 +29,12 @@ class SparseDynArr {
     friend class Iter;
     friend class CIter;
 
+    ~SparseDynArr();
+
     template<typename ...Args>
     SizeT emplace(Args &&...args);
     void  erase(SizeT idx);
 
-    void reserve(SizeT len);
     void shrink_to_fit();
 
     T&       operator[](SizeT idx);
@@ -45,69 +48,93 @@ class SparseDynArr {
     Iter   end();
     CIter cend() const;
     private:
-    //@IMPROVE save space with pointers (implicit size, instead of duplication)
-    std::vector<T>    data;
     std::vector<bool> slots;
+    T*                data;
+    SizeT             cap = 0;
 };
+
+template<typename T>
+SparseDynArr<T>::~SparseDynArr() {
+    if(cap > 0) {
+        for(auto it = begin(); it != end(); ++it) {
+            erase(it.idx);
+        }
+        lux_free<T>(data);
+    }
+}
 
 template<typename T>
 template<typename ...Args>
 SizeT SparseDynArr<T>::emplace(Args &&...args) {
     SizeT idx = std::find(slots.cbegin(), slots.cend(), false) - slots.cbegin();
-    if(idx == data.size()) {
-        data.emplace_back(args...);
+    if(idx == slots.size()) {
+        if(cap < idx + 1) {
+            if(cap == 0) {
+                cap  = 1;
+                data = lux_alloc<T>(cap);
+            } else {
+                cap *= 2;
+                T* new_data = lux_alloc<T>(cap);
+                for(auto it = begin(); it != end(); ++it) {
+                    new (new_data + it.idx) T(std::move(*it));
+                    (*it).~T();
+                }
+                lux_free<T>(data);
+                data = new_data;
+            }
+        }
         slots.emplace_back(true);
     } else {
-        new (data.data() + idx) T(args...);
         slots[idx] = true;
     }
+    new (data + idx) T(args...);
     return idx;
 }
 
 template<typename T>
 void SparseDynArr<T>::erase(SizeT idx) {
-    LUX_ASSERT(idx < data.size());
+    LUX_ASSERT(idx < slots.size());
     data[idx].~T();
-    slots[idx] = false;
-}
-
-template<typename T>
-void SparseDynArr<T>::reserve(SizeT len) {
-    data.reserve(len);
-    slots.reserve(len);
+    if(idx == slots.size() - 1) {
+        slots.pop_back();
+    }
+    else slots[idx] = false;
 }
 
 template<typename T>
 void SparseDynArr<T>::shrink_to_fit() {
-    data.shrink_to_fit();
-    SizeT last_full_idx =
-        std::find(slots.crbegin(), slots.crend(), true) - slots.crbegin();
-    slots.resize(last_full_idx + 1);
+    if(slots.size() == 0) {
+        lux_free<T>(data);
+        data = nullptr;
+    } else {
+        data = lux_realloc<T>(data, slots.size());
+    }
+    cap = slots.size();
     slots.shrink_to_fit();
 }
 
 template<typename T>
 T& SparseDynArr<T>::operator[](SizeT idx) {
-    LUX_ASSERT(idx < data.size());
+    LUX_ASSERT(idx < slots.size());
     return data[idx];
 }
 
 template<typename T>
 T const& SparseDynArr<T>::operator[](SizeT idx) const {
-    LUX_ASSERT(idx < data.size());
+    LUX_ASSERT(idx < slots.size());
     return data[idx];
 }
 
 template<typename T>
 bool SparseDynArr<T>::contains(SizeT idx) const {
-    if(idx >= data.size()) return false;
+    if(idx >= slots.size()) return false;
     return slots[idx];
 }
 
 template<typename T>
 SizeT SparseDynArr<T>::size() const {
     SizeT size = 0;
-    for(Uns i = 0; i < data.size(); ++i) {
+    for(Uns i = 0; i < slots.size(); ++i) {
         size += slots[i];
     }
     return size;
@@ -127,12 +154,12 @@ typename SparseDynArr<T>::CIter SparseDynArr<T>::cbegin() const {
 
 template<typename T>
 typename SparseDynArr<T>::Iter SparseDynArr<T>::end() {
-    return {data.size(), this};
+    return {slots.size(), this};
 }
 
 template<typename T>
 typename SparseDynArr<T>::CIter SparseDynArr<T>::cend() const {
-    return {data.size(), this};
+    return {slots.size(), this};
 }
 
 template<typename T>
