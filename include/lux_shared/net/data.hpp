@@ -12,8 +12,42 @@ struct NetSsInit {
 };
 
 struct NetSsTick {
+    struct EntityComps {
+        typedef EntityVec Pos;
+        typedef DynArr<char> Name;
+        struct Visible {
+            U32   visible_id;
+            Vec2F quad_sz;
+        };
+        struct Item {
+            F32 weight;
+        };
+        struct Destructible {
+            F32 dur;
+            F32 dur_max;
+        };
+        struct Health {
+            F32 hp;
+            F32 hp_max;
+        };
+        struct Container {
+            DynArr<EntityHandle> items;
+        };
+        struct Orientation {
+            F32 angle; ///in radians
+        };
+
+        HashTable<EntityHandle, Pos>          pos;
+        HashTable<EntityHandle, Name>         name;
+        HashTable<EntityHandle, Visible>      visible;
+        HashTable<EntityHandle, Item>         item;
+        HashTable<EntityHandle, Destructible> destructible;
+        HashTable<EntityHandle, Health>       health;
+        HashTable<EntityHandle, Container>    container;
+        HashTable<EntityHandle, Orientation>  orientation;
+    };
     EntityHandle player_id;
-    EntityComps  comps;
+    EntityComps  entity_comps;
 };
 
 struct NetSsSgnl {

@@ -110,16 +110,16 @@ divert(0)dnl
 #include <lux_shared/net/serial.hpp>
 #include <lux_shared/net/data.hpp>
 
-m4_lux_net_data(EntityComps::Shape, static, rad)
-m4_lux_net_data(EntityComps::Visible, static, texture_id)
-m4_lux_net_data(EntityComps::Item, static, weight)
-m4_lux_net_data(EntityComps::Destructible, static, dur, dur_max)
-m4_lux_net_data(EntityComps::Animated, static, time, time_max)
-m4_lux_net_data(EntityComps, dynamic,
-    pos, vel, name, shape, visible, item, destructible, animated)
-
 m4_lux_net_data(NetSsInit, static, name, tick_rate)
-m4_lux_net_data(NetSsTick, dynamic, player_id, comps)
+m4_lux_net_data(NetSsTick::EntityComps::Visible, static, visible_id, quad_sz)
+m4_lux_net_data(NetSsTick::EntityComps::Item, static, weight)
+m4_lux_net_data(NetSsTick::EntityComps::Destructible, static, dur, dur_max)
+m4_lux_net_data(NetSsTick::EntityComps::Health, static, hp, hp_max)
+m4_lux_net_data(NetSsTick::EntityComps::Container, dynamic, items)
+m4_lux_net_data(NetSsTick::EntityComps::Orientation, static, angle)
+m4_lux_net_data(NetSsTick::EntityComps, dynamic,
+    pos, name, visible, item, destructible, health, container, orientation)
+m4_lux_net_data(NetSsTick, dynamic, player_id, entity_comps)
 m4_lux_net_data(NetSsSgnl::MapLoad::Chunk, static, voxels, light_lvls)
 m4_lux_net_data(NetSsSgnl::MapLoad, dynamic, chunks)
 m4_lux_net_data(NetSsSgnl::LightUpdate::Chunk, static, light_lvls)
