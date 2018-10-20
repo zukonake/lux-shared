@@ -46,8 +46,9 @@ struct NetSsTick {
         HashTable<EntityHandle, Container>    container;
         HashTable<EntityHandle, Orientation>  orientation;
     };
-    EntityHandle player_id;
-    EntityComps  entity_comps;
+    EntityHandle         player_id;
+    EntityComps          entity_comps;
+    DynArr<EntityHandle> entities;
 };
 
 struct NetSsSgnl {

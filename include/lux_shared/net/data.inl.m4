@@ -119,7 +119,7 @@ m4_lux_net_data(NetSsTick::EntityComps::Container, dynamic, items)
 m4_lux_net_data(NetSsTick::EntityComps::Orientation, static, angle)
 m4_lux_net_data(NetSsTick::EntityComps, dynamic,
     pos, name, visible, item, destructible, health, container, orientation)
-m4_lux_net_data(NetSsTick, dynamic, player_id, entity_comps)
+m4_lux_net_data(NetSsTick, dynamic, player_id, entity_comps, entities)
 m4_lux_net_data(NetSsSgnl::MapLoad::Chunk, static, voxels, light_lvls)
 m4_lux_net_data(NetSsSgnl::MapLoad, dynamic, chunks)
 m4_lux_net_data(NetSsSgnl::LightUpdate::Chunk, static, light_lvls)
