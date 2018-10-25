@@ -31,24 +31,24 @@ struct NetSsTick {
             F32 hp_max;
         };
         struct Container {
-            DynArr<EntityHandle> items;
+            DynArr<EntityId> items;
         };
         struct Orientation {
             F32 angle; ///in radians
         };
 
-        HashTable<EntityHandle, Pos>          pos;
-        HashTable<EntityHandle, Name>         name;
-        HashTable<EntityHandle, Visible>      visible;
-        HashTable<EntityHandle, Item>         item;
-        HashTable<EntityHandle, Destructible> destructible;
-        HashTable<EntityHandle, Health>       health;
-        HashTable<EntityHandle, Container>    container;
-        HashTable<EntityHandle, Orientation>  orientation;
+        HashTable<EntityId, Pos>          pos;
+        HashTable<EntityId, Name>         name;
+        HashTable<EntityId, Visible>      visible;
+        HashTable<EntityId, Item>         item;
+        HashTable<EntityId, Destructible> destructible;
+        HashTable<EntityId, Health>       health;
+        HashTable<EntityId, Container>    container;
+        HashTable<EntityId, Orientation>  orientation;
     };
-    EntityHandle         player_id;
-    EntityComps          entity_comps;
-    DynArr<EntityHandle> entities;
+    EntityId         player_id;
+    EntityComps      entity_comps;
+    DynArr<EntityId> entities;
 };
 
 struct NetSsSgnl {

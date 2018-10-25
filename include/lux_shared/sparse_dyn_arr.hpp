@@ -9,50 +9,47 @@ template<typename T, typename _Id = U32>
 class SparseDynArr {
     public:
     typedef _Id Id;
-    struct Iter {
-        public:
-        Iter& operator++();
-        bool operator!=(Iter const& other);
-        bool is_valid();
-        T& operator*();
-        T* operator->();
-        T const& operator*() const;
-        T const* operator->() const;
-        void erase();
-
-        SparseDynArr<T, Id>* arr;
-        Id id;
-    };
-    friend class Iter;
 
     ~SparseDynArr();
 
     template<typename ...Args>
-    Iter emplace(Args &&...args);
+    Id emplace(Args &&...args);
+    void erase(Id id);
+
     void shrink_to_fit();
     SizeT size() const;
+    T&       operator[](Id id);
+    T const& operator[](Id id) const;
+    T*       at(Id id);
+    T const* at(Id id) const;
+    template<typename F>
+    void foreach(F f);
+    template<typename F>
+    void foreach_while(F f);
 
-    Iter begin();
-    Iter end();
+    Id begin() const;
+    Id end() const;
+    Id next(Id id) const;
+    bool contains(Id id);
     private:
     std::vector<bool> slots;
     T*                data;
     SizeT             cap = 0;
 };
 
-template<typename T, typename Id>
-SparseDynArr<T, Id>::~SparseDynArr() {
+template<typename T, typename _Id>
+SparseDynArr<T, _Id>::~SparseDynArr() {
     if(cap > 0) {
-        for(auto it = begin(); it != end(); ++it) {
-            it.erase();
+        for(auto it = begin(); it != end(); it = next(it)) {
+            erase(it);
         }
         lux_free<T>(data);
     }
 }
 
-template<typename T, typename Id>
+template<typename T, typename _Id>
 template<typename ...Args>
-typename SparseDynArr<T, Id>::Iter SparseDynArr<T, Id>::emplace(Args &&...args) {
+typename SparseDynArr<T, _Id>::Id SparseDynArr<T, _Id>::emplace(Args &&...args) {
     Id id = std::find(slots.cbegin(), slots.cend(), false) - slots.cbegin();
     if(id == slots.size()) {
         if(cap < id + 1u) {
@@ -62,9 +59,9 @@ typename SparseDynArr<T, Id>::Iter SparseDynArr<T, Id>::emplace(Args &&...args) 
             } else {
                 cap *= 2;
                 T* new_data = lux_alloc<T>(cap);
-                for(auto it = begin(); it != end(); ++it) {
-                    new (new_data + it.id) T(std::move(*it));
-                    it->~T();
+                for(auto it = begin(); it != end(); it = next(it)) {
+                    new (new_data + it) T(std::move(data[it]));
+                    data[it].~T();
                 }
                 lux_free<T>(data);
                 data = new_data;
@@ -75,19 +72,29 @@ typename SparseDynArr<T, Id>::Iter SparseDynArr<T, Id>::emplace(Args &&...args) 
         slots[id] = true;
     }
     new (data + id) T(args...);
-    return {this, id};
+    return id;
 }
 
-template<typename T, typename Id>
-void SparseDynArr<T, Id>::shrink_to_fit() {
+template<typename T, typename _Id>
+void SparseDynArr<T, _Id>::erase(Id id) {
+    LUX_ASSERT(contains(id));
+    data[id].~T();
+    if(id == slots.size() - 1) {
+        slots.pop_back();
+    }
+    else slots[id] = false;
+}
+
+template<typename T, typename _Id>
+void SparseDynArr<T, _Id>::shrink_to_fit() {
     if(slots.size() == 0) {
         lux_free<T>(data);
         data = nullptr;
     } else {
         T* new_data = lux_alloc<T>(slots.size());
-        for(auto it = begin(); it != end(); ++it) {
-            new (new_data + it.id) T(std::move(*it));
-            (*it).~T();
+        for(auto it = begin(); it != end(); it = next(it)) {
+            new (new_data + it) T(std::move(data[it]));
+            data[it].~T();
         }
         lux_free<T>(data);
         data = new_data;
@@ -96,71 +103,73 @@ void SparseDynArr<T, Id>::shrink_to_fit() {
     slots.shrink_to_fit();
 }
 
-template<typename T, typename Id>
-SizeT SparseDynArr<T, Id>::size() const {
+template<typename T, typename _Id>
+SizeT SparseDynArr<T, _Id>::size() const {
     SizeT size = 0;
-    for(Uns i = 0; i < slots.size(); ++i) {
-        size += slots[i];
+    for(auto it = begin(); it != end(); it = next(it)) {
+        size += 1;
     }
     return size;
 }
 
-template<typename T, typename Id>
-typename SparseDynArr<T, Id>::Iter SparseDynArr<T, Id>::begin() {
-    return {this,
-            (Id)(std::find(slots.begin(), slots.end(), true) - slots.begin())};
+template<typename T, typename _Id>
+T& SparseDynArr<T, _Id>::operator[](Id id) {
+    return data[id];
 }
 
-template<typename T, typename Id>
-typename SparseDynArr<T, Id>::Iter SparseDynArr<T, Id>::end() {
-    return {this, (Id)slots.size()};
+template<typename T, typename _Id>
+T const& SparseDynArr<T, _Id>::operator[](Id id) const {
+    return data[id];
 }
 
-template<typename T, typename Id>
-typename SparseDynArr<T, Id>::Iter& SparseDynArr<T, Id>::Iter::operator++() {
-    id = std::find(arr->slots.begin() + id + 1,
-                   arr->slots.end(), true) - arr->slots.begin();
-    return *this;
+template<typename T, typename _Id>
+T* SparseDynArr<T, _Id>::at(Id id) {
+    if(!contains(id)) return nullptr;
+    return &data[id];
 }
 
-template<typename T, typename Id>
-bool SparseDynArr<T, Id>::Iter::operator!=(Iter const& other) {
-    LUX_ASSERT(other.arr == arr);
-    return id != other.id;
+template<typename T, typename _Id>
+T const* SparseDynArr<T, _Id>::at(Id id) const {
+    if(!contains(id)) return nullptr;
+    return &data[id];
 }
 
-template<typename T, typename Id>
-bool SparseDynArr<T, Id>::Iter::is_valid() {
-    if(id >= arr->slots.size()) return false;
-    return arr->slots[id];
-}
-
-template<typename T, typename Id>
-T& SparseDynArr<T, Id>::Iter::operator*() {
-    return arr->data[id];
-}
-
-template<typename T, typename Id>
-T* SparseDynArr<T, Id>::Iter::operator->() {
-    return &arr->data[id];
-}
-
-template<typename T, typename Id>
-T const& SparseDynArr<T, Id>::Iter::operator*() const {
-    return arr->data[id];
-}
-
-template<typename T, typename Id>
-T const* SparseDynArr<T, Id>::Iter::operator->() const {
-    return &arr->data[id];
-}
-
-template<typename T, typename Id>
-void SparseDynArr<T, Id>::Iter::erase() {
-    LUX_ASSERT(is_valid());
-    arr->data[id].~T();
-    if(id == arr->slots.size() - 1) {
-        arr->slots.pop_back();
+template<typename T, typename _Id>
+template<typename F>
+void SparseDynArr<T, _Id>::foreach(F f) {
+    for(Id id = begin(); id != end(); ++id) {
+        if(slots[id]) f(id);
     }
-    else arr->slots[id] = false;
+}
+
+template<typename T, typename _Id>
+template<typename F>
+void SparseDynArr<T, _Id>::foreach_while(F f) {
+    for(Id id = begin(); id != end(); ++id) {
+        if(slots[id]) {
+            if(!f(id)) break;
+        }
+    }
+}
+
+template<typename T, typename _Id>
+typename SparseDynArr<T, _Id>::Id SparseDynArr<T, _Id>::begin() const {
+    return (Id)(std::find(slots.begin(), slots.end(), true) - slots.begin());
+}
+
+template<typename T, typename _Id>
+typename SparseDynArr<T, _Id>::Id SparseDynArr<T, _Id>::end() const {
+    return (Id)slots.size();
+}
+
+template<typename T, typename _Id>
+typename SparseDynArr<T, _Id>::Id SparseDynArr<T, _Id>::next(Id id) const {
+    return std::find(slots.begin() + id + 1,
+                     slots.end(), true) - slots.begin();
+}
+
+template<typename T, typename _Id>
+bool SparseDynArr<T, _Id>::contains(Id id) {
+    if(id >= slots.size()) return false;
+    return slots[id];
 }
