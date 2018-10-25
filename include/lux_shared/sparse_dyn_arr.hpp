@@ -31,8 +31,13 @@ class SparseDynArr {
     Id end() const;
     Id next(Id id) const;
     bool contains(Id id);
+    void free_slots();
     private:
+    ///those are the slots that are for valid elements
     std::vector<bool> slots;
+    ///those are slots that are not considered free for emplacing
+    //@IMPROVE redundant size (slots == full)
+    std::vector<bool> full;
     T*                data;
     SizeT             cap = 0;
 };
@@ -50,7 +55,7 @@ SparseDynArr<T, _Id>::~SparseDynArr() {
 template<typename T, typename _Id>
 template<typename ...Args>
 typename SparseDynArr<T, _Id>::Id SparseDynArr<T, _Id>::emplace(Args &&...args) {
-    Id id = std::find(slots.cbegin(), slots.cend(), false) - slots.cbegin();
+    Id id = std::find(full.cbegin(), full.cend(), false) - full.cbegin();
     if(id == slots.size()) {
         if(cap < id + 1u) {
             if(cap == 0) {
@@ -68,8 +73,10 @@ typename SparseDynArr<T, _Id>::Id SparseDynArr<T, _Id>::emplace(Args &&...args) 
             }
         }
         slots.emplace_back(true);
+        full.emplace_back(true);
     } else {
         slots[id] = true;
+        full[id]  = true;
     }
     new (data + id) T(args...);
     return id;
@@ -79,10 +86,7 @@ template<typename T, typename _Id>
 void SparseDynArr<T, _Id>::erase(Id id) {
     LUX_ASSERT(contains(id));
     data[id].~T();
-    if(id == slots.size() - 1) {
-        slots.pop_back();
-    }
-    else slots[id] = false;
+    slots[id] = false;
 }
 
 template<typename T, typename _Id>
@@ -101,6 +105,7 @@ void SparseDynArr<T, _Id>::shrink_to_fit() {
     }
     cap = slots.size();
     slots.shrink_to_fit();
+    full.shrink_to_fit();
 }
 
 template<typename T, typename _Id>
@@ -114,11 +119,13 @@ SizeT SparseDynArr<T, _Id>::size() const {
 
 template<typename T, typename _Id>
 T& SparseDynArr<T, _Id>::operator[](Id id) {
+    LUX_ASSERT(contains(id));
     return data[id];
 }
 
 template<typename T, typename _Id>
 T const& SparseDynArr<T, _Id>::operator[](Id id) const {
+    LUX_ASSERT(contains(id));
     return data[id];
 }
 
@@ -172,4 +179,12 @@ template<typename T, typename _Id>
 bool SparseDynArr<T, _Id>::contains(Id id) {
     if(id >= slots.size()) return false;
     return slots[id];
+}
+
+template<typename T, typename _Id>
+void SparseDynArr<T, _Id>::free_slots() {
+    SizeT actual_sz = slots.size() -
+        (std::find(slots.rbegin(), slots.rend(), true) - slots.rbegin());
+    slots.resize(actual_sz);
+    full = slots;
 }
