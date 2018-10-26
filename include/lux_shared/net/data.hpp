@@ -41,8 +41,6 @@ struct NetSsTick {
         HashTable<EntityId, Name>         name;
         HashTable<EntityId, Visible>      visible;
         HashTable<EntityId, Item>         item;
-        HashTable<EntityId, Destructible> destructible;
-        HashTable<EntityId, Health>       health;
         HashTable<EntityId, Container>    container;
         HashTable<EntityId, Orientation>  orientation;
     };
