@@ -144,7 +144,7 @@ T const* SparseDynArr<T, _Id>::at(Id id) const {
 template<typename T, typename _Id>
 template<typename F>
 void SparseDynArr<T, _Id>::foreach(F f) {
-    for(Id id = begin(); id != end(); ++id) {
+    for(Id id = begin(), last = end(); id != last; ++id) {
         if(slots[id]) f(id);
     }
 }
@@ -152,7 +152,7 @@ void SparseDynArr<T, _Id>::foreach(F f) {
 template<typename T, typename _Id>
 template<typename F>
 void SparseDynArr<T, _Id>::foreach_while(F f) {
-    for(Id id = begin(); id != end(); ++id) {
+    for(Id id = begin(), last = end(); id != last; ++id) {
         if(slots[id]) {
             if(!f(id)) break;
         }
