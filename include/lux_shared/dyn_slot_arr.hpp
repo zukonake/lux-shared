@@ -15,8 +15,7 @@ class DynSlotArr {
         SizeT idx;
         DynSlotArr* arr;
     };
-    friend class Iter;
-    friend class CIter;
+    friend struct Iter;
 
     SizeT emplace();
     void  erase(SizeT idx);

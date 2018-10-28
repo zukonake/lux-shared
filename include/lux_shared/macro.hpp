@@ -22,6 +22,43 @@ enum LuxRval : bool {
     LUX_OK   = true,
 };
 
+#if (defined(__clang__) || defined(_MSC_VER))
+template<typename... Args>
+void LUX_PRINT(const char* prefix, const char* fmt, Args&& ...args) {
+    std::fprintf(stderr, "%s: ", prefix); 
+    std::fprintf(stderr, fmt, args...);
+    std::fprintf(stderr, "\n"); 
+}
+
+template<typename... Args>
+void LUX_LOG(const char* fmt, Args&& ...args) {
+    LUX_PRINT("INFO", fmt, args...);
+}
+
+template<typename... Args>
+void LUX_LOG_ERR(const char* fmt, Args&& ...args) {
+    LUX_PRINT("ERROR", fmt, args...);
+}
+
+template<typename... Args>
+void LUX_LOG_DBG(const char* fmt, Args&& ...args) {
+    LUX_PRINT("DEBUG", fmt, args...);
+}
+
+template<typename... Args>
+void LUX_FATAL(const char* fmt, Args&& ...args) {
+    LUX_PRINT("FATAL", fmt, args...);
+    std::quick_exit(EXIT_FAILURE);
+}
+
+template<typename... Args>
+void LUX_PANIC(const char* fmt, Args&& ...args) {
+    LUX_PRINT("PANIC", fmt, args...);
+    std::abort();
+}
+
+#else
+
 #define LUX_LOG(fmt, ...) { \
     std::printf("%s(): " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
 
@@ -31,6 +68,7 @@ enum LuxRval : bool {
 #define LUX_LOG_DBG(fmt, ...) { \
     std::printf("DEBUG %s(): " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
 
+//@TODO fatal should not exist, use panic or error
 #define LUX_FATAL(fmt, ...) { \
     std::fprintf(stderr, "FATAL %s(): " fmt "\n", \
             __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); \
@@ -40,11 +78,12 @@ enum LuxRval : bool {
     std::fprintf(stderr, "PANIC %s(): " fmt "\n", \
             __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); \
     std::abort(); }
+#endif //#if defined(__GNUG__)
 
 #define LUX_MAY_FAIL [[nodiscard]] LuxRval
 #define LUX_RETHROW(expr, ...) { \
     if((expr) != LUX_OK) { \
-        LUX_LOG_ERR(__VA_ARGS__); \
+        LUX_UNIMPLEMENTED(); \
         return LUX_FAIL; \
     } }
 
