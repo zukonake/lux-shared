@@ -20,7 +20,10 @@ template<> struct HasStaticSz<I32>  { bool static constexpr val = true; };
 template<> struct HasStaticSz<I64>  { bool static constexpr val = true; };
 template<> struct HasStaticSz<F32>  { bool static constexpr val = true; };
 template<> struct HasStaticSz<F64>  { bool static constexpr val = true; };
-
+template<SizeT len>
+struct HasStaticSz<BitArr<len>> {
+    bool static constexpr val = true;
+};
 template<typename F, typename S>
 struct HasStaticSz<std::pair<F, S>> {
     bool static constexpr val = HasStaticSz<F>::val && HasStaticSz<S>::val;
@@ -121,6 +124,18 @@ SizeT get_real_sz(T const& val) {
     static_assert(HasStaticSz<T>::val);
     return sizeof(T);
 }
+
+template<SizeT len>
+LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, BitArr<len>* val) {
+    LUX_RETHROW(deserialize(buff, buff_end, &val->raw_data));
+    return LUX_OK;
+}
+
+template<SizeT len>
+void serialize(U8** buff, BitArr<len> const& val) {
+    serialize(buff, val.raw_data);
+}
+
 
 template<typename T>
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, T* val) {

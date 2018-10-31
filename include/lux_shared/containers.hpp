@@ -6,13 +6,14 @@
 #include <array>
 #include <queue>
 #include <deque>
+#include <bitset>
 #include <unordered_map>
 #include <unordered_set>
 #include <map>
 #include <set>
 //
 #include <lux_shared/slice.hpp>
-#include <lux_shared/dyn_slot_arr.hpp>
+#include <lux_shared/bit_arr.hpp>
 #include <lux_shared/sparse_dyn_arr.hpp>
 #include <lux_shared/util/packer.hpp>
 #include <lux_shared/util/identity.hpp>
