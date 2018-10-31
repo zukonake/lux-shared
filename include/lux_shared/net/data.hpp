@@ -37,12 +37,12 @@ struct NetSsTick {
             F32 angle; ///in radians
         };
 
-        HashTable<EntityId, Pos>          pos;
-        HashTable<EntityId, Name>         name;
-        HashTable<EntityId, Visible>      visible;
-        HashTable<EntityId, Item>         item;
-        HashTable<EntityId, Container>    container;
-        HashTable<EntityId, Orientation>  orientation;
+        IdMap<EntityId, Pos>          pos;
+        IdMap<EntityId, Name>         name;
+        IdMap<EntityId, Visible>      visible;
+        IdMap<EntityId, Item>         item;
+        IdMap<EntityId, Container>    container;
+        IdMap<EntityId, Orientation>  orientation;
     };
     EntityId         player_id;
     EntityComps      entity_comps;

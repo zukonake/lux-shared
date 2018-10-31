@@ -38,9 +38,9 @@ struct HasStaticSz<Vec<T, len>> {
 template<typename T>
 void clear_net_data(T* val);
 template<typename K, typename Hasher>
-void clear_net_data(HashSet<K, Hasher>* val);
+void clear_net_data(AssocSet<K, Hasher>* val);
 template<typename K, typename V, typename Hasher>
-void clear_net_data(HashMap<K, V, Hasher>* val);
+void clear_net_data(AssocMap<K, V, Hasher>* val);
 template<typename T>
 void clear_net_data(DynArr<T>* val);
 template<typename T, SizeT len>
@@ -49,18 +49,18 @@ void clear_net_data(Arr<T, len>* val);
 template<typename T>
 SizeT get_real_sz(T const& val);
 template<typename K, typename Hasher>
-SizeT get_real_sz(HashSet<K, Hasher> const&);
+SizeT get_real_sz(AssocSet<K, Hasher> const&);
 template<typename K, typename V, typename Hasher>
-SizeT get_real_sz(HashMap<K, V, Hasher> const&);
+SizeT get_real_sz(AssocMap<K, V, Hasher> const&);
 template<typename T>
 SizeT get_real_sz(DynArr<T> const&);
 
 template<typename T>
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, T*);
 template<typename K, typename Hasher>
-LUX_MAY_FAIL deserialize(U8 const**, U8 const*, HashSet<K, Hasher>*);
+LUX_MAY_FAIL deserialize(U8 const**, U8 const*, AssocSet<K, Hasher>*);
 template<typename K, typename V, typename Hasher>
-LUX_MAY_FAIL deserialize(U8 const**, U8 const*, HashMap<K, V, Hasher>*);
+LUX_MAY_FAIL deserialize(U8 const**, U8 const*, AssocMap<K, V, Hasher>*);
 template<typename T>
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, DynArr<T>*);
 template<typename T, I32 len>
@@ -71,9 +71,9 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, Arr<T, len>*);
 template<typename T>
 void serialize(U8** buff, T const&);
 template<typename K, typename Hasher>
-void serialize(U8** buff, HashSet<K, Hasher> const&);
+void serialize(U8** buff, AssocSet<K, Hasher> const&);
 template<typename K, typename V, typename Hasher>
-void serialize(U8** buff, HashMap<K, V, Hasher> const&);
+void serialize(U8** buff, AssocMap<K, V, Hasher> const&);
 template<typename T>
 void serialize(U8** buff, DynArr<T> const&);
 template<typename T, I32 len>
@@ -88,12 +88,12 @@ void clear_net_data(T* val) {
 }
 
 template<typename K, typename Hasher>
-void clear_net_data(HashSet<K, Hasher>* val) {
+void clear_net_data(AssocSet<K, Hasher>* val) {
     val->clear();
 }
 
 template<typename K, typename V, typename Hasher>
-void clear_net_data(HashMap<K, V, Hasher>* val) {
+void clear_net_data(AssocMap<K, V, Hasher>* val) {
     for(auto& it : *val) {
         clear_net_data(&it.second);
     }
@@ -139,14 +139,14 @@ void serialize(U8** buff, T const& val) {
 }
 
 template<typename K, typename Hasher>
-SizeT get_real_sz(HashSet<K, Hasher> const& val) {
+SizeT get_real_sz(AssocSet<K, Hasher> const& val) {
     static_assert(HasStaticSz<K>::val);
     return sizeof(U32) + val.size() * sizeof(K);
 }
 
 template<typename K, typename Hasher>
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
-                         HashSet<K, Hasher>* val) {
+                         AssocSet<K, Hasher>* val) {
     static_assert(HasStaticSz<K>::val);
     U32 len;
     LUX_RETHROW(deserialize(buff, buff_end, &len) &&
@@ -161,14 +161,14 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
 }
 
 template<typename K, typename Hasher>
-void serialize(U8** buff, HashSet<K, Hasher> const& val) {
+void serialize(U8** buff, AssocSet<K, Hasher> const& val) {
     static_assert(HasStaticSz<K>::val);
     serialize(buff, (U32 const&)val.size());
     for(auto const& key : val) serialize(buff, key);
 }
 
 template<typename K, typename V, typename Hasher>
-SizeT get_real_sz(HashMap<K, V, Hasher> const& val) {
+SizeT get_real_sz(AssocMap<K, V, Hasher> const& val) {
     static_assert(HasStaticSz<K>::val);
     if constexpr(HasStaticSz<V>::val) {
         return sizeof(U32) + val.size() * (sizeof(K) + sizeof(V));
@@ -183,7 +183,7 @@ SizeT get_real_sz(HashMap<K, V, Hasher> const& val) {
 
 template<typename K, typename V, typename Hasher>
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
-                         HashMap<K, V, Hasher>* val) {
+                         AssocMap<K, V, Hasher>* val) {
     static_assert(HasStaticSz<K>::val);
     U32 len;
     LUX_RETHROW(deserialize(buff, buff_end, &len),
@@ -209,7 +209,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
 }
 
 template<typename K, typename V, typename Hasher>
-void serialize(U8** buff, HashMap<K, V, Hasher> const& val) {
+void serialize(U8** buff, AssocMap<K, V, Hasher> const& val) {
     static_assert(HasStaticSz<K>::val);
     serialize(buff, (U32 const&)val.size());
     for(auto const& pair : val) {

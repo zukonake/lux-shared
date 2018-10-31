@@ -9,6 +9,7 @@
 #include <lux_shared/vec.hpp>
 #include <lux_shared/containers.hpp>
 #include <lux_shared/string.hpp>
+#include <lux_shared/hash.hpp>
 #include <lux_shared/random.hpp>
 
 inline bool f32_cmp(F32 a, F32 b) {
