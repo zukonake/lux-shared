@@ -14,7 +14,7 @@ typedef Vec2<ChkCoord> ChkPos;
 typedef Vec2<MapCoord> MapPos;
 typedef Vec2<ChkIdx>   IdxPos;
 
-typedef U16 VoxelId;
+typedef U16 TileId;
 typedef U16 LightLvl;
 
 ///if you need to change the chunk size, change this only

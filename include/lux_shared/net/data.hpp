@@ -50,16 +50,16 @@ struct NetSsTick {
 };
 
 struct NetSsSgnl {
-    struct MapLoad {
+    struct Tiles {
         struct Chunk {
-            Arr<VoxelId , CHK_VOL> voxels;
-            Arr<LightLvl, CHK_VOL> light_lvls;
+            Arr<TileId , CHK_VOL> id;
+            BitArr<CHK_VOL>     wall;
         };
         VecMap<ChkPos, Chunk> chunks;
     };
-    struct LightUpdate {
+    struct Light {
         struct Chunk {
-            Arr<LightLvl, CHK_VOL> light_lvls;
+            Arr<LightLvl, CHK_VOL> light_lvl;
         };
         VecMap<ChkPos, Chunk> chunks;
     };
@@ -67,15 +67,15 @@ struct NetSsSgnl {
         DynArr<char> contents;
     };
     enum Tag : U8 {
-        MAP_LOAD     = 0x00,
-        LIGHT_UPDATE = 0x01,
-        MSG          = 0x02,
+        TILES = 0x00,
+        LIGHT = 0x01,
+        MSG   = 0x02,
         TAG_MAX,
     } tag = TAG_MAX;
 
-    MapLoad     map_load;
-    LightUpdate light_update;
-    Msg         msg;
+    Tiles tiles;
+    Light light;
+    Msg   msg;
 };
 
 struct NetCsTick {
