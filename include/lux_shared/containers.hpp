@@ -3,7 +3,6 @@
 #include <type_traits>
 #include <forward_list>
 #include <vector>
-#include <string>
 #include <array>
 #include <queue>
 #include <deque>
@@ -43,5 +42,3 @@ using VecMap = HashMap<K, V, util::Packer<K>>;
 template<typename V>
 using VecSet = HashSet<V, util::Packer<V>>;
 
-typedef std::string DynStr;
-typedef const char* SttStr;
