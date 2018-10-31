@@ -31,7 +31,7 @@ typename BitArr<_len>::Ref& BitArr<_len>::Ref::operator=(bool v) {
 
 template<SizeT _len>
 BitArr<_len>::Ref::operator bool() const {
-    return arr[idx];
+    return ((BitArr<len> const&)arr)[idx];
 }
 
 template<SizeT _len>
