@@ -1,35 +1,26 @@
 # Lux ideas
-### General
-* goal is to reach top of the map (unsure)
+### Graphics
+* top-down 2d
+* extensive light system
+* extensive field of vision system
+* perhaps shadows
+* pixelated textures
+* noise in dark areas (just like IRL)
 ### Map
-* infinite 3d map
+* infinite 2d map
 * map is grid based
-* whole map is filled with dungeons
-* ancient mayan inspired dungeons
-    * some are active with no vines
-        * filled with monsters, guardians and traps
-        * high-value treasure/gear/materials inside
-    * the rest is like a wilderness
-        * filled with animals and "plants"
-    * the high levels have cracks that let sunlight in
-    * there are different zones or "biomes" of dungeons
-        * they are procedurally generated
-        * generated monsters and items
-        * different levels and rewards
-        * zones have random names
-            * maybe like in dwarf fortress?
-    * random plague in rooms
-    * the plague takes over nearby open rooms slowly
-    * the plague is dark, it eats all light
-    * the plague grows much quicker in darkness
-    * the plague can be fought with, but its quite slow
-    * the plague turns entities into a dark, fast and aggressive version
-        * dark entities will have a negative effect on light
-* occasional towns and caverns
-* some source of light exists but its mostly dark
-* various game modes
-    * start in a cold biome with a furnace
-    * start without eyes but with very good hearing abilities
+* wilderness with various biomes
+    * free-roaming animals that you can tame and perhaps use in a practical way
+    (horses etc.)
+* some ruins, dungeons and caves as well
+* occasional villages
+    * villages grow on their own
+    * dynamic economy system
+    * every villager has a task they do everyday
+    * you can create and manage your own villages with NPCs
+* possible various starting points, for example:
+    * start in a very cold biome with a cabin
+    * start without eyes but with very good hearing and martial arts abilities
 ### Mechanics
 * co-op survival multiplayer
     * players specializing in various schools of magic being efficient
@@ -37,15 +28,31 @@
 * food water and light are neccesary to survive
     * survival should be a hard in beginning
     * survival shouldnt limit the player later
-    * lack of light affecting sanity
-* player is free to build and rearrange the dungeons
-    * player could build mechanisms and fortify the dungeons
-    * exploring each dungeon is a risk to take, especially in some biomes
+    * hunting as a good source of food
+    * farming as well, but needs to be developed early and requires a lot of
+    land, suitable for long-term food source or multiplayer
+* player is free to build and mine
+    * mining and building should be somewhat slow, and save progress
+* programmable AI
+    * AI can be programmed using visual programming
+    * you can program NPCs to manage/gain your resources etc.
+* AI pathfinding is not all-knowing
+    * AI will have to explore paths based on directions, instead of solving a
+    maze with no exploration
+    * AI will know paths to certain tiles, it can add relative paths to other
+    neighboring tiles this way
+    * AI will forget the paths after some time, this depends on memory skill etc.
+    * this can actually be faster than standard pathfinding, but take more RAM
+* industry
+    * wheelbarrows and minecarts etc will be available early on, later ox-driven
+    carts as well
+        * they need to be designed in a way that is practical to the player
+    * later on more advanced and automated industry will be available, in the
+    beginning the NPCs or the player will have to do some parts
 * dynamic combat system
 * some sort of crafting system
-* mining would be possible, but slow
-* the game should be realistic, but not based on grinding and prefereable not time-consuming
-    * magic might greatly help with that
+* the game should be realistic, but not based on grinding
+    * magic and industry might greatly help with that
 * weapons are hotline miami-like
     * sword slashes
     * bows
@@ -55,18 +62,14 @@
     * game objects should be defined in scripts
         * this includes monsters, items, biomes
         * maybe even the generator, interface and spells
-            * this would require an exposed API
 * mod-friendly
-    * again - exposed API
-    * open-source helps
+    * exposed API
+    * being open-source helps
 * physics engine
-* block placing shouldn't be too limiting, it would be nice to place non-overlapping blocks
-  on the same tile
-* inventory shouldn't be limiting, as in Minecraft
+* inventory shouldn't be limiting, like it is in Minecraft
     * the major factor there was, that many items that were not needed were often carried
     * additionaly a quick-stack feature like in Terraria would be good
-* entities move freely or on a smaller grid
-* entities can fall down
+* entities move freely
 * realistic health system
     * various statistics like consciousness or vision
         * affecting each other and character's activities and senses
@@ -78,6 +81,7 @@
 * the game should have various ways to achieve automatization
     * one way is magic, either by inanimate objects or animate servants
     * another way is pure industry, pipes and engines
+    * another way are NPCs, either servants or villagers
     * the ways can be combined, they should be perfectly compatible
 * action system
     * every thing a player can do is an action
@@ -85,9 +89,13 @@
     * you can combine actions, similarly to "macros"
         * the system could resemble visual programming
         * you would set various parameters, such as paths, radiuses, etc.
+    * un-combined actions are called "basic"
+    * combined actions are called "complex"
     * spells are also actions
         * this can enable rebinding standard actions such as attacks to something different
             * example: enchant sword before attacking, then attack, as a single action
+    * perhaps the basic actions could have a skill counterpart, that increases
+    the efficiency as the action is used
 * advanced magic system
     * magic works on the principle of equivalent exchange
     * basic magic can be cast using one's lifeforce
@@ -134,10 +142,13 @@
     * whispers and blurred visions
     * on very low sanity you see horryfing abominations and the world becomes bloody
     * dark magic should be really dark and dangerous to play with, but equally powerful
-### Graphics
-* top-down 2d
-* you can see levels below, darker or something
-* extensive light system
-* extensive field of vision system
-* minimap showing the dungeon zones
-* pixelated textures
+    * long-term low sanity makes your character develop psychological illnesses
+    and makes gameplay very hard (and perhaps short)
+* character system
+    * besides sanity, your character will have certain needs that dictate what
+    you need to do to stay effective
+    * for example your character might be very curious, and so might have to do
+    research in order not to be bored, and would as well have a bonus to
+    research
+    * boredom decreases effectivenes in all skills
+    * character could be chosen randomly or created by the player
