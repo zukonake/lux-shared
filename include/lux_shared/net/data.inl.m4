@@ -66,8 +66,7 @@ void clear_net_data($1* val) {
     switch(val->tag) {dnl
         m4_formember(`$@', `
         case $1::translit(member, `a-z', `A-Z'):
-            m4_formember(`$@', `
-            clear_net_data(&val->member);')
+            clear_net_data(&val->member);
             break;')
         default: break;
     }

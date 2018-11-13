@@ -238,7 +238,7 @@ SizeT get_real_sz(DynArr<T> const& val) {
     if constexpr(HasStaticSz<T>::val) {
         return sizeof(U32) + val.size() * sizeof(T);
     } else {
-        SizeT sz = 0;
+        SizeT sz = sizeof(U32);
         for(auto const& x : val) {
             sz += get_real_sz(x);
         }
