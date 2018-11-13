@@ -111,13 +111,19 @@ divert(0)dnl
 #include <lux_shared/net/data.hpp>
 
 m4_lux_net_data(NetSsInit, static, name, tick_rate)
+m4_lux_net_data(NetSsTick::DbgInf::Shape::Sphere, static, pos, rad)
+m4_lux_net_data(NetSsTick::DbgInf::Shape::Rect, static, pos, sz)
+m4_lux_net_data(NetSsTick::DbgInf::Shape::Line, static, beg, end)
+m4_lux_net_data(NetSsTick::DbgInf::Shape::Point, static, pos)
+m4_lux_net_data(NetSsTick::DbgInf::Shape, tagged, sphere, rect, line, point)
+m4_lux_net_data(NetSsTick::DbgInf, dynamic, shapes)
 m4_lux_net_data(NetSsTick::EntityComps::Visible, static, visible_id, quad_sz)
 m4_lux_net_data(NetSsTick::EntityComps::Item, static, weight)
 m4_lux_net_data(NetSsTick::EntityComps::Container, dynamic, items)
 m4_lux_net_data(NetSsTick::EntityComps::Orientation, static, angle)
 m4_lux_net_data(NetSsTick::EntityComps, dynamic,
     pos, name, visible, item, container, orientation)
-m4_lux_net_data(NetSsTick, dynamic, player_id, entity_comps, entities)
+m4_lux_net_data(NetSsTick, dynamic, player_id, entity_comps, dbg_inf, entities)
 m4_lux_net_data(NetSsSgnl::Tiles::Chunk, static, id, wall)
 m4_lux_net_data(NetSsSgnl::Tiles, dynamic, chunks)
 m4_lux_net_data(NetSsSgnl::Light::Chunk, static, light_lvl)

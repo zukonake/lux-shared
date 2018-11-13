@@ -44,8 +44,35 @@ struct NetSsTick {
         IdMap<EntityId, Container>    container;
         IdMap<EntityId, Orientation>  orientation;
     };
+    struct DbgInf {
+        struct Shape {
+            struct Sphere {
+                Vec2F pos;
+                F32   rad;
+            } sphere;
+            struct Rect {
+                Vec2F pos;
+                Vec2F sz;
+            } rect;
+            struct Line {
+                Vec2F beg;
+                Vec2F end;
+            } line;
+            struct Point {
+                Vec2F pos;
+            } point;
+            enum Tag {
+                SPHERE,
+                RECT,
+                LINE,
+                POINT,
+            } tag;
+        };
+        DynArr<Shape> shapes;
+    };
     EntityId         player_id;
     EntityComps      entity_comps;
+    DbgInf           dbg_inf;
     DynArr<EntityId> entities;
 };
 
