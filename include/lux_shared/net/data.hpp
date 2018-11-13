@@ -58,21 +58,16 @@ struct NetSsTick {
                 Vec2F beg;
                 Vec2F end;
             };
-            struct Point {
-                Vec2F pos;
-            };
             enum Tag : U8 {
                 SPHERE,
                 RECT,
                 LINE,
-                POINT,
                 TAG_MAX,
             } tag = TAG_MAX;
             union {
                 Sphere sphere;
                 Rect rect;
                 Line line;
-                Point point;
             };
         };
         DynArr<Shape> shapes;
