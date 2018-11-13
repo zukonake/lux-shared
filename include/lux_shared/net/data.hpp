@@ -46,6 +46,12 @@ struct NetSsTick {
     };
     struct DbgInf {
         struct Shape {
+            enum Tag {
+                SPHERE,
+                RECT,
+                LINE,
+                POINT,
+            } tag;
             struct Sphere {
                 Vec2F pos;
                 F32   rad;
@@ -61,12 +67,6 @@ struct NetSsTick {
             struct Point {
                 Vec2F pos;
             } point;
-            enum Tag {
-                SPHERE,
-                RECT,
-                LINE,
-                POINT,
-            } tag;
         };
         DynArr<Shape> shapes;
     };
