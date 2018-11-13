@@ -11,7 +11,4 @@
 #include <lux_shared/string.hpp>
 #include <lux_shared/hash.hpp>
 #include <lux_shared/random.hpp>
-
-inline bool f32_cmp(F32 a, F32 b) {
-    return std::fabs(a - b) < FLT_EPSILON;
-}
+#include <lux_shared/math.hpp>
