@@ -60,22 +60,22 @@ void LUX_PANIC(const char* fmt, Args&& ...args) {
 #else
 
 #define LUX_LOG(fmt, ...) { \
-    std::printf("%s(): " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
+    std::printf("%s: " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
 
 #define LUX_LOG_ERR(fmt, ...) { \
-    std::printf("ERROR %s(): " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
+    std::printf("ERROR %s: " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
 
 #define LUX_LOG_DBG(fmt, ...) { \
-    std::printf("DEBUG %s(): " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
+    std::printf("DEBUG %s: " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
 
 //@TODO fatal should not exist, use panic or error
 #define LUX_FATAL(fmt, ...) { \
-    std::fprintf(stderr, "FATAL %s(): " fmt "\n", \
+    std::fprintf(stderr, "FATAL %s: " fmt "\n", \
             __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); \
     std::quick_exit(EXIT_FAILURE); }
 
 #define LUX_PANIC(fmt, ...) { \
-    std::fprintf(stderr, "PANIC %s(): " fmt "\n", \
+    std::fprintf(stderr, "PANIC %s: " fmt "\n", \
             __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); \
     std::abort(); }
 #endif //#if defined(__GNUG__)
