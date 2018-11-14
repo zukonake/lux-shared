@@ -79,7 +79,7 @@ template<typename K, typename V, typename Hasher>
 void serialize(U8** buff, AssocMap<K, V, Hasher> const&);
 template<typename T>
 void serialize(U8** buff, DynArr<T> const&);
-template<typename T, I32 len>
+template<typename T, int len>
 void serialize(U8** buff, Vec<T, len> const&);
 template<typename T, SizeT len>
 void serialize(U8** buff, Arr<T, len> const&);
@@ -275,7 +275,7 @@ void serialize(U8** buff, DynArr<T> const& val) {
     }
 }
 
-template<typename T, I32 len>
+template<typename T, int len>
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
                          Vec<T, len>* val) {
     static_assert(HasStaticSz<T>::val);
@@ -298,7 +298,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
         LUX_RETHROW(buff_sz_at_least(len * sizeof(T), *buff, buff_end),
                     "failed to deserialize array");
         for(Uns i = 0; i < len; ++i) {
-            (void)deserialize<T>(buff, buff_end, *val + i);
+            (void)deserialize(buff, buff_end, *val + i);
         }
     } else {
         for(Uns i = 0; i < len; ++i) {

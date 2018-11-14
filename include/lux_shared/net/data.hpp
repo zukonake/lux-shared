@@ -46,29 +46,54 @@ struct NetSsTick {
     };
     struct DbgInf {
         struct Shape {
-            struct Sphere {
+            struct Point {
                 Vec2F pos;
-                F32   rad;
-            };
-            struct Rect {
-                Vec2F pos;
-                Vec2F sz;
             };
             struct Line {
                 Vec2F beg;
                 Vec2F end;
             };
+            struct Arrow {
+                Vec2F beg;
+                Vec2F end;
+            };
+            struct Cross {
+                Vec2F pos;
+                F32   sz;
+            };
+            struct Sphere {
+                Vec2F pos;
+                F32   rad;
+            };
+            struct Triangle {
+                Vec2F verts[3];
+            };
+            struct Rect {
+                Vec2F pos;
+                Vec2F sz;
+                F32 angle;
+            };
             enum Tag : U8 {
-                SPHERE,
-                RECT,
+                POINT,
                 LINE,
+                ARROW,
+                CROSS,
+                SPHERE,
+                TRIANGLE,
+                RECT,
                 TAG_MAX,
             } tag = TAG_MAX;
             union {
-                Sphere sphere;
-                Rect rect;
+                Point point;
                 Line line;
+                Arrow arrow;
+                Cross cross;
+                Sphere sphere;
+                Triangle triangle;
+                Rect rect;
             };
+            Vec4F col;
+            bool border;
         };
         DynArr<Shape> shapes;
     };
