@@ -133,8 +133,30 @@ struct NetSsSgnl {
 };
 
 struct NetCsTick {
-    Vec2F player_dir;
-    F32   player_aim_angle;
+    struct Action {
+        enum Tag : U8 {
+            MOVE,
+            BREAK,
+            TAG_MAX,
+        } tag = TAG_MAX;
+        struct Target {
+            enum Tag : U8 {
+                NONE,
+                POINT,
+                DIR,
+                ENTITY,
+                TAG_MAX,
+            } tag = TAG_MAX;
+            union {
+                //this is necessary due to the how the macros work atm
+                U8       none;
+                Vec2F    point;
+                Vec2F    dir;
+                EntityId entity;
+            };
+        } target;
+    };
+    DynArr<Action> actions;
 };
 
 struct NetCsInit {

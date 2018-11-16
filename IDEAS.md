@@ -6,12 +6,15 @@
 * perhaps shadows
 * pixelated textures
 * noise in dark areas (just like IRL)
+* further areas areas are blurred
+    * the factor depends on the eye sight of your character
 ### Map
 * infinite 2d map
 * map is grid based
 * wilderness with various biomes
     * free-roaming animals that you can tame and perhaps use in a practical way
     (horses etc.)
+    * natural ambient sounds for wind, night-time forest etc.
 * some ruins, dungeons and caves as well
 * occasional villages
     * villages grow on their own
