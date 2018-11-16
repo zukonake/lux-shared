@@ -14,7 +14,7 @@ void net_order_n(U8* dst, U8 const* src);
 template<typename T>
 void net_order(T* dst, T const* src) {
     LUX_ASSERT(dst != src);
-    static_assert(std::is_arithmetic<T>::value);
+    static_assert(std::is_arithmetic<T>::value || std::is_enum<T>::value);
     net_order_n<sizeof(T)>((U8*)dst, (U8 const*)src);
 }
 
