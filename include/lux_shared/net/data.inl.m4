@@ -152,4 +152,6 @@ m4_lux_net_data(NetCsSgnl::Command, dynamic, contents)
 m4_lux_net_data(NetCsSgnl, tagged, `map_request, command')
 m4_lux_net_data(NetCsInit, static,
     net_ver.major, net_ver.minor, net_ver.patch, name)
-m4_lux_net_data(NetCsTick, static, player_dir, player_aim_angle)
+m4_lux_net_data(NetCsTick::Action::Target, tagged, `none, point, dir, entity')
+m4_lux_net_data(NetCsTick::Action, tagged, `', target)
+m4_lux_net_data(NetCsTick, dynamic, actions)

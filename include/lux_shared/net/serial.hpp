@@ -7,7 +7,8 @@
 
 LUX_MAY_FAIL buff_sz_at_least(SizeT sz, U8 const* iter, U8 const* end);
 
-template<typename T> struct HasStaticSz { bool static constexpr val = false; };
+template<typename T>
+struct HasStaticSz { bool static constexpr val = std::is_enum<T>::value; };
 template<> struct HasStaticSz<bool> { bool static constexpr val = true; };
 template<> struct HasStaticSz<char> { bool static constexpr val = true; };
 template<> struct HasStaticSz<U8>   { bool static constexpr val = true; };
@@ -251,6 +252,8 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, DynArr<T>* val) {
     U32 len;
     LUX_RETHROW(deserialize(buff, buff_end, &len),
                 "failed to deserialize dynamic array length");
+    //@TODO this can fail and we cannot catch it, custom dynarr implementation
+    //needed
     val->resize(len);
     if constexpr(HasStaticSz<T>::val) {
         LUX_RETHROW(buff_sz_at_least(len * sizeof(T), *buff, buff_end),
