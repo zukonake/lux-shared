@@ -106,8 +106,9 @@ struct NetSsTick {
 struct NetSsSgnl {
     struct Tiles {
         struct Chunk {
-            Arr<TileId , CHK_VOL> id;
-            BitArr<CHK_VOL>     wall;
+            Arr<TileId , CHK_VOL> floor;
+            Arr<TileId , CHK_VOL> wall;
+            Arr<TileId , CHK_VOL> roof;
         };
         VecMap<ChkPos, Chunk> chunks;
     };

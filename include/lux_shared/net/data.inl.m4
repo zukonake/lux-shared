@@ -141,7 +141,7 @@ m4_lux_net_data(NetSsTick::EntityComps::Orientation, static, angle)
 m4_lux_net_data(NetSsTick::EntityComps, dynamic,
     pos, name, visible, item, container, orientation)
 m4_lux_net_data(NetSsTick, dynamic, player_id, entity_comps, dbg_inf, entities)
-m4_lux_net_data(NetSsSgnl::Tiles::Chunk, static, id, wall)
+m4_lux_net_data(NetSsSgnl::Tiles::Chunk, static, floor, wall, roof)
 m4_lux_net_data(NetSsSgnl::Tiles, dynamic, chunks)
 m4_lux_net_data(NetSsSgnl::Light::Chunk, static, light_lvl)
 m4_lux_net_data(NetSsSgnl::Light, dynamic, chunks)
