@@ -1,5 +1,7 @@
 #pragma once
 
+#include <lux_shared/vec.hpp>
+
 ///clockwise order of vertices
 template<typename T>
 Vec2<T> constexpr quad[] =
@@ -22,9 +24,7 @@ Vec2<T> constexpr manhattan[] =
 
 template<typename T>
 Vec2<T> constexpr manhattan_hollow[] =
-             {{0, -1},
-     {-1, 0}         , {1, 0},
-              {0,  1}};
+    {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
 template<typename T>
 Vec2<T> constexpr chebyshev[] =
