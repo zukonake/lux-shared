@@ -97,6 +97,8 @@ struct NetSsTick {
         };
         DynArr<Shape> shapes;
     };
+    ///1 is expressed as midday, -1 is expressed as midnight
+    F32              day_cycle;
     EntityId         player_id;
     EntityComps      entity_comps;
     DbgInf           dbg_inf;
