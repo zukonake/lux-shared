@@ -51,3 +51,8 @@ template<typename K, typename V>
 using VecMap = AssocMap<K, V, util::Packer<K>>;
 template<typename V>
 using VecSet = AssocSet<V, util::Packer<V>>;
+
+template<typename T, SizeT len>
+constexpr SizeT arr_len(Arr<T, len> const&) {
+    return len;
+}

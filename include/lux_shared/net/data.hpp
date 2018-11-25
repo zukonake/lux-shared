@@ -137,27 +137,7 @@ struct NetSsSgnl {
 
 struct NetCsTick {
     struct Action {
-        enum Tag : U8 {
-            MOVE,
-            BREAK,
-            TAG_MAX,
-        } tag = TAG_MAX;
-        struct Target {
-            enum Tag : U8 {
-                NONE,
-                POINT,
-                DIR,
-                ENTITY,
-                TAG_MAX,
-            } tag = TAG_MAX;
-            union {
-                //this is necessary due to the how the macros work atm
-                U8       none;
-                Vec2F    point;
-                Vec2F    dir;
-                EntityId entity;
-            };
-        } target;
+        DynArr<U16> bytecode;
     };
     DynArr<Action> actions;
 };
@@ -189,4 +169,9 @@ struct NetCsSgnl {
 
     MapRequest map_request;
     Command    command;
+
+    struct Action {
+        DynArr<U16> bytecode;
+    };
+    DynArr<Action> actions;
 };
