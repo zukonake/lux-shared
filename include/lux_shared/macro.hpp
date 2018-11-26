@@ -46,6 +46,11 @@ void LUX_LOG_DBG(const char* fmt, Args&& ...args) {
 }
 
 template<typename... Args>
+void LUX_LOG_WARN(const char* fmt, Args&& ...args) {
+    LUX_PRINT("WARN", fmt, args...);
+}
+
+template<typename... Args>
 void LUX_FATAL(const char* fmt, Args&& ...args) {
     LUX_PRINT("FATAL", fmt, args...);
     std::quick_exit(EXIT_FAILURE);
@@ -67,6 +72,9 @@ void LUX_PANIC(const char* fmt, Args&& ...args) {
 
 #define LUX_LOG_DBG(fmt, ...) { \
     std::printf("DEBUG %s: " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
+
+#define LUX_LOG_WARN(fmt, ...) { \
+    std::printf("WARN %s: " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
 
 //@TODO fatal should not exist, use panic or error
 #define LUX_FATAL(fmt, ...) { \
