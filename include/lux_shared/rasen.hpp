@@ -61,11 +61,11 @@ enum : U8 {
 #define RN_SAVEV(x, v) (U16)(0x8000 | (x << 8) | v)
 #define RN_CONST(x, v) (U16)(0x9000 | (x << 8) | v)
 #define RN_ADDV( x, v) (U16)(0xa000 | (x << 8) | v)
-#define RN_JMP(  x, v) (U16)(0xb000 | t)
-#define RN_JEZ(  x, v) (U16)(0xc000 | t)
-#define RN_JNZ(  x, v) (U16)(0xd000 | t)
-#define RN_JGZ(  x, v) (U16)(0xe000 | t)
-#define RN_JLZ(  x, v) (U16)(0xf000 | t)
+#define RN_JMP(  t   ) (U16)(0xb000 | t)
+#define RN_JEZ(  t   ) (U16)(0xc000 | t)
+#define RN_JNZ(  t   ) (U16)(0xd000 | t)
+#define RN_JGZ(  t   ) (U16)(0xe000 | t)
+#define RN_JLZ(  t   ) (U16)(0xf000 | t)
 
 ///macros
 #define RN_SUBV (x, v) RN_ADDV(x, (0xff) - (v - 1))
