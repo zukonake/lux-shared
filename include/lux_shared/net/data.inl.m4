@@ -137,7 +137,7 @@ m4_lux_net_data(NetSsTick::DbgInf, dynamic, shapes)
 m4_lux_net_data(NetSsTick::EntityComps::Visible, static, visible_id, quad_sz)
 m4_lux_net_data(NetSsTick::EntityComps::Item, static, weight)
 m4_lux_net_data(NetSsTick::EntityComps::Container, dynamic, items)
-m4_lux_net_data(NetSsTick::EntityComps::Orientation, static, angle)
+m4_lux_net_data(NetSsTick::EntityComps::Orientation, static, origin, angle)
 m4_lux_net_data(NetSsTick::EntityComps, dynamic,
     pos, name, visible, item, container, orientation)
 m4_lux_net_data(NetSsTick, dynamic, day_cycle, player_id, entity_comps, dbg_inf,

@@ -34,7 +34,8 @@ struct NetSsTick {
             DynArr<EntityId> items;
         };
         struct Orientation {
-            F32 angle; ///in radians
+            Vec2F origin;
+            F32   angle; ///in radians
         };
 
         IdMap<EntityId, Pos>          pos;
