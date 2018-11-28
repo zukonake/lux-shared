@@ -38,12 +38,13 @@ struct NetSsTick {
             F32   angle; ///in radians
         };
 
-        IdMap<EntityId, Pos>          pos;
-        IdMap<EntityId, Name>         name;
-        IdMap<EntityId, Visible>      visible;
-        IdMap<EntityId, Item>         item;
-        IdMap<EntityId, Container>    container;
-        IdMap<EntityId, Orientation>  orientation;
+        IdMap<EntityId, Pos>         pos;
+        IdMap<EntityId, Name>        name;
+        IdMap<EntityId, Visible>     visible;
+        IdMap<EntityId, Item>        item;
+        IdMap<EntityId, Container>   container;
+        IdMap<EntityId, Orientation> orientation;
+        IdMap<EntityId, EntityId>    parent;
     };
     struct DbgInf {
         struct Shape {
