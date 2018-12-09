@@ -7,14 +7,14 @@
 #include <lux_shared/entity.hpp>
 
 struct NetSsInit {
-    Arr<U8, SERVER_NAME_LEN> name;
-    U16                 tick_rate;
+    Arr<char, SERVER_NAME_LEN> name;
+    U16                   tick_rate;
 };
 
 struct NetSsTick {
     struct EntityComps {
         typedef EntityVec Pos;
-        typedef DynArr<char> Name;
+        typedef DynArr<char>   Name;
         struct Visible {
             U32   visible_id;
             Vec2F quad_sz;
@@ -137,11 +137,13 @@ struct NetSsSgnl {
     Msg   msg;
 };
 
+struct NetAction {
+    DynArr<U8> stack;
+    U16           id;
+};
+
 struct NetCsTick {
-    struct Action {
-        DynArr<U16> bytecode;
-    };
-    DynArr<Action> actions;
+    DynArr<NetAction> actions;
 };
 
 struct NetCsInit {
@@ -153,7 +155,7 @@ struct NetCsInit {
         static_assert(sizeof(minor) == sizeof(NET_VERSION_MINOR));
         static_assert(sizeof(patch) == sizeof(NET_VERSION_PATCH));
     } net_ver;
-    Arr<U8, CLIENT_NAME_LEN> name;
+    Arr<char, CLIENT_NAME_LEN> name;
 };
 
 struct NetCsSgnl {
@@ -163,17 +165,20 @@ struct NetCsSgnl {
     struct Command {
         DynArr<char> contents;
     };
+    struct RasenAsm {
+        DynArr<char> str_id;
+        DynArr<char> contents;
+    };
     enum Tag : U8 {
         MAP_REQUEST = 0x00,
         COMMAND     = 0x01,
+        RASEN_ASM   = 0x02,
         TAG_MAX,
     } tag = TAG_MAX;
 
     MapRequest map_request;
     Command    command;
+    RasenAsm   rasen_asm;
 
-    struct Action {
-        DynArr<U16> bytecode;
-    };
-    DynArr<Action> actions;
+    DynArr<NetAction> actions;
 };

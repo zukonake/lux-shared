@@ -2,7 +2,6 @@
 
 #include <type_traits>
 #include <forward_list>
-#include <vector>
 #include <array>
 #include <queue>
 #include <deque>
@@ -12,17 +11,14 @@
 #include <map>
 #include <set>
 //
-#include <lux_shared/slice.hpp>
-#include <lux_shared/bit_arr.hpp>
-#include <lux_shared/sparse_dyn_arr.hpp>
 #include <lux_shared/util/packer.hpp>
 #include <lux_shared/util/identity.hpp>
 
 template<typename T>
+struct Slice;
+template<typename T>
 struct LuxHash;
 
-template<typename T>
-using DynArr = std::vector<T>;
 template<typename T, std::size_t len>
 using Arr = T[len];
 template<typename T>
@@ -52,7 +48,26 @@ using VecMap = AssocMap<K, V, util::Packer<K>>;
 template<typename V>
 using VecSet = AssocSet<V, util::Packer<V>>;
 
+#include <lux_shared/slice.hpp>
+#include <lux_shared/dyn_arr.hpp>
+#include <lux_shared/bit_arr.hpp>
+#include <lux_shared/sparse_dyn_arr.hpp>
+
 template<typename T, SizeT len>
 constexpr SizeT arr_len(Arr<T, len> const&) {
     return len;
+}
+
+template<typename T, typename F>
+void foreach(T const& v, F f) {
+    for(auto it = v.begin(), end = v.end(); it != end; it = v.next(it)) {
+        f(it);
+    }
+}
+
+template<typename T, typename F>
+void foreach_while(T const& v, F f) {
+    for(auto it = v.begin(), end = v.end(); it != end; it = v.next(it)) {
+        if(!f(it)) break;
+    }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <lux_shared/common.hpp>
+#include <lux_shared/int.hpp>
+#include <lux_shared/vec.hpp>
 
 namespace util
 {

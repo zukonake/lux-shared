@@ -106,9 +106,7 @@ void clear_net_data(AssocMap<K, V, Hasher>* val) {
 
 template<typename T>
 void clear_net_data(DynArr<T>* val) {
-    for(auto& it : *val) {
-        clear_net_data(&it);
-    }
+    foreach(*val, [&](SizeT idx) { clear_net_data(val->beg + idx); });
     val->clear();
 }
 
@@ -237,12 +235,10 @@ void serialize(U8** buff, AssocMap<K, V, Hasher> const& val) {
 template<typename T>
 SizeT get_real_sz(DynArr<T> const& val) {
     if constexpr(HasStaticSz<T>::val) {
-        return sizeof(U32) + val.size() * sizeof(T);
+        return sizeof(U32) + val.len * sizeof(T);
     } else {
         SizeT sz = sizeof(U32);
-        for(auto const& x : val) {
-            sz += get_real_sz(x);
-        }
+        foreach(val, [&](SizeT idx) { sz += get_real_sz(val[idx]); });
         return sz;
     }
 }
@@ -252,18 +248,17 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, DynArr<T>* val) {
     U32 len;
     LUX_RETHROW(deserialize(buff, buff_end, &len),
                 "failed to deserialize dynamic array length");
-    //@TODO this can fail and we cannot catch it, custom dynarr implementation
-    //needed
+    //@TODO what if this fails, some security needed
     val->resize(len);
     if constexpr(HasStaticSz<T>::val) {
         LUX_RETHROW(buff_sz_at_least(len * sizeof(T), *buff, buff_end),
                     "failed to deserialize dynamic array");
         for(Uns i = 0; i < len; ++i) {
-            (void)deserialize(buff, buff_end, val->data() + i);
+            (void)deserialize(buff, buff_end, val->beg + i);
         }
     } else {
         for(Uns i = 0; i < len; ++i) {
-            LUX_RETHROW(deserialize(buff, buff_end, val->data() + i),
+            LUX_RETHROW(deserialize(buff, buff_end, val->beg + i),
                         "failed to deserialize dynamic array");
         }
     }
@@ -272,10 +267,8 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, DynArr<T>* val) {
 
 template<typename T>
 void serialize(U8** buff, DynArr<T> const& val) {
-    serialize(buff, (U32 const&)val.size());
-    for(auto const& x : val) {
-        serialize(buff, x);
-    }
+    serialize(buff, (U32 const&)val.len);
+    foreach(val, [&](SizeT idx) { serialize(buff, val[idx]); });
 }
 
 template<typename T, int len>

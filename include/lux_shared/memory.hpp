@@ -2,7 +2,8 @@
 
 #include <cstdlib>
 //
-#include <lux_shared/common.hpp>
+#include <lux_shared/int.hpp>
+#include <lux_shared/macro.hpp>
 
 template<typename T>
 inline T* lux_alloc(SizeT sz) {

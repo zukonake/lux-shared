@@ -1,13 +1,13 @@
 #pragma once
 
 #include <cstddef>
-#include <cstring>
 #include <type_traits>
 //
 #include <xxhash/xxhash.h>
 //
 #include <lux_shared/int.hpp>
-#include <lux_shared/string.hpp>
+#include <lux_shared/slice.hpp>
+#include <lux_shared/dyn_arr.hpp>
 
 template<typename V>
 struct LuxHash {
@@ -17,16 +17,16 @@ struct LuxHash {
     }
 };
 
-template<>
-struct LuxHash<SttStr> {
-    std::size_t operator()(SttStr const& v) const {
-        return XXH64((const void*)v, std::strlen(v), 0);
+template<typename T>
+struct LuxHash<Slice<T>> {
+    std::size_t operator()(Slice<T> const& v) const {
+        return XXH64((const void*)v.beg, v.len * sizeof(T), 0);
     }
 };
 
-template<>
-struct LuxHash<DynStr> {
-    std::size_t operator()(DynStr const& v) const {
-        return XXH64((const void*)v.data(), v.size(), 0);
+template<typename T>
+struct LuxHash<DynArr<T>> {
+    std::size_t operator()(DynArr<T> const& v) const {
+        return LuxHash<Slice<T>>()((Slice<T>)v);
     }
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <lux_shared/common.hpp>
+#include <lux_shared/int.hpp>
 
 namespace util
 {

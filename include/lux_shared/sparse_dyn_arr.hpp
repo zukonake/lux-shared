@@ -22,10 +22,6 @@ class SparseDynArr {
     T const& operator[](Id id) const;
     T*       at(Id id);
     T const* at(Id id) const;
-    template<typename F>
-    void foreach(F f);
-    template<typename F>
-    void foreach_while(F f);
 
     Id begin() const;
     Id end() const;
@@ -139,24 +135,6 @@ template<typename T, typename _Id>
 T const* SparseDynArr<T, _Id>::at(Id id) const {
     if(!contains(id)) return nullptr;
     return &data[id];
-}
-
-template<typename T, typename _Id>
-template<typename F>
-void SparseDynArr<T, _Id>::foreach(F f) {
-    for(Id id = begin(), last = end(); id != last; ++id) {
-        if(slots[id]) f(id);
-    }
-}
-
-template<typename T, typename _Id>
-template<typename F>
-void SparseDynArr<T, _Id>::foreach_while(F f) {
-    for(Id id = begin(), last = end(); id != last; ++id) {
-        if(slots[id]) {
-            if(!f(id)) break;
-        }
-    }
 }
 
 template<typename T, typename _Id>

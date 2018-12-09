@@ -91,7 +91,7 @@ void LUX_PANIC(const char* fmt, Args&& ...args) {
 #define LUX_MAY_FAIL [[nodiscard]] LuxRval
 #define LUX_RETHROW(expr, ...) { \
     if((expr) != LUX_OK) { \
-        LUX_UNIMPLEMENTED(); \
+        LUX_LOG_ERR(__VA_ARGS__) \
         return LUX_FAIL; \
     } }
 
