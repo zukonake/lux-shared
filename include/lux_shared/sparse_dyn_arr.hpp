@@ -120,7 +120,7 @@ void SparseDynArr<T, _Id>::shrink_to_fit() {
 template<typename T, typename _Id>
 SizeT SparseDynArr<T, _Id>::size() const {
     SizeT size = 0;
-    for(auto it = begin(); it != end(); it = next(it)) {
+    for(auto it = cbegin(); it != cend(); ++it) {
         size += 1;
     }
     return size;
@@ -165,7 +165,7 @@ typename SparseDynArr<T, _Id>::Iter SparseDynArr<T, _Id>::end() {
 template<typename T, typename _Id>
 typename SparseDynArr<T, _Id>::CIter SparseDynArr<T, _Id>::cbegin() const {
     CIter it = {*this, 0};
-    if(!it.is_valid() && it.key < slots.size()) ++it;
+    if(!contains(it.id)) ++it;
     return it;
 }
 

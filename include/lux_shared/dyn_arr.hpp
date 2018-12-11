@@ -10,13 +10,15 @@ class DynArr : public Slice<T> {
     DynArr();
     DynArr(std::initializer_list<T> init);
     DynArr(SizeT cap);
-    DynArr(Slice<T> const& that);
+    template<typename ThatT>
+    DynArr(Slice<ThatT> const& that);
     DynArr(DynArr<T> const& that);
     DynArr(DynArr<T>&& that);
     ~DynArr();
 
     using Slice<T>::operator==;
-    DynArr<T>& operator=(Slice<T> const& that);
+    template<typename ThatT>
+    DynArr<T>& operator=(Slice<ThatT> const& that);
     DynArr<T>& operator=(DynArr<T> const& that);
     DynArr<T>& operator=(DynArr<T>&& that);
     T& operator[](SizeT idx);
@@ -65,7 +67,8 @@ DynArr<T>::DynArr(SizeT cap) {
 }
 
 template<typename T>
-DynArr<T>::DynArr(Slice<T> const& that) {
+template<typename ThatT>
+DynArr<T>::DynArr(Slice<ThatT> const& that) {
     len = 0;
     cap = 0;
     *this = that;
@@ -95,7 +98,8 @@ DynArr<T>::~DynArr() {
 }
 
 template<typename T>
-DynArr<T>& DynArr<T>::operator=(Slice<T> const& that) {
+template<typename ThatT>
+DynArr<T>& DynArr<T>::operator=(Slice<ThatT> const& that) {
     len = that.len;
     reserve_exactly(len);
     for(Uns i = 0; i < len; i++) {
@@ -164,6 +168,10 @@ void DynArr<T>::erase(SizeT idx) {
     LUX_ASSERT(len != 0);
     LUX_ASSERT(idx < len);
     beg[idx].~T();
+    for(Uns i = idx + 1; i < len; i++) {
+        new (beg + i - 1) T(std::move(beg[i]));
+        beg[i].~T();
+    }
     len--;
 }
 
