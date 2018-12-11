@@ -98,23 +98,19 @@ void clear_net_data(AssocSet<K, Hasher>* val) {
 
 template<typename K, typename V, typename Hasher>
 void clear_net_data(AssocMap<K, V, Hasher>* val) {
-    for(auto& it : *val) {
-        clear_net_data(&it.second);
-    }
+    for(auto& it : *val) clear_net_data(&it.second);
     val->clear();
 }
 
 template<typename T>
 void clear_net_data(DynArr<T>* val) {
-    foreach(*val, [&](SizeT idx) { clear_net_data(val->beg + idx); });
+    for(T& it : *val) clear_net_data(&it);
     val->clear();
 }
 
 template<typename T, SizeT len>
 void clear_net_data(Arr<T, len>* val) {
-    for(Uns i = 0; i < len; ++i) {
-        clear_net_data(*val + i);
-    }
+    for(T& it : *val) clear_net_data(&it);
 }
 
 template<typename T>
@@ -188,9 +184,7 @@ SizeT get_real_sz(AssocMap<K, V, Hasher> const& val) {
         return sizeof(U32) + val.size() * (sizeof(K) + sizeof(V));
     } else {
         SizeT sz = sizeof(U32) + val.size() * sizeof(K);
-        for(auto const& x : val) {
-            sz += get_real_sz(x.second);
-        }
+        for(auto const& x : val) sz += get_real_sz(x.second);
         return sz;
     }
 }
@@ -226,9 +220,9 @@ template<typename K, typename V, typename Hasher>
 void serialize(U8** buff, AssocMap<K, V, Hasher> const& val) {
     static_assert(HasStaticSz<K>::val);
     serialize(buff, (U32 const&)val.size());
-    for(auto const& pair : val) {
-        serialize(buff, pair.first);
-        serialize(buff, pair.second);
+    for(auto const& it : val) {
+        serialize(buff, it.first);
+        serialize(buff, it.second);
     }
 }
 
@@ -238,7 +232,7 @@ SizeT get_real_sz(DynArr<T> const& val) {
         return sizeof(U32) + val.len * sizeof(T);
     } else {
         SizeT sz = sizeof(U32);
-        foreach(val, [&](SizeT idx) { sz += get_real_sz(val[idx]); });
+        for(T const& it : val) sz += get_real_sz(it);
         return sz;
     }
 }
@@ -253,12 +247,12 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, DynArr<T>* val) {
     if constexpr(HasStaticSz<T>::val) {
         LUX_RETHROW(buff_sz_at_least(len * sizeof(T), *buff, buff_end),
                     "failed to deserialize dynamic array");
-        for(Uns i = 0; i < len; ++i) {
-            (void)deserialize(buff, buff_end, val->beg + i);
+        for(T& it : *val) {
+            (void)deserialize(buff, buff_end, &it);
         }
     } else {
-        for(Uns i = 0; i < len; ++i) {
-            LUX_RETHROW(deserialize(buff, buff_end, val->beg + i),
+        for(T& it : *val) {
+            LUX_RETHROW(deserialize(buff, buff_end, &it),
                         "failed to deserialize dynamic array");
         }
     }
@@ -268,7 +262,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, DynArr<T>* val) {
 template<typename T>
 void serialize(U8** buff, DynArr<T> const& val) {
     serialize(buff, (U32 const&)val.len);
-    foreach(val, [&](SizeT idx) { serialize(buff, val[idx]); });
+    for(T const& it : val) serialize(buff, it);
 }
 
 template<typename T, int len>
@@ -293,12 +287,10 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
     if constexpr(HasStaticSz<T>::val) {
         LUX_RETHROW(buff_sz_at_least(len * sizeof(T), *buff, buff_end),
                     "failed to deserialize array");
-        for(Uns i = 0; i < len; ++i) {
-            (void)deserialize(buff, buff_end, *val + i);
-        }
+        for(T& it : *val) (void)deserialize(buff, buff_end, &it);
     } else {
-        for(Uns i = 0; i < len; ++i) {
-            LUX_RETHROW(deserialize(buff, buff_end, *val + i),
+        for(T& it : *val) {
+            LUX_RETHROW(deserialize(buff, buff_end, &it),
                         "failed to deserialize array");
         }
     }
@@ -307,5 +299,5 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end,
 
 template<typename T, SizeT len>
 void serialize(U8** buff, Arr<T, len> const& val) {
-    for(Uns i = 0; i < len; ++i) serialize(buff, val[i]);
+    for(T const& it : val) serialize(buff, it);
 }

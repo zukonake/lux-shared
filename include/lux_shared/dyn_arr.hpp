@@ -27,9 +27,8 @@ class DynArr : public Slice<T> {
     T& push(T&& val);
     T& last();
     void erase(SizeT idx);
-    SizeT begin() const;
-    SizeT end() const;
-    SizeT next(SizeT idx) const;
+    T* begin() const;
+    T* end() const;
 
     void resize(SizeT new_sz);
     void clear();
@@ -169,19 +168,13 @@ void DynArr<T>::erase(SizeT idx) {
 }
 
 template<typename T>
-SizeT DynArr<T>::begin() const {
-    return 0;
+T* DynArr<T>::begin() const {
+    return beg;
 }
 
 template<typename T>
-SizeT DynArr<T>::end() const {
-    return len;
-}
-
-template<typename T>
-SizeT DynArr<T>::next(SizeT idx) const {
-    LUX_ASSERT(idx < len);
-    return idx + 1;
+T* DynArr<T>::end() const {
+    return beg + len;
 }
 
 template<typename T>

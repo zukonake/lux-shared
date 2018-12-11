@@ -57,17 +57,3 @@ template<typename T, SizeT len>
 constexpr SizeT arr_len(Arr<T, len> const&) {
     return len;
 }
-
-template<typename T, typename F>
-void foreach(T const& v, F f) {
-    for(auto it = v.begin(), end = v.end(); it != end; it = v.next(it)) {
-        f(it);
-    }
-}
-
-template<typename T, typename F>
-void foreach_while(T const& v, F f) {
-    for(auto it = v.begin(), end = v.end(); it != end; it = v.next(it)) {
-        if(!f(it)) break;
-    }
-}
