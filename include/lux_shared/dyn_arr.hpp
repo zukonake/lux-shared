@@ -60,10 +60,11 @@ DynArr<T>::DynArr(std::initializer_list<T> init) {
 }
 
 template<typename T>
-DynArr<T>::DynArr(SizeT cap) {
+DynArr<T>::DynArr(SizeT _cap) {
     len = 0;
     cap = 0;
-    reserve_exactly(cap);
+    reserve_exactly(_cap);
+    while(len < _cap) emplace();
 }
 
 template<typename T>

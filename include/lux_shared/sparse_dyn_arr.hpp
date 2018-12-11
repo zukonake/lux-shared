@@ -120,8 +120,8 @@ void SparseDynArr<T, _Id>::shrink_to_fit() {
 template<typename T, typename _Id>
 SizeT SparseDynArr<T, _Id>::size() const {
     SizeT size = 0;
-    for(auto it = cbegin(); it != cend(); ++it) {
-        size += 1;
+    for(Id id = 0; id < slots.size(); id++) {
+        size += contains(id);
     }
     return size;
 }
@@ -153,7 +153,7 @@ T const* SparseDynArr<T, _Id>::at(Id id) const {
 template<typename T, typename _Id>
 typename SparseDynArr<T, _Id>::Iter SparseDynArr<T, _Id>::begin() {
     Iter it = {*this, 0};
-    if(!contains(it.id)) ++it;
+    if(!contains(it.id) && slots.size() != 0) ++it;
     return it;
 }
 
@@ -165,7 +165,7 @@ typename SparseDynArr<T, _Id>::Iter SparseDynArr<T, _Id>::end() {
 template<typename T, typename _Id>
 typename SparseDynArr<T, _Id>::CIter SparseDynArr<T, _Id>::cbegin() const {
     CIter it = {*this, 0};
-    if(!contains(it.id)) ++it;
+    if(!contains(it.id) && slots.size() != 0) ++it;
     return it;
 }
 
@@ -176,6 +176,7 @@ typename SparseDynArr<T, _Id>::CIter SparseDynArr<T, _Id>::cend() const {
 
 template<typename T, typename _Id>
 typename SparseDynArr<T, _Id>::Id SparseDynArr<T, _Id>::next(Id id) const {
+    id++;
     while(!contains(id) && id < slots.size()) id++;
     return id;
 }
