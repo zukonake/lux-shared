@@ -47,6 +47,8 @@ template<typename T>
 DynArr<T>::DynArr() {
     len = 0;
     cap = 0;
+    ///doing this only because valgrind shows false positives in begin and end
+    beg = nullptr;
 }
 
 template<typename T>

@@ -10,3 +10,5 @@ constexpr Slice<const char> operator"" _l(const char* cstr, SizeT len) {
 typedef Slice<const char> Str;
 typedef Slice<char>       DynStr;
 typedef DynArr<char>      StrBuff;
+
+//@TODO custom format function and str->int etc. funcs
