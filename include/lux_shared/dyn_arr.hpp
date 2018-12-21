@@ -29,6 +29,7 @@ class DynArr : public Slice<T> {
     T& push(T&& val);
     T& last();
     void erase(SizeT idx);
+    void pop();
     T* begin() const;
     T* end() const;
 
@@ -178,6 +179,12 @@ void DynArr<T>::erase(SizeT idx) {
         beg[i].~T();
     }
     len--;
+}
+
+template<typename T>
+void DynArr<T>::pop() {
+    LUX_ASSERT(len > 0);
+    erase(len - 1);
 }
 
 template<typename T>
