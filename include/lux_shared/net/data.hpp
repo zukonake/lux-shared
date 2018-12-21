@@ -125,16 +125,21 @@ struct NetSsSgnl {
     struct Msg {
         DynArr<char> contents;
     };
+    struct RasenAsmFinish {
+        U16 id;
+    };
     enum Tag : U8 {
         TILES = 0x00,
-        LIGHT = 0x01,
-        MSG   = 0x02,
+        LIGHT,
+        MSG,
+        RASEN_ASM_FINISH,
         TAG_MAX,
     } tag = TAG_MAX;
 
-    Tiles tiles;
-    Light light;
-    Msg   msg;
+    Tiles          tiles;
+    Light          light;
+    Msg            msg;
+    RasenAsmFinish rasen_asm_finish;
 };
 
 struct NetAction {
@@ -171,8 +176,8 @@ struct NetCsSgnl {
     };
     enum Tag : U8 {
         MAP_REQUEST = 0x00,
-        COMMAND     = 0x01,
-        RASEN_ASM   = 0x02,
+        COMMAND,
+        RASEN_ASM,
         TAG_MAX,
     } tag = TAG_MAX;
 
