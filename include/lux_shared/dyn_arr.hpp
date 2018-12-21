@@ -103,7 +103,9 @@ DynArr<T>::~DynArr() {
 template<typename T>
 template<typename ThatT>
 DynArr<T>& DynArr<T>::operator=(Slice<ThatT> const& that) {
-    reserve_exactly(that.len);
+    if(cap < that.len) {
+        reserve_exactly(that.len);
+    }
     for(Uns i = 0; i < that.len; i++) {
         new (beg + i) T(that[i]);
     }
