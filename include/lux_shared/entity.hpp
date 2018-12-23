@@ -2,5 +2,5 @@
 
 #include <lux_shared/common.hpp>
 
-typedef Vec2<F32> EntityVec;
+typedef Vec3<F32> EntityVec;
 typedef U32 EntityId;
