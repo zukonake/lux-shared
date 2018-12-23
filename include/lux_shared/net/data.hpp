@@ -6,9 +6,15 @@
 #include <lux_shared/map.hpp>
 #include <lux_shared/entity.hpp>
 
+struct NetRasenLabel {
+    StrBuff str_id;
+    U16     id;
+};
+
 struct NetSsInit {
     Arr<char, SERVER_NAME_LEN> name;
     U16                   tick_rate;
+    DynArr<NetRasenLabel> rasen_labels;
 };
 
 struct NetSsTick {
@@ -125,10 +131,6 @@ struct NetSsSgnl {
     struct Msg {
         DynArr<char> contents;
     };
-    struct RasenLabel {
-        StrBuff str_id;
-        U16     id;
-    };
     enum Tag : U8 {
         TILES = 0x00,
         LIGHT,
@@ -137,10 +139,10 @@ struct NetSsSgnl {
         TAG_MAX,
     } tag = TAG_MAX;
 
-    Tiles              tiles;
-    Light              light;
-    Msg                msg;
-    DynArr<RasenLabel> rasen_labels;
+    Tiles                 tiles;
+    Light                 light;
+    Msg                   msg;
+    DynArr<NetRasenLabel> rasen_labels;
 };
 
 struct NetAction {

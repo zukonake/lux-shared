@@ -123,7 +123,8 @@ divert(0)dnl
 #include <lux_shared/net/serial.hpp>
 #include <lux_shared/net/data.hpp>
 
-m4_lux_net_data(NetSsInit, static, name, tick_rate)
+m4_lux_net_data(NetRasenLabel, dynamic, str_id, id)
+m4_lux_net_data(NetSsInit, dynamic, name, tick_rate, rasen_labels)
 m4_lux_net_data(NetSsTick::DbgInf::Shape::Point, static, pos)
 m4_lux_net_data(NetSsTick::DbgInf::Shape::Line, static, beg, end)
 m4_lux_net_data(NetSsTick::DbgInf::Shape::Arrow, static, beg, end)
@@ -147,7 +148,6 @@ m4_lux_net_data(NetSsSgnl::Tiles, dynamic, chunks)
 m4_lux_net_data(NetSsSgnl::Light::Chunk, static, light_lvl)
 m4_lux_net_data(NetSsSgnl::Light, dynamic, chunks)
 m4_lux_net_data(NetSsSgnl::Msg, dynamic, contents)
-m4_lux_net_data(NetSsSgnl::RasenLabel, dynamic, str_id, id)
 m4_lux_net_data(NetSsSgnl, tagged, `tiles, light, msg, rasen_labels')
 m4_lux_net_data(NetAction, dynamic, stack, id)
 m4_lux_net_data(NetCsSgnl::MapRequest, dynamic, requests)
