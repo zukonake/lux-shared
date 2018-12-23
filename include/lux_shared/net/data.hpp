@@ -135,14 +135,14 @@ struct NetSsSgnl {
         TILES = 0x00,
         LIGHT,
         MSG,
-        RASEN_LABELS,
+        RASEN_LABEL,
         TAG_MAX,
     } tag = TAG_MAX;
 
-    Tiles                 tiles;
-    Light                 light;
-    Msg                   msg;
-    DynArr<NetRasenLabel> rasen_labels;
+    Tiles         tiles;
+    Light         light;
+    Msg           msg;
+    NetRasenLabel rasen_label;
 };
 
 struct NetAction {
