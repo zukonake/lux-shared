@@ -13,7 +13,7 @@ struct Slice {
     constexpr Slice(Slice<ThatT> const& that);
     constexpr Slice(Slice<const T> const& that);
     template<SizeT LEN>
-    constexpr explicit Slice(T (&that)[LEN]);
+    constexpr Slice(T (&that)[LEN]);
     template<typename ThatT>
     constexpr Slice<T>& operator=(Slice<ThatT> const& that);
 
