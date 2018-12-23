@@ -125,21 +125,22 @@ struct NetSsSgnl {
     struct Msg {
         DynArr<char> contents;
     };
-    struct RasenAsmFinish {
-        U16 id;
+    struct RasenLabel {
+        StrBuff str_id;
+        U16     id;
     };
     enum Tag : U8 {
         TILES = 0x00,
         LIGHT,
         MSG,
-        RASEN_ASM_FINISH,
+        RASEN_LABELS,
         TAG_MAX,
     } tag = TAG_MAX;
 
-    Tiles          tiles;
-    Light          light;
-    Msg            msg;
-    RasenAsmFinish rasen_asm_finish;
+    Tiles              tiles;
+    Light              light;
+    Msg                msg;
+    DynArr<RasenLabel> rasen_labels;
 };
 
 struct NetAction {
