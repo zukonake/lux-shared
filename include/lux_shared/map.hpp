@@ -41,13 +41,13 @@ inline IdxPos to_idx_pos(MapPos const &map_pos)
 inline IdxPos to_idx_pos(ChkIdx const &chk_idx)
 {
     return { chk_idx &  (CHK_SIZE - 1),
-            (chk_idx & ((CHK_SIZE - 1) << CHK_SIZE_EXP    )) >> CHK_SIZE_EXP,
-            (chk_idx & ((CHK_SIZE - 1) << CHK_SIZE_EXP * 2)) >> CHK_SIZE_EXP * 2};
+            (chk_idx & ((CHK_SIZE - 1) <<  CHK_SIZE_EXP     )) >>  CHK_SIZE_EXP,
+            (chk_idx & ((CHK_SIZE - 1) << (CHK_SIZE_EXP * 2))) >> (CHK_SIZE_EXP * 2)};
 }
 
 inline ChkIdx to_chk_idx(IdxPos const &idx_pos)
 {
-    return idx_pos.x | (idx_pos.y << CHK_SIZE_EXP) | idx_pos.z << CHK_SIZE_EXP;
+    return idx_pos.x | (idx_pos.y << CHK_SIZE_EXP) | (idx_pos.z << (CHK_SIZE_EXP * 2));
 }
 
 inline ChkIdx to_chk_idx(MapPos const &map_pos)
