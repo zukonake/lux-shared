@@ -114,10 +114,9 @@ struct NetSsTick {
 };
 
 struct NetSsSgnl {
-    struct Tiles {
+    struct Blocks {
         struct Chunk {
-            Arr<TileId, CHK_VOL> floor;
-            Arr<TileId, CHK_VOL> wall;
+            Arr<BlockId, CHK_VOL> id;
         };
         VecMap<ChkPos, Chunk> chunks;
     };
@@ -131,14 +130,14 @@ struct NetSsSgnl {
         DynArr<char> contents;
     };
     enum Tag : U8 {
-        TILES = 0x00,
+        BLOCKS = 0x00,
         LIGHT,
         MSG,
         RASEN_LABEL,
         TAG_MAX,
     } tag = TAG_MAX;
 
-    Tiles         tiles;
+    Blocks        blocks;
     Light         light;
     Msg           msg;
     NetRasenLabel rasen_label;
