@@ -2,7 +2,7 @@
 
 #include <tuple>
 //
-#include <xxhash/xxhash.h>
+#include <xxhash/xxhash.hpp>
 //
 #include <lux_shared/int.hpp>
 #include <lux_shared/macro.hpp>

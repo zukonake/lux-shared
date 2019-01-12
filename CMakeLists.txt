@@ -25,9 +25,5 @@ foreach(m4_file IN LISTS m4_files)
     list(APPEND m4_out_files ${out_file})
 endforeach(m4_file)
 
-add_subdirectory("deps/xxhash/cmake_unofficial")
-
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_library(lux STATIC ${SOURCES} ${m4_out_files})
-
-target_link_libraries(lux xxhash)

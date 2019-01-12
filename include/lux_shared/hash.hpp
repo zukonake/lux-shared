@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <type_traits>
 //
-#include <xxhash/xxhash.h>
+#include <xxhash/xxhash.hpp>
 //
 #include <lux_shared/int.hpp>
 #include <lux_shared/slice.hpp>

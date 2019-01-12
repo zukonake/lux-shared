@@ -1,6 +1,0 @@
-[submodule "deps/tinyformat"]
-	path = deps/tinyformat
-	url = https://github.com/c42f/tinyformat.git
-[submodule "deps/xxhash"]
-	path = deps/xxhash
-	url = https://github.com/Cyan4973/xxHash
