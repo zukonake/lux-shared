@@ -65,16 +65,16 @@ void LUX_PANIC(const char* fmt, Args&& ...args) {
 #else
 
 #define LUX_LOG(fmt, ...) { \
-    std::printf("%s: " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
+    std::printf(fmt "\n" __VA_OPT__(,) __VA_ARGS__); }
 
 #define LUX_LOG_ERR(fmt, ...) { \
     std::printf("ERROR %s: " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
 
 #define LUX_LOG_DBG(fmt, ...) { \
-    std::printf("DEBUG %s: " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
+    std::printf("DEBUG: " fmt "\n" __VA_OPT__(,) __VA_ARGS__); }
 
 #define LUX_LOG_WARN(fmt, ...) { \
-    std::printf("WARN %s: " fmt "\n", __PRETTY_FUNCTION__ __VA_OPT__(,) __VA_ARGS__); }
+    std::printf("WARN: " fmt "\n" __VA_OPT__(,) __VA_ARGS__); }
 
 //@TODO fatal should not exist, use panic or error
 #define LUX_FATAL(fmt, ...) { \
@@ -97,13 +97,14 @@ void LUX_PANIC(const char* fmt, Args&& ...args) {
 
 #ifndef NDEBUG
     #define LUX_ASSERT(expr) { \
-        if(!(expr)) LUX_PANIC("assertion `" #expr "` failed"); }
+        if(!(expr)) LUX_PANIC("%s:%u assertion `" #expr "` failed", \
+                              __FILE__, __LINE__); }
 #else
     #define LUX_ASSERT(expr) do {} while(false)
 #endif
 
 #define LUX_UNREACHABLE()   LUX_ASSERT(false)
-#define LUX_UNIMPLEMENTED() LUX_LOG("unimplemented")
+#define LUX_UNIMPLEMENTED() LUX_LOG("%s:%u unimplemented", __FILE__, __LINE__)
 
 #define LUX_SIGN_REPR_UNKNOWN            0
 #define LUX_SIGN_REPR_SIGN_AND_MAGNITUDE 1

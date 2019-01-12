@@ -10,6 +10,10 @@ inline bool f32_cmp(F32 a, F32 b) {
     return std::abs(a - b) < FLT_EPSILON;
 }
 
+inline F32 p_norm(F32 a) {
+    return (a + 1.f) / 2.f;
+}
+
 template<typename T>
 inline T rcp(T a) {
     return (T)1 / a;
