@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 configure_file("${PROJECT_SOURCE_DIR}/config.h.in"
                "${PROJECT_BINARY_DIR}/include/lux_shared/config.h")
+add_subdirectory("deps/zlib")
 
 include_directories(SYSTEM "include" "${PROJECT_BINARY_DIR}/include")
 file(GLOB_RECURSE m4_files RELATIVE "${PROJECT_SOURCE_DIR}" "*.m4")
@@ -27,3 +28,6 @@ endforeach(m4_file)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_library(lux STATIC ${SOURCES} ${m4_out_files})
+
+find_library(Z_LIB z)
+target_link_libraries(lux "${Z_LIB}")
