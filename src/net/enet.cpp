@@ -9,6 +9,7 @@
 
 typedef U16 NetMagic;
 NetMagic constexpr net_magic = 0x1337;
+SizeT constexpr compression_threshold = 256;
 
 ///streams for zlib compression
 z_stream net_def_strm;
@@ -16,6 +17,7 @@ z_stream net_inf_strm;
 
 size_t compress(void *, const ENetBuffer *in_buffs, size_t in_buffs_num,
                 size_t in_limit, enet_uint8 *out, size_t out_limit) {
+    if(in_limit < compression_threshold) return 0;
     net_def_strm.avail_out = out_limit;
     net_def_strm.next_out = (Bytef*)out;
     while(in_buffs_num > 1) {
@@ -55,8 +57,9 @@ size_t decompress(void *, const enet_uint8 *in, size_t in_limit,
     LUX_ASSERT(ret != Z_STREAM_ERROR);
     SizeT avail = net_inf_strm.avail_in;
     SizeT total = net_inf_strm.total_out;
-    deflateReset(&net_inf_strm);
+    inflateReset(&net_inf_strm);
     if(ret != Z_STREAM_END) {
+        LUX_LOG_WARN("deflate stream result: %d", ret);
         LUX_LOG_WARN("failed to decompress %zuB into %zuB",
                      in_limit, out_limit);
         return 0;
