@@ -15,19 +15,19 @@ dnl
 ifelse(`$2', `static', `dnl
 
 template<> struct HasStaticSz<$1> { bool static constexpr val = true; };
-void clear_net_data($1* val) {
+inline void clear_net_data($1* val) {
     m4_foreach(`member', `shift(shift($@))', `
     clear_net_data(&val->member);')
 }
 
-LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
+LUX_MAY_FAIL inline deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
     LUX_RETHROW(buff_sz_at_least(sizeof($1), *buff, buff_end));dnl
     m4_foreach(`member', `shift(shift($@))', `
     (void)deserialize(buff, buff_end, &val->member);')
     return LUX_OK;
 }
 
-void serialize(U8** buff, $1 const& val) {dnl
+inline void serialize(U8** buff, $1 const& val) {dnl
     m4_foreach(`member', `shift(shift($@))', `
     serialize(buff, val.member);')
 }', `dnl
@@ -35,25 +35,25 @@ dnl
 dnl
 ifelse(`$2', `dynamic', `dnl
 
-void clear_net_data($1* val) {
+inline void clear_net_data($1* val) {
     m4_foreach(`member', `shift(shift($@))', `
     clear_net_data(&val->member);')
 }
 
-SizeT get_real_sz($1 const& val) {
+inline SizeT get_real_sz($1 const& val) {
     return m4_foreach(`member', `shift(shift($@))', `
         get_real_sz(val.member) +')
         0;
 }
 
-LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
+LUX_MAY_FAIL inline deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
     m4_foreach(`member', `shift(shift($@))', `
     LUX_RETHROW(deserialize(buff, buff_end, &val->member),
                 "failed to deserialize member of $1");')
     return LUX_OK;
 }
 
-void serialize(U8** buff, $1 const& val) {dnl
+inline void serialize(U8** buff, $1 const& val) {dnl
     m4_foreach(`member', `shift(shift($@))', `
     serialize(buff, val.member);')
 }', `dnl
@@ -61,7 +61,7 @@ dnl
 dnl
 ifelse(`$2', `tagged', `dnl
 
-void clear_net_data($1* val) {
+inline void clear_net_data($1* val) {
     switch(val->tag) {dnl
         m4_foreach(`variant', `$3', `
         case $1::translit(variant, `a-z', `A-Z'):
@@ -73,7 +73,7 @@ void clear_net_data($1* val) {
     clear_net_data(&val->member);')
 }
 
-SizeT get_real_sz($1 const& val) {
+inline SizeT get_real_sz($1 const& val) {
     SizeT sz = sizeof($1::Tag);
     switch(val.tag) {dnl
         m4_foreach(`variant', `$3', `
@@ -87,7 +87,7 @@ SizeT get_real_sz($1 const& val) {
     return sz;
 }
 
-LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
+LUX_MAY_FAIL inline deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
     LUX_RETHROW(deserialize(buff, buff_end, (U8*)&val->tag),
                 "failed to deserialize $1 tag");
     switch(val->tag) {dnl
@@ -106,7 +106,7 @@ LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, $1* val) {
     return LUX_OK;
 }
 
-void serialize(U8** buff, $1 const& val) {
+inline void serialize(U8** buff, $1 const& val) {
     serialize(buff, (U8 const&)val.tag);
     switch(val.tag) {dnl
         m4_foreach(`variant', `$3', `
@@ -120,6 +120,8 @@ void serialize(U8** buff, $1 const& val) {
 ',)')')dnl
 ')dnl
 divert(0)dnl
+//@TODO split into cpp files?
+#pragma once
 #include <lux_shared/net/serial.hpp>
 #include <lux_shared/net/data.hpp>
 
