@@ -7,7 +7,7 @@
 #include <lux_shared/common.hpp>
 #include <lux_shared/net/common.hpp>
 
-void net_init(ENetHost* host);
+void net_compression_init(ENetHost* host);
 
 LUX_MAY_FAIL send_packet(ENetPeer* peer, ENetPacket* pack, U8 channel);
 LUX_MAY_FAIL create_reliable_pack(ENetPacket*& pack, SizeT sz);

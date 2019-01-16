@@ -73,8 +73,7 @@ static void net_deinit(void*) {
     inflateEnd(&net_inf_strm);
 }
 
-//@TODO better name
-void net_init(ENetHost* host) {
+void net_compression_init(ENetHost* host) {
     net_def_strm.zalloc = Z_NULL;
     net_def_strm.zfree  = Z_NULL;
     net_def_strm.opaque = Z_NULL;
