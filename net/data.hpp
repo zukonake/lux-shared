@@ -44,9 +44,19 @@ struct NetSsTick {
 };
 
 struct NetSsSgnl {
-    struct Blocks {
+    struct ChunkLoad {
         struct Chunk {
-            Arr<BlockId, CHK_VOL> id;
+            Arr<BlockId, CHK_VOL> blocks;
+        };
+        VecMap<ChkPos, Chunk> chunks;
+    };
+    struct ChunkUpdate {
+        struct Chunk {
+            struct Block {
+                ChkIdx  idx;
+                BlockId id;
+            };
+            DynArr<Block> blocks;
         };
         VecMap<ChkPos, Chunk> chunks;
     };
@@ -54,13 +64,15 @@ struct NetSsSgnl {
         DynArr<char> contents;
     };
     enum Tag : U8 {
-        BLOCKS = 0x00,
+        CHUNK_LOAD = 0x00,
+        CHUNK_UPDATE,
         MSG,
         RASEN_LABEL,
         TAG_MAX,
     } tag = TAG_MAX;
 
-    Blocks        blocks;
+    ChunkLoad     chunk_load;
+    ChunkUpdate   chunk_update;
     Msg           msg;
     NetRasenLabel rasen_label;
 };

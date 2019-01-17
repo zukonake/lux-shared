@@ -36,11 +36,11 @@ template<typename K, typename V, typename Hasher>
 using AssocMap = std::unordered_map<K, V, Hasher>;
 template<typename K, typename V>
 using IdMap = AssocMap<K, V, util::Identity<K>>;
-template<typename K, typename V>
+template<typename K>
 using IdSet = AssocSet<K, util::Identity<K>>;
 template<typename K, typename V>
 using HashMap = AssocMap<K, V, LuxHash<K>>;
-template<typename K, typename V>
+template<typename K>
 using HashSet = AssocSet<K, LuxHash<K>>;
 template<typename K, typename V>
 using VecMap = AssocMap<K, V, util::Packer<K>>;
