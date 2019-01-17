@@ -1,5 +1,5 @@
 /**
- * @file    SimplexNoise.h
+ * @file    SimplexNoise.hpp
  * @brief   A Perlin Simplex Noise C++ Implementation (1D, 2D, 3D).
  *
  * Copyright (c) 2014-2018 Sebastien Rombauts (sebastien.rombauts@gmail.com)

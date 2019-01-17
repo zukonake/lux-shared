@@ -25,7 +25,7 @@
  */
 
 #include <cstdlib>
-#include <simplex/SimplexNoise.h>
+#include <SimplexNoise/SimplexNoise.hpp>
 
 #include <cstdint>  // int32_t/uint8_t
 

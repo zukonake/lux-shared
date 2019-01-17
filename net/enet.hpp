@@ -2,8 +2,6 @@
 
 #include <enet/enet.h>
 //
-#include <zlib/zlib.h>
-//
 #include <lux_shared/common.hpp>
 #include <lux_shared/net/common.hpp>
 

@@ -1,8 +1,10 @@
 #pragma once
 
 #include <initializer_list>
+#include <utility>
 //
 #include <lux_shared/slice.hpp>
+#include <lux_shared/memory.hpp>
 
 template<typename T>
 class DynArr : public Slice<T> {

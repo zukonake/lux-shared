@@ -5,7 +5,6 @@
 namespace util
 {
 
-//TODO use util::Clock?
 class TickClock
 {
     public:

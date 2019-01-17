@@ -1,10 +1,9 @@
+#include <zlib/zlib.h>
 #include <enet/enet.h>
 //
 #include <lux_shared/common.hpp>
 #include <lux_shared/net/common.hpp>
 #include <lux_shared/net/serial.hpp>
-#include <lux_shared/net/data.hpp>
-#include <lux_shared/net/data.inl>
 #include <lux_shared/net/enet.hpp>
 
 typedef U16 NetMagic;
@@ -166,7 +165,9 @@ LUX_MAY_FAIL deserialize_packet(ENetPacket* in_pack, T* data) {
     return LUX_OK;
 }
 
-//@CONSIDER moving these to respective repos (client, server)
+#include <lux_shared/net/data.hpp>
+#include <lux_shared/net/data.inl>
+
 template LUX_MAY_FAIL send_net_data<NetSsInit>(ENetPeer*, NetSsInit*, U8, bool);
 template LUX_MAY_FAIL send_net_data<NetSsTick>(ENetPeer*, NetSsTick*, U8, bool);
 template LUX_MAY_FAIL send_net_data<NetSsSgnl>(ENetPeer*, NetSsSgnl*, U8, bool);
@@ -180,3 +181,4 @@ template LUX_MAY_FAIL deserialize_packet<NetSsSgnl>(ENetPacket*, NetSsSgnl*);
 template LUX_MAY_FAIL deserialize_packet<NetCsInit>(ENetPacket*, NetCsInit*);
 template LUX_MAY_FAIL deserialize_packet<NetCsTick>(ENetPacket*, NetCsTick*);
 template LUX_MAY_FAIL deserialize_packet<NetCsSgnl>(ENetPacket*, NetCsSgnl*);
+
