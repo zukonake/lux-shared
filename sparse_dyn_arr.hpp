@@ -62,7 +62,13 @@ SparseDynArr<T, _Id>::~SparseDynArr() {
 template<typename T, typename _Id>
 template<typename ...Args>
 typename SparseDynArr<T, _Id>::Id SparseDynArr<T, _Id>::emplace(Args &&...args) {
-    Id id = std::find(full.cbegin(), full.cend(), false) - full.cbegin();
+    Id id = slots.size();
+    for(Uns i = 0; i < slots.size(); ++i) {
+        if(full[i] == false) {
+            id = i;
+            break;
+        }
+    }
     if(id == slots.size()) {
         if(cap < id + 1u) {
             if(cap == 0) {
@@ -71,7 +77,7 @@ typename SparseDynArr<T, _Id>::Id SparseDynArr<T, _Id>::emplace(Args &&...args) 
             } else {
                 cap *= 2;
                 T* new_data = lux_alloc<T>(cap);
-                for(Id id = 0; id != slots.size(); id++) {
+                for(Id id = 0; id < slots.size(); id++) {
                     if(!contains(id)) continue;
                     new (new_data + id) T(std::move(data[id]));
                     data[id].~T();
