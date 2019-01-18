@@ -100,10 +100,12 @@ void LUX_PANIC(const char* fmt, Args&& ...args) {
         if(!(expr)) LUX_PANIC("%s:%u assertion `" #expr "` failed", \
                               __FILE__, __LINE__); }
 #else
-    #define LUX_ASSERT(expr) do {} while(false)
+///without the if(expr), the expression will not be evaluated, even though
+///it might have side effects
+    #define LUX_ASSERT(expr) do {if(expr){ }} while(false)
 #endif
 
-#define LUX_UNREACHABLE()   LUX_ASSERT(false)
+#define LUX_UNREACHABLE()   LUX_PANIC("%s:%u unreachable!!!", __FILE__, __LINE__)
 #define LUX_UNIMPLEMENTED() LUX_LOG("%s:%u unimplemented", __FILE__, __LINE__)
 
 #define LUX_SIGN_REPR_UNKNOWN            0

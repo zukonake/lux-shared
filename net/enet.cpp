@@ -33,7 +33,6 @@ size_t compress(void *, const ENetBuffer *in_buffs, size_t in_buffs_num,
     net_def_strm.next_in  = (Bytef*)in_buffs->data;
     auto ret = deflate(&net_def_strm, Z_FINISH);
     LUX_ASSERT(ret != Z_STREAM_ERROR);
-    SizeT avail = net_def_strm.avail_in;
     SizeT total = net_def_strm.total_out;
     deflateReset(&net_def_strm);
     if(ret != Z_STREAM_END) {
@@ -41,7 +40,7 @@ size_t compress(void *, const ENetBuffer *in_buffs, size_t in_buffs_num,
                      in_limit, out_limit);
         return 0;
     }
-    LUX_ASSERT(avail == 0);
+    LUX_ASSERT(net_def_strm.avail_in == 0);
     return total;
 }
 
@@ -54,16 +53,14 @@ size_t decompress(void *, const enet_uint8 *in, size_t in_limit,
 
     auto ret = inflate(&net_inf_strm, Z_FINISH);
     LUX_ASSERT(ret != Z_STREAM_ERROR);
-    SizeT avail = net_inf_strm.avail_in;
     SizeT total = net_inf_strm.total_out;
     inflateReset(&net_inf_strm);
     if(ret != Z_STREAM_END) {
-        LUX_LOG_WARN("deflate stream result: %d", ret);
         LUX_LOG_WARN("failed to decompress %zuB into %zuB",
                      in_limit, out_limit);
         return 0;
     }
-    LUX_ASSERT(avail == 0);
+    LUX_ASSERT(net_inf_strm.avail_in == 0);
     return total;
 }
 
