@@ -5,13 +5,13 @@ set(LUX_SHARED_VERSION_MAJOR 0)
 set(LUX_SHARED_VERSION_MINOR 0)
 set(LUX_SHARED_VERSION_PATCH 0)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 configure_file("${PROJECT_SOURCE_DIR}/config.h.in"
                "${PROJECT_BINARY_DIR}/config.h")
-add_subdirectory("deps/zlib")
 
-include_directories(SYSTEM ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} "deps")
+include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR})
+include_directories(SYSTEM "deps")
 file(GLOB_RECURSE m4_files RELATIVE "${PROJECT_SOURCE_DIR}" "*.m4")
 foreach(m4_file IN LISTS m4_files)
     string(REPLACE ".m4" "" out_file ${m4_file})
@@ -26,17 +26,23 @@ foreach(m4_file IN LISTS m4_files)
     list(APPEND m4_out_files ${out_file})
 endforeach(m4_file)
 
-add_library(lux STATIC ${m4_out_files})
+set(SOURCES
+    ${SOURCES}
+    noise.cpp
+    hash.cpp
+    random.cpp
+    util/tick_clock.cpp
+    net/enet.cpp
+    net/serial.cpp
+    deps/xxhash/xxhash.cpp
+    deps/SimplexNoise/SimplexNoise.cpp)
+
+add_subdirectory("deps/zlib")
+add_subdirectory("deps/enet")
+
+add_library(lux STATIC ${SOURCES} ${m4_out_files})
 
 find_library(Z_LIB z)
+find_library(ENET_LIB enet)
 target_link_libraries(lux "${Z_LIB}")
-target_sources(lux
-    PRIVATE
-        noise.cpp
-        hash.cpp
-        random.cpp
-        util/tick_clock.cpp
-        net/enet.cpp
-        net/serial.cpp
-        deps/xxhash/xxhash.cpp
-        deps/SimplexNoise/SimplexNoise.cpp)
+target_link_libraries(lux "${ENET_LIB}")

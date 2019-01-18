@@ -19,4 +19,12 @@ inline T rcp(T a) {
     return (T)1 / a;
 }
 
+template<typename T>
+inline T clamp(T a, T min, T max) {
+    LUX_ASSERT(min < max);
+         if(a < min) a = min;
+    else if(a > max) a = max;
+    return a;
+}
+
 F32 constexpr tau = 6.28318530717958647692528676655900576839433879875021f;
