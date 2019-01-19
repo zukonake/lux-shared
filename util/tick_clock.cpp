@@ -42,12 +42,10 @@ typename TickClock::Duration TickClock::get_tick_len()
 typename TickClock::Duration TickClock::synchronize()
 {
     Duration delta = rate - cycle;
-    if(cycle < rate)
-    {
-        if(delta > Duration::zero()) std::this_thread::sleep_for(delta);
-        reset();
+    if(delta > Duration::zero()) {
+        std::this_thread::sleep_for(delta);
     }
-    cycle = Duration::zero();
+    reset();
     return delta;
 }
 
