@@ -27,7 +27,6 @@ foreach(m4_file IN LISTS m4_files)
 endforeach(m4_file)
 
 set(SOURCES
-    ${SOURCES}
     noise.cpp
     hash.cpp
     random.cpp
