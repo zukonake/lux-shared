@@ -44,19 +44,19 @@ struct NetSsTick {
 };
 
 struct NetSsSgnl {
+    struct Block {
+        BlockId  id;
+        BlockLvl lvl;
+    };
     struct ChunkLoad {
         struct Chunk {
-            Arr<BlockId, CHK_VOL> blocks;
+            Arr<Block, CHK_VOL> blocks;
         };
         VecMap<ChkPos, Chunk> chunks;
     };
     struct ChunkUpdate {
         struct Chunk {
-            struct Block {
-                ChkIdx  idx;
-                BlockId id;
-            };
-            DynArr<Block> blocks;
+            IdMap<ChkIdx, Block> blocks;
         };
         VecMap<ChkPos, Chunk> chunks;
     };
@@ -102,18 +102,23 @@ struct NetCsSgnl {
     struct MapRequest {
         VecSet<ChkPos> requests;
     };
+    struct ChunkUnload {
+        VecSet<ChkPos> chunks;
+    };
     struct RasenAsm {
         DynArr<char> str_id;
         DynArr<char> contents;
     };
     enum Tag : U8 {
         MAP_REQUEST = 0x00,
+        CHUNK_UNLOAD,
         RASEN_ASM,
         TAG_MAX,
     } tag = TAG_MAX;
 
-    MapRequest map_request;
-    RasenAsm   rasen_asm;
+    MapRequest  map_request;
+    ChunkUnload chunk_unload;
+    RasenAsm    rasen_asm;
 
     DynArr<NetAction> actions;
 };

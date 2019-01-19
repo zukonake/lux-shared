@@ -15,6 +15,7 @@ typedef Vec3<MapCoord> MapPos;
 typedef Vec3<ChkIdx>   IdxPos;
 
 typedef U16 BlockId;
+typedef U16 BlockLvl;
 typedef U16 LightLvl;
 
 BlockId constexpr void_block = 0;
