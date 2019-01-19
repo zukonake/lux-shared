@@ -9,10 +9,27 @@
 
 extern U64 random_seed;
 
+#pragma pack(push, 1)
+
+template<typename... Xs>
+struct PackedTuple { };
+
+template<typename X, typename... Xs>
+struct PackedTuple<X, Xs...> : PackedTuple<Xs...> {
+    PackedTuple(X _x, Xs const& ...xs) :
+        PackedTuple<Xs...>(xs...)
+    {
+        x = _x;
+    }
+    X x;
+};
+
+#pragma pack(pop)
+
 //@TODO 32-bit support
 template<typename... Args>
 U64 lux_rand(Args const& ...args) {
-    auto tuple = std::make_tuple(args...);
+    PackedTuple<Args...> tuple(args...);
     return XXH64((const void*)&tuple, sizeof(tuple), random_seed);
 }
 
