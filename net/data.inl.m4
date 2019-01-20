@@ -127,8 +127,8 @@ divert(0)dnl
 
 m4_lux_net_data(NetRasenLabel, dynamic, str_id, id)
 m4_lux_net_data(NetSsInit, dynamic, name, tick_rate, rasen_labels)
-m4_lux_net_data(NetSsTick::EntityComps::Visible, static, visible_id, quad_sz)
-m4_lux_net_data(NetSsTick::EntityComps::Orientation, static, origin, angle)
+m4_lux_net_data(NetSsTick::EntityComps::Visible, static, visible_id)
+m4_lux_net_data(NetSsTick::EntityComps::Orientation, static, origin, angles)
 m4_lux_net_data(NetSsTick::EntityComps, dynamic,
     pos, name, visible, orientation, parent)
 m4_lux_net_data(NetSsTick, dynamic, day_cycle, player_id, entity_comps,

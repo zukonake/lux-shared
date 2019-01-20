@@ -23,11 +23,10 @@ struct NetSsTick {
         typedef DynArr<char>   Name;
         struct Visible {
             U32   visible_id;
-            Vec2F quad_sz;
         };
         struct Orientation {
-            Vec2F origin;
-            F32   angle; ///in radians
+            Vec3F origin;
+            Vec2F angles;
         };
 
         IdMap<EntityId, Pos>         pos;
