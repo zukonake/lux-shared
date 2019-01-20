@@ -41,7 +41,5 @@ add_subdirectory("deps/enet")
 
 add_library(lux STATIC ${SOURCES} ${m4_out_files})
 
-find_library(Z_LIB z)
-find_library(ENET_LIB enet)
-target_link_libraries(lux "${Z_LIB}")
-target_link_libraries(lux "${ENET_LIB}")
+target_link_libraries(lux zlib)
+target_link_libraries(lux enet)
