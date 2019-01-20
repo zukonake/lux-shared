@@ -2,6 +2,8 @@
 //
 #include <lux_shared/noise.hpp>
 
+//@TODO add random seed
+
 F32 noise(F32 seed) {
     return SimplexNoise::noise(seed);
 }
@@ -21,7 +23,9 @@ F32 noise_fbm(T seed, Uns octaves)
     F32 amp = 0.5f;
     for(Uns i = 0; i < octaves; ++i) {
         sum  += noise(seed) * amp;
-        seed *= 2.f;
+        ///we don't multiply exactly by 2, because that makes the octaves
+        ///overlap
+        seed *= 1.9f;
         amp  *= 0.5f;
     }
     return sum / (1.f - 2.f * amp);
