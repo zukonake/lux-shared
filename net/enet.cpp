@@ -119,6 +119,7 @@ LUX_MAY_FAIL send_net_data(ENetPeer* peer, T* data,
     ENetPacket* out_pack;
     int packet_flags = 0;
     switch(channel) {
+        //@TODO, this might be very bad for chunk transfer
         case SGNL_CHANNEL:
         case INIT_CHANNEL: packet_flags = ENET_PACKET_FLAG_RELIABLE; break;
 
