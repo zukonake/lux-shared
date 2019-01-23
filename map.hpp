@@ -69,3 +69,44 @@ inline MapPos to_map_pos(ChkPos const &chk_pos, ChkIdx const &chk_idx)
 {
     return to_map_pos(chk_pos, to_idx_pos(chk_idx));
 }
+
+template<typename F>
+void update_chunks_around(F update_mesh, ChkPos const& pos, U8 updated_sides) {
+    ///@NOTE this probably can be done using bitwise paralellism, but I have
+    ///decided not to, for the sake of time (and also the fact it might be
+    ///actually slower, since it probably would include a for loop)
+    update_mesh(pos);
+    if(updated_sides != 0) {
+        if(updated_sides & 0b000011) {
+            int s_x = updated_sides & 0b000001 ? -1 : 1;
+            update_mesh({s_x,  0,  0});
+            if(updated_sides & 0b001100) {
+                int s_y = updated_sides & 0b000100 ? -1 : 1;
+                update_mesh(pos + ChkPos(s_x, s_y, 0));
+                update_mesh(pos + ChkPos(  0, s_y, 0));
+                if(updated_sides & 0b110000) {
+                    int s_z = updated_sides & 0b010000 ? -1 : 1;
+                    update_mesh(pos + ChkPos(s_x, s_y, s_z));
+                    update_mesh(pos + ChkPos(  0, s_y, s_z));
+                    update_mesh(pos + ChkPos(  0,   0, s_z));
+                    update_mesh(pos + ChkPos(s_x,   0, s_z));
+                }
+            } else if(updated_sides & 0b110000) {
+                int s_z = updated_sides & 0b010000 ? -1 : 1;
+                update_mesh(pos + ChkPos(s_x,   0, s_z));
+                update_mesh(pos + ChkPos(  0,   0, s_z));
+            }
+        } else if(updated_sides & 0b001100) {
+            int s_y = updated_sides & 0b000100 ? -1 : 1;
+            update_mesh(pos + ChkPos(  0, s_y,   0));
+            if(updated_sides & 0b110000) {
+                int s_z = updated_sides & 0b010000 ? -1 : 1;
+                update_mesh(pos + ChkPos(  0, s_y, s_z));
+                update_mesh(pos + ChkPos(  0,   0, s_z));
+            }
+        } else if(updated_sides & 0b110000) {
+            int s_z = updated_sides & 0b010000 ? -1 : 1;
+            update_mesh(pos + ChkPos(  0,   0, s_z));
+        }
+    }
+}
