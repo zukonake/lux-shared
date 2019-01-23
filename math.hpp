@@ -20,6 +20,7 @@ inline T rcp(T a) {
 }
 
 using glm::clamp;
+using glm::sign;
 using glm::pow;
 using glm::sqrt;
 using glm::min;
