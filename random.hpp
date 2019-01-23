@@ -6,6 +6,8 @@
 //
 #include <lux_shared/int.hpp>
 #include <lux_shared/macro.hpp>
+#include <lux_shared/vec.hpp>
+#include <lux_shared/math.hpp>
 
 extern U64 random_seed;
 
@@ -57,7 +59,21 @@ F32 lux_randf(Args const& ...args) {
 }
 
 template<typename... Args>
+F32 lux_randfm(F32 max, Args const& ...args) {
+    return lux_randf(args...) * max;
+}
+
+template<typename... Args>
 F32 lux_randfmm(F32 min, F32 max, Args const& ...args) {
+    //@TODO is this correct?
     LUX_ASSERT(min < max);
-    return min + lux_randf(args...) * (max - min);
+    return min + lux_randfm(max - min, args...);
+}
+
+template<typename... Args>
+Vec3F lux_rand_norm(Args const& ...args) {
+    //@TODO confirm uniform distribution
+    F32 angle = lux_randfm(tau, args..., 0);
+    F32 z     = s_norm(lux_randf(args..., 1));
+    return {cos(angle), sin(angle), z};
 }
