@@ -1,7 +1,7 @@
 #pragma once
 
 #include <type_traits>
-#include <forward_list>
+#include <list>
 #include <array>
 #include <queue>
 #include <deque>
@@ -25,7 +25,7 @@ using Queue = std::queue<T>;
 template<typename T>
 using Deque = std::deque<T>;
 template<typename T>
-using List = std::forward_list<T>;
+using List = std::list<T>;
 template<typename K, typename V>
 using SortMap = std::map<K, V>;
 template<typename V>

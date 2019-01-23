@@ -22,6 +22,8 @@ struct Slice {
 
     template<typename ThatT>
     Slice<T> cpy(Slice<ThatT> const& that);
+    template<typename ThatT>
+    Slice<T> cpy(Slice<ThatT> const& that, SizeT cpy_len);
     void     set(T const& val);
 
     constexpr T const& operator[](SizeT idx) const;
@@ -79,8 +81,19 @@ template<typename T>
 template<typename ThatT>
 Slice<T> Slice<T>::cpy(Slice<ThatT> const& that) {
     LUX_ASSERT(that.len <= len);
-    std::memcpy(beg, that.beg, that.len);
+    LUX_ASSERT(sizeof(T) == sizeof(ThatT));
+    std::memcpy(beg, that.beg, that.len * sizeof(ThatT));
     return *this + that.len;
+}
+
+template<typename T>
+template<typename ThatT>
+Slice<T> Slice<T>::cpy(Slice<ThatT> const& that, SizeT cpy_len) {
+    LUX_ASSERT(cpy_len <= len);
+    LUX_ASSERT(cpy_len <= that.len);
+    LUX_ASSERT(sizeof(T) == sizeof(ThatT));
+    std::memcpy(beg, that.beg, cpy_len * sizeof(ThatT));
+    return *this + cpy_len;
 }
 
 //@TODO confusing name with previous func

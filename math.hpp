@@ -7,6 +7,7 @@
 #include <lux_shared/int.hpp>
 
 using glm::clamp;
+using glm::sign;
 using glm::pow;
 using glm::sqrt;
 using glm::min;
