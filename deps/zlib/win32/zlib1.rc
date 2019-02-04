@@ -1,6 +1,8 @@
 #include <winver.h>
 #include "../zlib.h"
 
+#define GCC_WINDRES
+//fix for cygwin
 #ifdef GCC_WINDRES
 VS_VERSION_INFO		VERSIONINFO
 #else

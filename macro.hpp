@@ -22,7 +22,7 @@ enum LuxRval : bool {
     LUX_OK   = true,
 };
 
-#if (defined(__clang__) || defined(_MSC_VER))
+#if 1
 template<typename... Args>
 void LUX_PRINT(const char* prefix, const char* fmt, Args&& ...args) {
     std::fprintf(stderr, "%s: ", prefix); 
@@ -91,7 +91,6 @@ void LUX_PANIC(const char* fmt, Args&& ...args) {
 #define LUX_MAY_FAIL [[nodiscard]] LuxRval
 #define LUX_RETHROW(expr, ...) { \
     if((expr) != LUX_OK) { \
-        LUX_LOG_ERR(__VA_ARGS__) \
         return LUX_FAIL; \
     } }
 
