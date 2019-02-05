@@ -10,6 +10,8 @@
 typedef I64 ChkCoord;
 typedef U16 ChkIdx;
 typedef I64 MapCoord;
+//@TODO IdxCoord can be smaller than ChkIdx
+typedef ChkIdx IdxCoord;
 typedef Vec3<ChkCoord> ChkPos;
 typedef Vec3<MapCoord> MapPos;
 typedef Vec3<ChkIdx>   IdxPos;
