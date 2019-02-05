@@ -12,6 +12,7 @@ configure_file("${PROJECT_SOURCE_DIR}/config.h.in"
 
 include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR})
 include_directories(SYSTEM "include")
+include_directories(SYSTEM ${PROJECT_BINARY_DIR}/deps/zlib)
 file(GLOB_RECURSE m4_files RELATIVE "${PROJECT_SOURCE_DIR}" "*.m4")
 foreach(m4_file IN LISTS m4_files)
     string(REPLACE ".m4" "" out_file ${m4_file})
