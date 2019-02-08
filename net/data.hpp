@@ -43,35 +43,38 @@ struct NetSsTick {
 };
 
 struct NetSsSgnl {
-    struct Block {
-        BlockId  id;
-        BlockLvl lvl;
-    };
     struct ChunkLoad {
         struct Chunk {
-            Arr<Block, CHK_VOL> blocks;
+            //for a vertex we need
+            //(per XYZ)
+            //  4 bits for integer position
+            //  4 bits for fixed point
+            //(per vertex)
+            //  16 bits for material ID
+            DynArr<U64> verts;
+            DynArr<U16> idxs;
         };
         VecMap<ChkPos, Chunk> chunks;
     };
-    struct ChunkUpdate {
+    /*struct ChunkUpdate {
         struct Chunk {
             IdMap<ChkIdx, Block> blocks;
         };
         VecMap<ChkPos, Chunk> chunks;
-    };
+    };*/
     struct Msg {
         DynArr<char> contents;
     };
     enum Tag : U8 {
         CHUNK_LOAD = 0x00,
-        CHUNK_UPDATE,
+        //CHUNK_UPDATE,
         MSG,
         RASEN_LABEL,
         TAG_MAX,
     } tag = TAG_MAX;
 
     ChunkLoad     chunk_load;
-    ChunkUpdate   chunk_update;
+    //ChunkUpdate   chunk_update;
     Msg           msg;
     NetRasenLabel rasen_label;
 };
