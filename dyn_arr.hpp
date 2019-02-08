@@ -69,7 +69,10 @@ DynArr<T>::DynArr(SizeT _cap) {
     len = 0;
     cap = 0;
     reserve_exactly(_cap);
-    while(len < _cap) emplace();
+    while(len < _cap) {
+        new (beg + len) T();
+        len++;
+    }
 }
 
 template<typename T>
@@ -95,7 +98,7 @@ template<typename T>
 DynArr<T>::DynArr(DynArr<T>&& that) {
     cap = 0;
     len = 0;
-    *this = std::move(that);
+    *this = move(that);
 }
 
 template<typename T>
@@ -160,7 +163,7 @@ T& DynArr<T>::push(T&& val) {
     if(len >= cap) {
         reserve_at_least(len + 1);
     }
-    new (beg + len) T(std::move(val));
+    new (beg + len) T(move(val));
     len++;
     return last();
 }
@@ -177,7 +180,7 @@ void DynArr<T>::erase(SizeT idx) {
     LUX_ASSERT(idx < len);
     beg[idx].~T();
     for(Uns i = idx + 1; i < len; i++) {
-        new (beg + i - 1) T(std::move(beg[i]));
+        new (beg + i - 1) T(move(beg[i]));
         beg[i].~T();
     }
     len--;
@@ -214,7 +217,10 @@ void DynArr<T>::resize(SizeT new_sz) {
 
 template<typename T>
 void DynArr<T>::clear() {
-    while(len > 0) erase(len - 1);
+    while(len > 0) {
+        len--;
+        beg[len].~T();
+    }
 }
 
 template<typename T>
@@ -243,7 +249,7 @@ void DynArr<T>::reserve_exactly(SizeT new_cap)
     } else {
         T* new_beg = lux_alloc<T>(new_cap);
         for(Uns i = 0; i < len; i++) {
-            new (new_beg + i) T(std::move(beg[i]));
+            new (new_beg + i) T(move(beg[i]));
             beg[i].~T();
         }
         lux_free<T>(beg);
@@ -258,4 +264,11 @@ void DynArr<T>::dealloc_all() {
     clear();
     lux_free<T>(beg);
     cap = 0;
+}
+
+template<typename T>
+void swap(DynArr<T>& a, DynArr<T>& b) noexcept {
+    swap(a.cap, b.cap);
+    swap(a.len, b.len);
+    swap(a.beg, b.beg);
 }

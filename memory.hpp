@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdlib>
+#include <utility>
 //
 #include <lux_shared/int.hpp>
 #include <lux_shared/macro.hpp>
@@ -29,3 +30,6 @@ template<typename T>
 inline void lux_free(T* ptr) {
     std::free(ptr);
 }
+
+using std::move;
+using std::swap;
