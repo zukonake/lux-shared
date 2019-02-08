@@ -45,13 +45,11 @@ struct NetSsTick {
 struct NetSsSgnl {
     struct ChunkLoad {
         struct Chunk {
-            //for a vertex we need
-            //(per XYZ)
-            //  4 bits for integer position
-            //  4 bits for fixed point
-            //(per vertex)
-            //  16 bits for material ID
-            DynArr<U64> verts;
+            struct Vert {
+                Vec3<U8> pos; ///4.4 fixed point
+                BlockId  id;
+            };
+            DynArr<Vert> verts;
             DynArr<U16> idxs;
         };
         VecMap<ChkPos, Chunk> chunks;
