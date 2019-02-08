@@ -63,4 +63,17 @@ inline bool diff_cmp(T const& a, T const& b, T const& diff) {
     return abs(a - b) < diff;
 }
 
+template<SizeT p_bits, typename T, SizeT n>
+inline Vec<F32, n> fixed_to_float(Vec<T, n> const& a) {
+    T p_mask = (1 << p_bits);
+    typedef Vec<F32, n> VecF;
+    return (VecF)(a >> (T)p_bits) + (VecF)(a & (T)(p_mask - 1)) / (VecF)p_mask;
+}
+
+template<SizeT p_bits, typename T>
+inline F32 fixed_to_float(T const& a) {
+    T p_mask = (1 << p_bits);
+    return (F32)(a >> (T)p_bits) + (F32)(a & (p_mask - 1)) / (F32)p_mask;
+}
+
 F32 constexpr tau = 6.28318530717958647692528676655900576839433879875021f;
