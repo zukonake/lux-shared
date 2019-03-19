@@ -2,11 +2,10 @@
 
 #include <lux_shared/vec.hpp>
 
-///clockwise order of vertices
 template<typename T>
 Vec2<T> constexpr quad[] =
     {{-1, -1}, { 1, -1},
-     { 1,  1}, {-1,  1}};
+     {-1,  1}, { 1,  1}};
 
 template<typename T>
 Vec3<T> constexpr cube[] =
@@ -27,10 +26,10 @@ Vec2<T> constexpr square_3[] =
 template<typename T>
 Vec2<T> constexpr u_quad[] =
     {{0, 0}, {1, 0},
-     {1, 1}, {0, 1}};
+     {0, 1}, {1, 1}};
 
 template<typename T>
-T constexpr quad_idxs[] = {0, 1, 2, 2, 3, 0};
+T constexpr quad_idxs[] = {0, 1, 2, 2, 3, 1};
 
 template<typename T>
 Vec2<T> constexpr manhattan_2d[] =
