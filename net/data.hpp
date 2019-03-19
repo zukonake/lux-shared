@@ -47,13 +47,11 @@ struct NetSsTick {
 struct NetSsSgnl {
     struct ChunkLoad {
         struct Chunk {
-            struct Vert {
-                Vec3<U16> pos;  ///12.4 fixed point
-                Vec3<U8>  norm; ///sign.7 fixed point
-                BlockId  id;
+            struct Face {
+                ChkIdx  idx;
+                BlockId id;
             };
-            DynArr<Vert> verts;
-            DynArr<U16> idxs;
+            Arr<DynArr<Face>, 3> faces;
         };
         VecMap<ChkPos, Chunk> chunks;
     };

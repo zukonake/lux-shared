@@ -58,6 +58,8 @@ template<typename K, typename V, typename Hasher>
 SizeT get_real_sz(AssocMap<K, V, Hasher> const&);
 template<typename T>
 SizeT get_real_sz(DynArr<T> const&);
+template<typename T, SizeT len>
+SizeT get_real_sz(Arr<T, len> const&);
 
 template<typename T>
 LUX_MAY_FAIL deserialize(U8 const** buff, U8 const* buff_end, T*);
@@ -235,6 +237,17 @@ SizeT get_real_sz(DynArr<T> const& val) {
         return sizeof(U32) + val.len * sizeof(T);
     } else {
         SizeT sz = sizeof(U32);
+        for(T const& it : val) sz += get_real_sz(it);
+        return sz;
+    }
+}
+
+template<typename T, SizeT len>
+SizeT get_real_sz(Arr<T, len> const& val) {
+    if constexpr(HasStaticSz<T>::val) {
+        return len * sizeof(T);
+    } else {
+        SizeT sz = 0;
         for(T const& it : val) sz += get_real_sz(it);
         return sz;
     }
