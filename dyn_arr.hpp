@@ -32,8 +32,6 @@ class DynArr : public Slice<T> {
     T& last();
     void erase(SizeT idx);
     void pop();
-    T* begin() const;
-    T* end() const;
 
     void resize(SizeT new_sz);
     void clear();
@@ -50,8 +48,6 @@ template<typename T>
 DynArr<T>::DynArr() {
     len = 0;
     cap = 0;
-    ///doing this only because valgrind shows false positives in begin and end
-    beg = nullptr;
 }
 
 template<typename T>
@@ -190,16 +186,6 @@ template<typename T>
 void DynArr<T>::pop() {
     LUX_ASSERT(len > 0);
     erase(len - 1);
-}
-
-template<typename T>
-T* DynArr<T>::begin() const {
-    return beg;
-}
-
-template<typename T>
-T* DynArr<T>::end() const {
-    return beg + len;
 }
 
 template<typename T>

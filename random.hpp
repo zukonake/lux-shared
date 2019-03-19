@@ -13,6 +13,9 @@ extern U64 random_seed;
 
 #pragma pack(push, 1)
 
+//@NOTE if we use an std::tuple, we get non-deterministic results, due to
+//uninitialized data inside the padding
+
 template<typename... Xs>
 struct PackedTuple { };
 
@@ -37,7 +40,7 @@ U64 lux_rand(Args const& ...args) {
 
 template<typename... Args>
 U64 lux_randm(U64 max, Args const& ...args) {
-    return lux_rand(args...) % max;
+    return lux_rand(args...) % (max + 1);
 }
 
 template<typename... Args>
@@ -71,9 +74,16 @@ F32 lux_randfmm(F32 min, F32 max, Args const& ...args) {
 }
 
 template<typename... Args>
-Vec3F lux_rand_norm(Args const& ...args) {
-    //@TODO confirm uniform distribution
+Vec2F lux_rand_norm_2(Args const& ...args) {
+    F32 angle = lux_randfm(tau, args..., 0);
+    return {cos(angle), sin(angle)};
+}
+
+template<typename... Args>
+Vec3F lux_rand_norm_3(Args const& ...args) {
+    //@TODO is this normalized?
     F32 angle = lux_randfm(tau, args..., 0);
     F32 z     = s_norm(lux_randf(args..., 1));
-    return {cos(angle), sin(angle), z};
+    F32 mul   = sqrt(1.f - z * z);
+    return {cos(angle) * mul, sin(angle) * mul, z};
 }

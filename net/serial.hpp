@@ -104,6 +104,9 @@ void clear_net_data(AssocMap<K, V, Hasher>* val) {
 
 template<typename T>
 void clear_net_data(DynArr<T>* val) {
+    //@NOTE false positive from valgrind here
+    //occurs because the val->beg might be uninitialized,
+    //however that does not matter here at all
     for(T& it : *val) clear_net_data(&it);
     val->clear();
 }

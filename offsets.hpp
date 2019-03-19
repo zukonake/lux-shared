@@ -9,6 +9,22 @@ Vec2<T> constexpr quad[] =
      { 1,  1}, {-1,  1}};
 
 template<typename T>
+Vec3<T> constexpr cube[] =
+    {{-1, -1, -1}, {1, -1, -1}, {-1, 1, -1}, {1, 1, -1},
+     {-1, -1,  1}, {1, -1,  1}, {-1, 1,  1}, {1, 1,  1}};
+
+template<typename T>
+Vec3<T> constexpr u_cube[] =
+    {{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {1, 1, 0},
+     {0, 0, 1}, {1, 0, 1}, {0, 1, 1}, {1, 1, 1}};
+
+template<typename T>
+Vec2<T> constexpr square_3[] =
+    {{-1, -1}, {0, -1}, {1, -1},
+     {-1,  0}, {0,  0}, {1,  0},
+     {-1,  1}, {0,  1}, {1,  1}};
+
+template<typename T>
 Vec2<T> constexpr u_quad[] =
     {{0, 0}, {1, 0},
      {1, 1}, {0, 1}};
@@ -60,7 +76,7 @@ Vec3<T> constexpr chebyshev[] =
      {-1,  1,  1}, { 0,  1,  1}, { 1,  1,  1}};
 
 template<typename T>
-Vec2<T> constexpr chebyshev_hollow[] =
+Vec3<T> constexpr chebyshev_hollow[] =
     {{-1, -1, -1}, { 0, -1, -1}, { 1, -1, -1},
      {-1,  0, -1}, { 0,  0, -1}, { 1,  0, -1},
      {-1,  1, -1}, { 0,  1, -1}, { 1,  1, -1},

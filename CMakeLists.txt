@@ -31,7 +31,6 @@ set(SOURCES
     noise.cpp
     hash.cpp
     random.cpp
-    marching_cubes.cpp
     util/tick_clock.cpp
     net/enet.cpp
     net/serial.cpp

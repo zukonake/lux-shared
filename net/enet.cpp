@@ -8,7 +8,7 @@
 
 typedef U16 NetMagic;
 NetMagic constexpr net_magic = 0x1337;
-SizeT constexpr compression_threshold = 256;
+SizeT constexpr compression_threshold = -1;
 
 ///streams for zlib compression
 z_stream net_def_strm;

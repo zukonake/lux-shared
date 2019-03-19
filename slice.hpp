@@ -33,6 +33,9 @@ struct Slice {
     Slice<T>& operator+=(SizeT v);
     bool operator==(Slice<T> const& that) const;
 
+    T* begin() const;
+    T* end() const;
+
     T*    beg;
     SizeT len;
 };
@@ -133,4 +136,14 @@ bool Slice<T>::operator==(Slice<T> const& that) const {
         if((*this)[i] != that[i]) return false;
     }
     return true;
+}
+
+template<typename T>
+T* Slice<T>::begin() const {
+    return beg;
+}
+
+template<typename T>
+T* Slice<T>::end() const {
+    return beg + len;
 }

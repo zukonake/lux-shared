@@ -4,7 +4,11 @@
 #include <cstdlib>
 //
 #include <glm/glm.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/component_wise.hpp>
+//
 #include <lux_shared/int.hpp>
+#include <lux_shared/containers.hpp>
 
 using glm::clamp;
 using glm::sign;
@@ -74,6 +78,19 @@ template<SizeT p_bits, typename T>
 inline F32 fixed_to_float(T const& a) {
     T p_mask = (1 << p_bits);
     return (F32)(a >> (T)p_bits) + (F32)(a & (p_mask - 1)) / (F32)p_mask;
+}
+
+template<typename T>
+inline F32 trilinear_interp(Arr<T, 8> const& v, Vec3F f) {
+    return mix(mix(mix(v[0], v[1], f.x),
+                   mix(v[2], v[3], f.x), f.y),
+               mix(mix(v[4], v[5], f.x),
+                   mix(v[6], v[7], f.x), f.y), f.z);
+}
+
+template<typename T, int n>
+inline T chebyshev_distance(Vec<T, n> const& a, Vec<T, n> const& b) {
+    return compMax(abs(a - b));
 }
 
 F32 constexpr tau = 6.28318530717958647692528676655900576839433879875021f;

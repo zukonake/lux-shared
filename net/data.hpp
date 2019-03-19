@@ -6,6 +6,8 @@
 #include <lux_shared/map.hpp>
 #include <lux_shared/entity.hpp>
 
+#pragma pack(push, 1)
+
 struct NetRasenLabel {
     StrBuff str_id;
     U16     id;
@@ -46,7 +48,8 @@ struct NetSsSgnl {
     struct ChunkLoad {
         struct Chunk {
             struct Vert {
-                Vec3<U8> pos; ///4.4 fixed point
+                Vec3<U16> pos;  ///12.4 fixed point
+                Vec3<U8> norm; ///sign.7 fixed point
                 BlockId  id;
             };
             DynArr<Vert> verts;
@@ -122,3 +125,5 @@ struct NetCsSgnl {
 
     DynArr<NetAction> actions;
 };
+
+#pragma pack(pop)
