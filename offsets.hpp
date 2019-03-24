@@ -29,7 +29,7 @@ Vec2<T> constexpr u_quad[] =
      {0, 1}, {1, 1}};
 
 template<typename T>
-T constexpr quad_idxs[] = {0, 1, 2, 2, 3, 1};
+T constexpr quad_idxs[] = {0, 1, 2, 1, 3, 2};
 
 template<typename T>
 Vec3<T> constexpr axis_quads[3][4] =
