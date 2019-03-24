@@ -133,7 +133,7 @@ m4_lux_net_data(NetSsTick::EntityComps, dynamic,
     pos, name, visible, orientation, parent)
 m4_lux_net_data(NetSsTick, dynamic, day_cycle, player_id, entity_comps,
     entities)
-m4_lux_net_data(NetSsSgnl::ChunkLoad::Chunk::Face, static, idx, id)
+m4_lux_net_data(NetSsSgnl::ChunkLoad::Chunk::Face, static, idx, id, orientation)
 m4_lux_net_data(NetSsSgnl::ChunkLoad::Chunk, dynamic, faces)
 m4_lux_net_data(NetSsSgnl::ChunkLoad, dynamic, chunks)
 //#m4_lux_net_data(NetSsSgnl::ChunkUpdate::Chunk, dynamic, blocks)

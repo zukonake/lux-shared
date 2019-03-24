@@ -50,8 +50,9 @@ struct NetSsSgnl {
             struct Face {
                 ChkIdx  idx;
                 BlockId id;
+                U8      orientation;
             };
-            Arr<DynArr<Face>, 3> faces;
+            DynArr<Face> faces;
         };
         VecMap<ChkPos, Chunk> chunks;
     };

@@ -23,11 +23,11 @@ typedef U16 LightLvl;
 BlockId constexpr void_block = 0;
 
 ///if you need to change the chunk size, change this only
-U64 constexpr CHK_SIZE_EXP = 4;
+U64 constexpr CHK_SIZE_EXP = 5;
 
 U64 constexpr CHK_SIZE = 1 << CHK_SIZE_EXP;
 U64 constexpr CHK_VOL  = CHK_SIZE * CHK_SIZE * CHK_SIZE;
-static_assert(CHK_VOL <= 1 << (sizeof(ChkIdx) * 8));
+static_assert(sizeof(ChkIdx) * 8 >= CHK_SIZE_EXP * 3);
 
 inline ChkPos to_chk_pos(MapPos const &map_pos)
 {

@@ -32,6 +32,12 @@ template<typename T>
 T constexpr quad_idxs[] = {0, 1, 2, 2, 3, 1};
 
 template<typename T>
+Vec3<T> constexpr axis_quads[3][4] =
+    {{{0, 0, 0}, {0, 1, 0}, {0, 0, 1}, {0, 1, 1}},
+     {{0, 0, 0}, {0, 0, 1}, {1, 0, 1}, {1, 0, 1}},
+     {{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {1, 1, 0}}};
+
+template<typename T>
 Vec2<T> constexpr manhattan_2d[] =
              {{0, -1},
      {-1, 0}, {0,  0}, {1, 0},
