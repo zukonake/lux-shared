@@ -125,6 +125,7 @@ divert(0)dnl
 #include <lux_shared/net/serial.hpp>
 #include <lux_shared/net/data.hpp>
 
+m4_lux_net_data(BlockFace, static, idx, id, orientation)
 m4_lux_net_data(NetRasenLabel, dynamic, str_id, id)
 m4_lux_net_data(NetSsInit, dynamic, name, tick_rate, rasen_labels)
 m4_lux_net_data(NetSsTick::EntityComps::Visible, static, visible_id)
@@ -133,13 +134,12 @@ m4_lux_net_data(NetSsTick::EntityComps, dynamic,
     pos, name, visible, orientation, parent)
 m4_lux_net_data(NetSsTick, dynamic, day_cycle, player_id, entity_comps,
     entities)
-m4_lux_net_data(NetSsSgnl::ChunkLoad::Chunk::Face, static, idx, id, orientation)
 m4_lux_net_data(NetSsSgnl::ChunkLoad::Chunk, dynamic, faces)
 m4_lux_net_data(NetSsSgnl::ChunkLoad, dynamic, chunks)
-//#m4_lux_net_data(NetSsSgnl::ChunkUpdate::Chunk, dynamic, blocks)
-//#m4_lux_net_data(NetSsSgnl::ChunkUpdate, dynamic, chunks)
+m4_lux_net_data(NetSsSgnl::ChunkUpdate::Chunk, dynamic, removed_faces, added_faces)
+m4_lux_net_data(NetSsSgnl::ChunkUpdate, dynamic, chunks)
 m4_lux_net_data(NetSsSgnl::Msg, dynamic, contents)
-m4_lux_net_data(NetSsSgnl, tagged, `chunk_load, msg, rasen_label')
+m4_lux_net_data(NetSsSgnl, tagged, `chunk_load, chunk_update, msg, rasen_label')
 m4_lux_net_data(NetAction, dynamic, stack, id)
 m4_lux_net_data(NetCsSgnl::MapRequest, dynamic, requests)
 m4_lux_net_data(NetCsSgnl::ChunkUnload, dynamic, chunks)

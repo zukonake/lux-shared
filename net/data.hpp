@@ -47,34 +47,30 @@ struct NetSsTick {
 struct NetSsSgnl {
     struct ChunkLoad {
         struct Chunk {
-            struct Face {
-                ChkIdx  idx;
-                BlockId id;
-                U8      orientation;
-            };
-            DynArr<Face> faces;
+            DynArr<BlockFace> faces;
         };
         VecMap<ChkPos, Chunk> chunks;
     };
-    /*struct ChunkUpdate {
+    struct ChunkUpdate {
         struct Chunk {
-            IdMap<ChkIdx, Block> blocks;
+            DynArr<Uns>       removed_faces;
+            DynArr<BlockFace> added_faces;
         };
         VecMap<ChkPos, Chunk> chunks;
-    };*/
+    };
     struct Msg {
         DynArr<char> contents;
     };
     enum Tag : U8 {
         CHUNK_LOAD = 0x00,
-        //CHUNK_UPDATE,
+        CHUNK_UPDATE,
         MSG,
         RASEN_LABEL,
         TAG_MAX,
     } tag = TAG_MAX;
 
     ChunkLoad     chunk_load;
-    //ChunkUpdate   chunk_update;
+    ChunkUpdate   chunk_update;
     Msg           msg;
     NetRasenLabel rasen_label;
 };

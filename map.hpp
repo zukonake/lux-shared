@@ -20,6 +20,14 @@ typedef U16 BlockId;
 typedef U16 BlockLvl;
 typedef U16 LightLvl;
 
+#pragma pack(push, 1)
+struct BlockFace {
+    ChkIdx  idx;
+    BlockId id;
+    U8      orientation; //first bit is normal's sign, 2 next bits are axis (XYZ)
+};
+#pragma pack(pop)
+
 BlockId constexpr void_block = 0;
 
 ///if you need to change the chunk size, change this only
