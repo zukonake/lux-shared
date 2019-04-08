@@ -8,23 +8,17 @@
 
 #pragma pack(push, 1)
 
-struct NetRasenLabel {
-    StrBuff str_id;
-    U16     id;
-};
-
 struct NetSsInit {
     Arr<char, SERVER_NAME_LEN> name;
     U16                   tick_rate;
-    DynArr<NetRasenLabel> rasen_labels;
 };
 
 struct NetSsTick {
     struct EntityComps {
-        typedef EntityVec Pos;
-        typedef DynArr<char>   Name;
-        struct Visible {
-            U32   visible_id;
+        typedef EntityVec    Pos;
+        typedef DynArr<char> Name;
+        struct Model {
+            U32 id;
         };
         struct Orientation {
             Vec3F origin;
@@ -33,9 +27,7 @@ struct NetSsTick {
 
         IdMap<EntityId, Pos>         pos;
         IdMap<EntityId, Name>        name;
-        IdMap<EntityId, Visible>     visible;
-        IdMap<EntityId, Orientation> orientation;
-        IdMap<EntityId, EntityId>    parent;
+        IdMap<EntityId, Model>       model;
     };
     ///1 is expressed as midday, -1 is expressed as midnight
     F32              day_cycle;
@@ -58,30 +50,19 @@ struct NetSsSgnl {
         };
         VecMap<ChkPos, Chunk> chunks;
     };
-    struct Msg {
-        DynArr<char> contents;
-    };
     enum Tag : U8 {
         CHUNK_LOAD = 0x00,
         CHUNK_UPDATE,
-        MSG,
-        RASEN_LABEL,
         TAG_MAX,
     } tag = TAG_MAX;
 
     ChunkLoad     chunk_load;
     ChunkUpdate   chunk_update;
-    Msg           msg;
-    NetRasenLabel rasen_label;
-};
-
-struct NetAction {
-    DynArr<U8> stack;
-    U16           id;
 };
 
 struct NetCsTick {
-    DynArr<NetAction> actions;
+    EntityVec move_dir;
+    bool      is_moving;
 };
 
 struct NetCsInit {
@@ -103,22 +84,14 @@ struct NetCsSgnl {
     struct ChunkUnload {
         VecSet<ChkPos> chunks;
     };
-    struct RasenAsm {
-        DynArr<char> str_id;
-        DynArr<char> contents;
-    };
     enum Tag : U8 {
         MAP_REQUEST = 0x00,
         CHUNK_UNLOAD,
-        RASEN_ASM,
         TAG_MAX,
     } tag = TAG_MAX;
 
     MapRequest  map_request;
     ChunkUnload chunk_unload;
-    RasenAsm    rasen_asm;
-
-    DynArr<NetAction> actions;
 };
 
 #pragma pack(pop)
