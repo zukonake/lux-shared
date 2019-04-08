@@ -62,6 +62,7 @@ struct NetSsSgnl {
 
 struct NetCsTick {
     EntityVec move_dir;
+    Vec2F     yaw_pitch;
     bool      is_moving;
 };
 

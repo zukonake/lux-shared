@@ -141,4 +141,4 @@ m4_lux_net_data(NetCsSgnl::ChunkUnload, dynamic, chunks)
 m4_lux_net_data(NetCsSgnl, tagged, `map_request, chunk_unload')
 m4_lux_net_data(NetCsInit, static,
     net_ver.major, net_ver.minor, net_ver.patch, name)
-m4_lux_net_data(NetCsTick, static, move_dir, is_moving)
+m4_lux_net_data(NetCsTick, static, move_dir, yaw_pitch, is_moving)
