@@ -140,3 +140,11 @@ void LUX_PANIC(const char* fmt, Args&& ...args) {
 #if !defined(LUX_32BIT) && !defined(LUX_64BIT)
     #error "neither LUX_32BIT, neither LUX_64BIT is defined"
 #endif
+
+#if defined(__unix__)
+    #define LUX_OS_UNIX
+#elif defined(_WIN32)
+    #define LUX_OS_WINDOWS
+#else
+    #warning "unknown operating system, some features might be missing"
+#endif

@@ -31,6 +31,7 @@ class DynArr : public Slice<T> {
     T& push(T&& val);
     T& last();
     void erase(SizeT idx);
+    void erase(SizeT idx, SizeT len);
     void pop();
 
     void resize(SizeT new_sz);
@@ -175,11 +176,26 @@ void DynArr<T>::erase(SizeT idx) {
     LUX_ASSERT(len != 0);
     LUX_ASSERT(idx < len);
     beg[idx].~T();
-    for(Uns i = idx + 1; i < len; i++) {
-        new (beg + i - 1) T(move(beg[i]));
+    len--;
+    for(Uns i = idx; i < len; i++) {
+        new (beg + i) T(move(beg[i + 1]));
+        beg[i + 1].~T();
+    }
+}
+
+template<typename T>
+void DynArr<T>::erase(SizeT idx, SizeT count) {
+    if(idx + count > len)
+    LUX_LOG("%zu %zu", idx+count, len);
+    LUX_ASSERT(idx + count <= len);
+    for(Uns i = idx; i < idx + count; ++i) {
         beg[i].~T();
     }
-    len--;
+    for(Uns i = idx + count; i < len; ++i) {
+        new (beg + i - count) T(move(beg[i]));
+        beg[i].~T();
+    }
+    len -= count;
 }
 
 template<typename T>
