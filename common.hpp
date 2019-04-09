@@ -13,3 +13,4 @@
 #include <lux_shared/random.hpp>
 #include <lux_shared/math.hpp>
 #include <lux_shared/offsets.hpp>
+#include <lux_shared/benchmark.hpp>
